@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0d0f14"/>
+  <!-- Lichtkegel vom Objektiv zur Leinwand -->
+  <polygon points="150,380 380,150 380,362" fill="#f2b544" opacity=".22"/>
+  <line x1="150" y1="380" x2="380" y2="150" stroke="#f2b544" stroke-width="10" stroke-linecap="round"/>
+  <line x1="150" y1="380" x2="380" y2="362" stroke="#f2b544" stroke-width="10" stroke-linecap="round"/>
+  <!-- Leinwand -->
+  <line x1="386" y1="140" x2="386" y2="372" stroke="#e9e6df" stroke-width="22" stroke-linecap="round"/>
+  <!-- Objektiv -->
+  <circle cx="142" cy="388" r="30" fill="#f2b544"/>
+  <circle cx="142" cy="388" r="12" fill="#0d0f14"/>
+</svg>

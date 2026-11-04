@@ -1,0 +1,47 @@
+{
+  "$comment": "ENTWURF – Werte aus Dolby-Dokumenten, siehe docs/dolby-lautsprecherwinkel.md. Vor Verwendung im Planer freigeben.",
+  "retrieved": "2026-11-04",
+  "status": "draft",
+  "sources": {
+    "G": { "title": "Dolby Atmos Home Theater Installation Guidelines r3.1", "date": "2018-12", "url": "https://www.dolby.com/siteassets/technologies/dolby-atmos/atmos-installation-guidelines-121318_r3.1.pdf" },
+    "S712": { "title": "Home Theater Speaker Guide 7.1.2 Overhead", "date": "2020-03", "url": "https://www.dolby.com/siteassets/about/support/guide/setup-guides/7.1.2-overhead-speaker-placement/7_1_2_overhead_speaker_setup.pdf" },
+    "S714": { "title": "Home Theater Speaker Guide 7.1.4 Overhead", "date": "2020-03", "url": "https://www.dolby.com/siteassets/about/support/guide/setup-guides/7.1.4-overhead-speaker-placement/7_1_4_overhead_speaker_setup.pdf" },
+    "S912": { "title": "Home Theater Speaker Guide 9.1.2 Overhead", "date": "2020-03", "url": "https://www.dolby.com/siteassets/about/support/guide/setup-guides/9.1.2-overhead-speaker-placement/9_1_2_overhead_speaker_setup.pdf" },
+    "S914": { "title": "Home Theater Speaker Guide 9.1.4 Overhead", "date": "2020-03", "url": "https://www.dolby.com/siteassets/about/support/guide/setup-guides/9.1.4-overhead-speaker-placement/9_1_4_overhead_speaker_setup.pdf" },
+    "S916": { "title": "Home Theater Speaker Guide 9.1.6 Overhead", "date": "2020-03", "url": "https://www.dolby.com/siteassets/about/support/guide/setup-guides/9.1.6-overhead-speaker-placement/9_1_6_overhead_speaker_setup.pdf" }
+  },
+  "conventions": {
+    "azimuth": "Grad vom MLP, 0° = Leinwandmitte, symmetrisch L/R",
+    "elevation": "Grad in Seitenansicht vom Ohr am MLP, 0° = vorn waagerecht, 90° = senkrecht oben, 180° = hinten waagerecht"
+  },
+  "listenerLevel": {
+    "earHeightM": 1.2,
+    "rearMaxHeightFactor": 1.25,
+    "sources": ["G"]
+  },
+  "overheadMountHeightFactor": { "min": 2, "max": 3, "sources": ["G"] },
+  "channels": {
+    "C":   { "azimuth": { "ideal": 0 }, "sources": ["G"] },
+    "LR":  { "azimuth": { "min": 22, "max": 30 }, "sources": ["G", "S714", "S916"], "conflict": "G Abb. 3: 30° (22–40°)" },
+    "LwRw": { "azimuth": { "min": 50, "max": 70 }, "sources": ["G", "S916"] },
+    "LsRs_5.1": { "azimuth": { "min": 110, "max": 120 }, "sources": ["G"] },
+    "LsRs_5.1.x": { "azimuth": { "min": 90, "max": 110 }, "sources": ["G"], "conflict": "abweichend von 5.1 (110–120°) im selben Dokument" },
+    "LsRs_7plus": { "azimuth": { "min": 90, "max": 110 }, "sources": ["G", "S714", "S916"] },
+    "LrsRrs": { "azimuth": { "min": 135, "max": 150 }, "sources": ["G", "S714", "S916"] },
+    "Ltm_2": { "elevation": { "ideal": 80, "min": 65, "max": 100 }, "sources": ["S712", "S912"] },
+    "Ltf": { "elevation": { "ideal": 45, "min": 30, "max": 55 }, "sources": ["G", "S714", "S914", "S916"] },
+    "Ltm_6": { "elevation": { "ideal": 90, "min": 70, "max": 110 }, "sources": ["S916"] },
+    "Ltr": { "elevation": { "ideal": 135, "min": 125, "max": 150 }, "sources": ["G", "S714", "S914", "S916"] }
+  },
+  "layouts": {
+    "5.1":   ["C", "LR", "LsRs_5.1"],
+    "5.1.2": ["C", "LR", "LsRs_5.1.x", "Ltm_2"],
+    "5.1.4": ["C", "LR", "LsRs_5.1.x", "Ltf", "Ltr"],
+    "7.1":   ["C", "LR", "LsRs_7plus", "LrsRrs"],
+    "7.1.2": ["C", "LR", "LsRs_7plus", "LrsRrs", "Ltm_2"],
+    "7.1.4": ["C", "LR", "LsRs_7plus", "LrsRrs", "Ltf", "Ltr"],
+    "9.1.2": ["C", "LR", "LwRw", "LsRs_7plus", "LrsRrs", "Ltm_2"],
+    "9.1.4": ["C", "LR", "LwRw", "LsRs_7plus", "LrsRrs", "Ltf", "Ltr"],
+    "9.1.6": ["C", "LR", "LwRw", "LsRs_7plus", "LrsRrs", "Ltf", "Ltm_6", "Ltr"]
+  }
+}

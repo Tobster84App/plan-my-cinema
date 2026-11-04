@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0d0f14"/>
+  <!-- Scope-Leinwand 2,39:1 mit Bernstein-Rahmen -->
+  <rect x="106" y="178" width="300" height="126" rx="6" fill="#e9e6df"/>
+  <rect x="96" y="168" width="320" height="146" rx="12" fill="none" stroke="#f2b544" stroke-width="10"/>
+  <!-- Bemaßung -->
+  <line x1="106" y1="356" x2="406" y2="356" stroke="#f2b544" stroke-width="8" stroke-linecap="round"/>
+  <line x1="106" y1="336" x2="106" y2="376" stroke="#f2b544" stroke-width="8" stroke-linecap="round"/>
+  <line x1="406" y1="336" x2="406" y2="376" stroke="#f2b544" stroke-width="8" stroke-linecap="round"/>
+  <line x1="181" y1="346" x2="181" y2="366" stroke="#f2b544" stroke-width="6"/>
+  <line x1="256" y1="342" x2="256" y2="370" stroke="#f2b544" stroke-width="6"/>
+  <line x1="331" y1="346" x2="331" y2="366" stroke="#f2b544" stroke-width="6"/>
+</svg>
