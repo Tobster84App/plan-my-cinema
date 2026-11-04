@@ -53,6 +53,7 @@ jobs:
                case "$DRIVE_UPLOAD_URL" in *"/macros/u/"*|*"/u/"[0-9]*) echo "Hinweis: enthält /u/<Zahl>/ (mehrere Google-Konten angemeldet) – diesen Teil entfernen.";; esac
                case "$DRIVE_UPLOAD_URL" in *"/home/projects/"*|*"/d/"*"/edit"*) echo "Hinweis: das ist die Editor-Adresse, nicht die Web-App-Adresse.";; esac
                exit 1;; esac
+          K="$DRIVE_UPLOAD_KEY"; echo "Schlüssel: Länge=${#K} (erwartet 64), nur 0-9/a-f: $(printf '%s' "$K" | grep -qx '[0-9a-f]*' && echo ja || echo nein)"
           STAMP="$(TZ=Europe/Berlin date +%Y-%m-%d_%H%M%S)_${GITHUB_SHA::7}"
           LFTP_SET="set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate true;"
           # 1. aktuellen Serverstand herunterladen und packen
