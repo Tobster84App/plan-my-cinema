@@ -1,0 +1,9 @@
+---
+import type { Lang } from '../lib/format';
+const { lang } = Astro.props as { lang: Lang };
+---
+<p class="aff-note">
+  {lang === 'de'
+    ? 'Mit „Anzeige“ markierte Links sind Affiliate-Links. Kaufst du darüber, erhalten wir eine Provision. Der Preis ändert sich für dich nicht.'
+    : 'Links marked “Ad” are affiliate links. If you buy through them we earn a commission at no extra cost to you.'}
+</p>

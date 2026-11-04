@@ -1,0 +1,19 @@
+---
+/**
+ * Affiliate-Link mit Kennzeichnung.
+ * rel="sponsored" ist die von Google empfohlene Auszeichnung bezahlter Links.
+ * Die sichtbare Kennzeichnung („Anzeige“ / „Ad“) ist für Werbung nach UWG/TMG-Praxis üblich –
+ * die genaue Formulierung bitte rechtlich prüfen lassen.
+ */
+import type { Lang } from '../lib/format';
+interface Props {
+  href: string;
+  lang: Lang;
+  /** z. B. 'Amazon', 'Thomann' */
+  partner: string;
+}
+const { href, lang, partner } = Astro.props;
+const mark = lang === 'de' ? 'Anzeige' : 'Ad';
+const title = lang === 'de' ? `Affiliate-Link zu ${partner}: Bei einem Kauf erhalten wir eine Provision, für dich ändert sich der Preis nicht.` : `Affiliate link to ${partner}: we earn a commission on purchases at no extra cost to you.`;
+---
+<a href={href} rel="sponsored noopener" target="_blank" title={title}><slot /></a><span class="aff-mark" title={title}>{mark}</span>
