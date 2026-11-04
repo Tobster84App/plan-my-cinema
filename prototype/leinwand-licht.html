@@ -1,0 +1,309 @@
+<title>Leinwand &amp; Licht</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: Projektor-Kabine — links das Bedienpult, rechts die "Leinwand" mit Messwerten und Draufsicht */
+:root{
+  --bg:#0d0f14;          /* Kinosaal, leicht blaustichig */
+  --panel:#151922;       /* Bedienpult */
+  --line:#262c3a;        /* Rahmen, Raster */
+  --fg:#e9e6df;          /* Leinwandweiß, warm */
+  --muted:#8d93a3;
+  --beam:#f2b544;        /* Lichtstrahl / Akzent, Wolfram-Bernstein */
+  --beam-soft:rgba(242,181,68,.14);
+  --ok:#6cc3a0; --warn:#e8a33c; --bad:#e2685c; --info:#7fa6e8;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px}
+.brand h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,5vw,54px);line-height:.95;margin:0;letter-spacing:.01em;text-transform:uppercase;text-wrap:balance}
+.brand h1 span{color:var(--beam)}
+.brand p{margin:6px 0 0;color:var(--muted);max-width:60ch}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.lang button{background:none;border:0;color:var(--muted);font:500 13px var(--mono);padding:7px 14px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--beam);color:#1a1205}
+.lang button:focus-visible,select:focus-visible,input:focus-visible,.seg button:focus-visible{outline:2px solid var(--beam);outline-offset:2px}
+
+.grid{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:18px}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+legend{font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--beam);margin-bottom:10px;padding:0}
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-size:13px;color:var(--muted)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.inp{display:flex;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:7px}
+.inp input,.inp select,select{flex:1;min-width:0;background:transparent;border:0;color:var(--fg);font:500 15px var(--mono);padding:9px 10px;font-variant-numeric:tabular-nums}
+select{background:var(--bg);border:1px solid var(--line);border-radius:7px;width:100%}
+.inp .u{font:400 12px var(--mono);color:var(--muted);padding-right:10px}
+.seg{display:flex;gap:6px}
+.seg button{flex:1;background:var(--bg);border:1px solid var(--line);color:var(--muted);border-radius:7px;padding:8px 6px;font:500 13px var(--body);cursor:pointer}
+.seg button[aria-pressed="true"]{border-color:var(--beam);color:var(--fg);background:var(--beam-soft)}
+.hint{font-size:12px;color:var(--muted);margin:0}
+.sample{font:400 11px var(--mono);color:var(--muted);border:1px dashed var(--line);border-radius:6px;padding:6px 8px}
+
+.results{display:flex;flex-direction:column;gap:18px;min-width:0}
+.hero{background:linear-gradient(180deg,var(--beam-soft),transparent 70%),var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.hero .k{font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.big{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.big .v{font-family:var(--display);font-weight:800;font-size:clamp(56px,9vw,92px);line-height:.9;font-variant-numeric:tabular-nums}
+.big .v small{font-size:.4em;font-weight:600;color:var(--muted);margin-left:6px}
+.big .alt{font:500 18px var(--mono);color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:7px;font:600 13px var(--body);padding:5px 11px;border-radius:999px;border:1px solid currentColor}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.scale{position:relative;height:34px}
+.scale .bar{position:absolute;inset:8px 0 auto;height:8px;border-radius:4px;display:flex;overflow:hidden}
+.scale .bar i{display:block;height:100%}
+.scale .mk{position:absolute;top:0;width:2px;height:24px;background:var(--fg);transform:translateX(-1px);transition:left .25s}
+.scale .ticks{position:absolute;inset:auto 0 0;display:flex;justify-content:space-between;font:400 10px var(--mono);color:var(--muted)}
+
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:620px){.cards{grid-template-columns:minmax(0,1fr)}}
+.card{border:1px solid var(--line);border-radius:10px;padding:15px;display:flex;flex-direction:column;gap:9px;min-width:0}
+.card h2{font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--beam);margin:0}
+dl{margin:0;display:grid;grid-template-columns:auto auto;gap:5px 10px}
+dt{color:var(--muted);font-size:13px}
+dd{margin:0;text-align:right;font:500 14px var(--mono);font-variant-numeric:tabular-nums}
+.verdict{font-size:13px;margin:2px 0 0}
+
+.plan{border:1px solid var(--line);border-radius:10px;padding:15px;display:flex;flex-direction:column;gap:8px}
+.plan h2{font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--beam);margin:0}
+.svgbox{overflow-x:auto}
+svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:4px;border-radius:2px;display:inline-block}
+
+footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:6px}
+footer code{font-family:var(--mono);color:var(--fg)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1 data-i="title">Leinwand <span>&amp;</span> Licht</h1>
+      <p data-i="sub">Projektionsabstand, Bildhelligkeit und Sitzabstand für dein Heimkino in einem Rechner.</p>
+    </div>
+    <div class="lang" role="group" aria-label="Sprache / Language">
+      <button id="l-de" aria-pressed="true">DE</button>
+      <button id="l-en" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <form class="panel" id="form" autocomplete="off">
+      <p class="sample" data-i="sample">Beispielwerte: 3,00 m Scope-Leinwand, Projektor mit 2.000 lm (kalibriert). Ersetze sie durch deine Daten.</p>
+      <fieldset>
+        <legend data-i="g-screen">Leinwand</legend>
+        <div class="f"><label for="ratio" data-i="ratio">Seitenverhältnis</label>
+          <select id="ratio">
+            <option value="1.7778">16:9 (1,78:1)</option>
+            <option value="2">2,00:1</option>
+            <option value="2.35" selected>2,35:1 Cinemascope</option>
+            <option value="2.39">2,39:1</option>
+            <option value="2.4">2,40:1</option>
+          </select></div>
+        <div class="f"><label for="width" data-i="width">Bildbreite (sichtbar)</label>
+          <div class="inp"><input id="width" type="number" inputmode="decimal" min="50" max="1000" step="1" value="300"><span class="u">cm</span></div></div>
+        <div class="row2">
+          <div class="f"><label for="gain">Gain</label>
+            <div class="inp"><input id="gain" type="number" inputmode="decimal" min="0.3" max="3" step="0.05" value="1.0"></div></div>
+          <div class="f"><label for="loss" data-i="loss">Tuchverlust</label>
+            <div class="inp"><input id="loss" type="number" inputmode="decimal" min="0" max="60" step="1" value="15"><span class="u">%</span></div></div>
+        </div>
+        <p class="hint" data-i="loss-h">Akustisch transparentes Tuch schluckt Licht. Ohne AT-Tuch: 0 %.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend data-i="g-proj">Projektor</legend>
+        <div class="f"><label for="lm" data-i="lm">Lichtstrom (kalibriert, nicht Datenblatt)</label>
+          <div class="inp"><input id="lm" type="number" inputmode="numeric" min="100" max="20000" step="50" value="2000"><span class="u">lm</span></div></div>
+        <div class="row2">
+          <div class="f"><label for="trmin" data-i="trmin">Throw Ratio min.</label>
+            <div class="inp"><input id="trmin" type="number" inputmode="decimal" min="0.2" max="10" step="0.01" value="1.35"><span class="u">:1</span></div></div>
+          <div class="f"><label for="trmax" data-i="trmax">Throw Ratio max.</label>
+            <div class="inp"><input id="trmax" type="number" inputmode="decimal" min="0.2" max="10" step="0.01" value="2.84"><span class="u">:1</span></div></div>
+        </div>
+        <div class="f" id="scope-wrap"><label data-i="method">Scope-Methode</label>
+          <div class="seg" role="group">
+            <button type="button" id="m-zoom" aria-pressed="true" data-i="m-zoom">Zoom</button>
+            <button type="button" id="m-lens" aria-pressed="false" data-i="m-lens">Anamorph. Linse</button>
+          </div>
+          <div class="f" id="lens-wrap" hidden><label for="lensloss" data-i="lensloss">Lichtverlust der Linse</label>
+            <div class="inp"><input id="lensloss" type="number" inputmode="decimal" min="0" max="30" step="1" value="8"><span class="u">%</span></div></div>
+          <p class="hint" data-i="method-h">Zoom: das 16:9-Panel wird so groß gezoomt, dass es die Breite füllt. Licht oberhalb und unterhalb des Bildes geht verloren.</p>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend data-i="g-seat">Sitzplatz</legend>
+        <div class="f"><label for="seat" data-i="seat">Abstand Augen zur Leinwand</label>
+          <div class="inp"><input id="seat" type="number" inputmode="decimal" min="0.5" max="20" step="0.05" value="3.8"><span class="u">m</span></div></div>
+      </fieldset>
+    </form>
+
+    <section class="results" aria-live="polite">
+      <div class="hero">
+        <span class="k" data-i="k-lum">Bildhelligkeit auf der Leinwand</span>
+        <div class="big"><span class="v" id="o-fl">–</span><span class="alt" id="o-nits">–</span><span class="pill" id="o-pill">–</span></div>
+        <div class="scale" aria-hidden="true">
+          <div class="bar"><i style="width:30%;background:var(--bad)"></i><i style="width:10%;background:var(--ok)"></i><i style="width:20%;background:var(--info)"></i><i style="width:40%;background:var(--beam)"></i></div>
+          <div class="mk" id="o-mk"></div>
+          <div class="ticks"><span>0</span><span>12</span><span>16</span><span>24</span><span>40 fL</span></div>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card"><h2 data-i="c-screen">Leinwand</h2><dl id="o-screen"></dl></div>
+        <div class="card"><h2 data-i="c-throw">Projektionsabstand</h2><dl id="o-throw"></dl><p class="verdict" id="o-throw-v"></p></div>
+        <div class="card"><h2 data-i="c-seat">Sitzposition</h2><dl id="o-seat"></dl><p class="verdict" id="o-seat-v"></p></div>
+      </div>
+
+      <div class="plan">
+        <h2 data-i="c-plan">Draufsicht, maßstäblich</h2>
+        <div class="svgbox"><svg id="svg" viewBox="0 0 640 230" width="100%" role="img" aria-label="Draufsicht"></svg></div>
+        <div class="legend">
+          <span><i style="background:var(--fg)"></i><b data-i="lg-screen" style="font-weight:400">Leinwand</b></span>
+          <span><i style="background:var(--beam)"></i><b data-i="lg-proj" style="font-weight:400">Projektor-Bereich (Objektivabstand)</b></span>
+          <span><i style="background:var(--info)"></i><b data-i="lg-seat" style="font-weight:400">Sitzplatz und Blickwinkel</b></span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <span data-i="f1">Prototyp. Helligkeit: nits = Lumen × Gain × (1 − Verlust) ÷ (π × beleuchtete Fläche in m²); 1 fL = 3,426 nits. Blickwinkel: 2 · atan(Breite ÷ 2 · Abstand).</span>
+    <span data-i="f2">Bewertungsgrenzen sind Orientierungswerte (SDR-Kino-Referenz 14–16 fL; SMPTE ≥ 30°, THX ca. 36–40°). Projektorhersteller geben Throw Ratio unterschiedlich an: Datenblatt prüfen.</span>
+  </footer>
+</div>
+
+<script>
+const T={
+ de:{title:'Leinwand <span>&amp;</span> Licht',sub:'Projektionsabstand, Bildhelligkeit und Sitzabstand für dein Heimkino in einem Rechner.',
+  sample:'Beispielwerte: 3,00 m Scope-Leinwand, Projektor mit 2.000 lm (kalibriert). Ersetze sie durch deine Daten.',
+  'g-screen':'Leinwand',ratio:'Seitenverhältnis',width:'Bildbreite (sichtbar)',loss:'Tuchverlust','loss-h':'Akustisch transparentes Tuch schluckt Licht. Ohne AT-Tuch: 0 %.',
+  'g-proj':'Projektor',lm:'Lichtstrom (kalibriert, nicht Datenblatt)',trmin:'Throw Ratio min.',trmax:'Throw Ratio max.',method:'Scope-Methode','m-zoom':'Zoom','m-lens':'Anamorph. Linse',lensloss:'Lichtverlust der Linse',
+  'method-h':'Zoom: das 16:9-Panel wird so groß gezoomt, dass es die Breite füllt. Licht oberhalb und unterhalb des Bildes geht verloren.',
+  'method-h2':'Linse: das ganze Panel wird auf die Scope-Fläche verteilt. Heller, aber die Linse kostet etwas Licht.',
+  'g-seat':'Sitzplatz',seat:'Abstand Augen zur Leinwand','k-lum':'Bildhelligkeit auf der Leinwand','c-screen':'Leinwand','c-throw':'Projektionsabstand','c-seat':'Sitzposition','c-plan':'Draufsicht, maßstäblich',
+  'lg-screen':'Leinwand','lg-proj':'Projektor-Bereich (Objektivabstand)','lg-seat':'Sitzplatz und Blickwinkel',
+  f1:'Prototyp. Helligkeit: nits = Lumen × Gain × (1 − Verlust) ÷ (π × beleuchtete Fläche in m²); 1 fL = 3,426 nits. Blickwinkel: 2 · atan(Breite ÷ 2 · Abstand).',
+  f2:'Bewertungsgrenzen sind Orientierungswerte (SDR-Kino-Referenz 14–16 fL; SMPTE ≥ 30°, THX ca. 36–40°). Projektorhersteller geben Throw Ratio unterschiedlich an: Datenblatt prüfen.',
+  w:'Breite',h:'Höhe',d:'Diagonale',a:'Bildfläche',lit:'Beleuchtete Fläche',min:'Minimal',max:'Maximal',wmin:'Bildbreite',
+  ang:'Horiz. Blickwinkel',smpte:'SMPTE 30°',thx:'THX 40°',
+  r0:'Zu dunkel',r1:'SDR-Referenz',r2:'SDR hell',r3:'Reserve für HDR',
+  tv:(a,b)=>`Objektiv muss zwischen ${a} und ${b} von der Leinwand stehen.`,
+  s0:'Unter SMPTE-Empfehlung, eher wenig Kinogefühl.',s1:'SMPTE-Bereich, entspannt.',s2:'THX-Bereich, immersiv.',s3:'Sehr nah, über THX-Empfehlung.'},
+ en:{title:'Screen <span>&amp;</span> Light',sub:'Throw distance, on-screen brightness and seating distance for your home cinema in one calculator.',
+  sample:'Sample values: 3.00 m scope screen, projector with 2,000 lm (calibrated). Replace them with your own.',
+  'g-screen':'Screen',ratio:'Aspect ratio',width:'Image width (visible)',loss:'Fabric loss','loss-h':'Acoustically transparent fabric absorbs light. No AT fabric: 0 %.',
+  'g-proj':'Projector',lm:'Light output (calibrated, not spec sheet)',trmin:'Throw ratio min.',trmax:'Throw ratio max.',method:'Scope method','m-zoom':'Zoom','m-lens':'Anamorphic lens',lensloss:'Lens light loss',
+  'method-h':'Zoom: the 16:9 panel is zoomed until it fills the width. Light above and below the picture is wasted.',
+  'method-h2':'Lens: the whole panel is spread over the scope area. Brighter, but the lens costs some light.',
+  'g-seat':'Seat',seat:'Eye-to-screen distance','k-lum':'On-screen brightness','c-screen':'Screen','c-throw':'Throw distance','c-seat':'Seating','c-plan':'Top view, to scale',
+  'lg-screen':'Screen','lg-proj':'Projector range (lens distance)','lg-seat':'Seat and viewing angle',
+  f1:'Prototype. Brightness: nits = lumens × gain × (1 − loss) ÷ (π × lit area in m²); 1 fL = 3.426 nits. Viewing angle: 2 · atan(width ÷ 2 · distance).',
+  f2:'Rating thresholds are guidance only (SDR cinema reference 14–16 fL; SMPTE ≥ 30°, THX approx. 36–40°). Manufacturers state throw ratio differently: check the spec sheet.',
+  w:'Width',h:'Height',d:'Diagonal',a:'Image area',lit:'Lit area',min:'Minimum',max:'Maximum',wmin:'Image width',
+  ang:'Horiz. viewing angle',smpte:'SMPTE 30°',thx:'THX 40°',
+  r0:'Too dim',r1:'SDR reference',r2:'Bright SDR',r3:'HDR headroom',
+  tv:(a,b)=>`Lens must be between ${a} and ${b} from the screen.`,
+  s0:'Below SMPTE recommendation, little cinema feel.',s1:'SMPTE range, relaxed.',s2:'THX range, immersive.',s3:'Very close, beyond THX recommendation.'}
+};
+let lang='de',method='zoom';
+try{const s=localStorage.getItem('ll-lang');if(s&&T[s])lang=s}catch(e){}
+const $=id=>document.getElementById(id);
+const num=id=>{const v=parseFloat($(id).value);return isFinite(v)?v:0};
+const fmt=(v,d=2)=>new Intl.NumberFormat(lang==='de'?'de-DE':'en-US',{minimumFractionDigits:d,maximumFractionDigits:d}).format(v);
+const m=v=>fmt(v,2)+' m';
+const inch=v=>lang==='en'?` <span style="color:var(--muted)">(${fmt(v/0.0254,0)}″)</span>`:` <span style="color:var(--muted)">(${fmt(v/0.0254,0)}″)</span>`;
+
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i]').forEach(el=>{const k=el.dataset.i;if(T[lang][k]!==undefined&&typeof T[lang][k]==='string')el.innerHTML=T[lang][k]});
+  $('l-de').setAttribute('aria-pressed',lang==='de');$('l-en').setAttribute('aria-pressed',lang==='en');
+  const opts=$('ratio').options;
+  const names=lang==='de'?['16:9 (1,78:1)','2,00:1','2,35:1 Cinemascope','2,39:1','2,40:1']:['16:9 (1.78:1)','2.00:1','2.35:1 CinemaScope','2.39:1','2.40:1'];
+  names.forEach((n,i)=>opts[i].textContent=n);
+  calc();
+}
+function row(k,v){return `<dt>${k}</dt><dd>${v}</dd>`}
+
+function calc(){
+  const t=T[lang];
+  const r=parseFloat($('ratio').value), W=num('width')/100, H=W/r;
+  const gain=num('gain'), loss=num('loss')/100, lm=num('lm');
+  let trmin=num('trmin'), trmax=num('trmax'); if(trmax<trmin)[trmin,trmax]=[trmax,trmin];
+  const seat=num('seat');
+  const scope=r>1.79;
+  $('scope-wrap').hidden=!scope;
+  $('lens-wrap').hidden=!(scope&&method==='lens');
+  $('scope-wrap').querySelector('.hint').innerHTML=method==='lens'?t['method-h2']:t['method-h'];
+
+  // beleuchtete Fläche und Wurfbreite
+  let lit, lensT=1;
+  if(!scope){lit=W*H}
+  else if(method==='zoom'){lit=W*(W/1.7778)}
+  else{lit=W*H;lensT=1-num('lensloss')/100}
+  const nits=lit>0?lm*gain*(1-loss)*lensT/(Math.PI*lit):0, fl=nits/3.426;
+  $('o-fl').innerHTML=fmt(fl,1)+'<small>fL</small>';
+  $('o-nits').textContent=fmt(nits,0)+' nits';
+  let rc,rt; if(fl<12){rc='var(--bad)';rt=t.r0}else if(fl<16){rc='var(--ok)';rt=t.r1}else if(fl<24){rc='var(--info)';rt=t.r2}else{rc='var(--beam)';rt=t.r3}
+  const p=$('o-pill');p.textContent=rt;p.style.color=rc;
+  $('o-mk').style.left=Math.min(100,fl/40*100)+'%';
+
+  $('o-screen').innerHTML=row(t.w,m(W))+row(t.h,m(H))+row(t.d,m(Math.hypot(W,H))+inch(Math.hypot(W,H)))+row(t.a,fmt(W*H,2)+' m²')+(scope&&method==='zoom'?row(t.lit,fmt(lit,2)+' m²'):'');
+
+  const dmin=trmin*W, dmax=trmax*W;
+  $('o-throw').innerHTML=row(t.min,m(dmin))+row(t.max,m(dmax))+row(t.wmin,m(W));
+  $('o-throw-v').textContent=t.tv(m(dmin),m(dmax));
+
+  const ang=seat>0?2*Math.atan(W/(2*seat))*180/Math.PI:0;
+  const dS=W/(2*Math.tan(15*Math.PI/180)), dT=W/(2*Math.tan(20*Math.PI/180));
+  $('o-seat').innerHTML=row(t.ang,fmt(ang,1)+'°')+row(t.smpte,m(dS))+row(t.thx,m(dT));
+  const sv=$('o-seat-v');
+  if(ang<30){sv.textContent=t.s0;sv.style.color='var(--warn)'}else if(ang<36){sv.textContent=t.s1;sv.style.color='var(--ok)'}else if(ang<=40){sv.textContent=t.s2;sv.style.color='var(--ok)'}else{sv.textContent=t.s3;sv.style.color='var(--warn)'}
+
+  draw(W,dmin,dmax,seat,dS,dT);
+  try{localStorage.setItem('ll-lang',lang)}catch(e){}
+}
+
+function draw(W,dmin,dmax,seat,dS,dT){
+  const svg=$('svg'), X0=56, VW=640, VH=230, cy=VH/2-4;
+  const maxD=Math.max(dmax,seat,dS)*1.08||1;
+  const s=Math.min((VW-X0-24)/maxD,(VH-110)/W);
+  const x=d=>X0+d*s, half=W*s/2;
+  const tickStep=maxD>12?2:1;
+  let g='';
+  for(let d=0;d<=maxD;d+=tickStep){g+=`<line x1="${x(d)}" y1="18" x2="${x(d)}" y2="${VH-20}" stroke="#262c3a" stroke-width="1"/><text x="${x(d)}" y="${VH-6}" text-anchor="middle">${d} m</text>`}
+  // Blickwinkel
+  g+=`<polygon points="${x(seat)},${cy} ${X0},${cy-half} ${X0},${cy+half}" fill="rgba(127,166,232,.12)" stroke="#7fa6e8" stroke-width="1"/>`;
+  // SMPTE / THX Markierungen
+  g+=`<line x1="${x(dT)}" y1="${cy+half+6}" x2="${x(dT)}" y2="${cy+half+16}" stroke="#6cc3a0" stroke-width="2"/><text x="${x(dT)}" y="${cy+half+28}" text-anchor="middle" style="fill:#6cc3a0">THX</text>`;
+  g+=`<line x1="${x(dS)}" y1="${cy+half+6}" x2="${x(dS)}" y2="${cy+half+16}" stroke="#6cc3a0" stroke-width="2"/><text x="${x(dS)}" y="${cy+half+28}" text-anchor="middle" style="fill:#6cc3a0">SMPTE</text>`;
+  // Projektorbereich
+  g+=`<rect x="${x(dmin)}" y="${cy-half-22}" width="${Math.max(2,(dmax-dmin)*s)}" height="10" rx="3" fill="#f2b544"/><text x="${(x(dmin)+x(dmax))/2}" y="${cy-half-28}" text-anchor="middle" style="fill:#f2b544">${m(dmin)} – ${m(dmax)}</text>`;
+  // Leinwand
+  g+=`<line x1="${X0}" y1="${cy-half}" x2="${X0}" y2="${cy+half}" stroke="#e9e6df" stroke-width="5" stroke-linecap="round"/><text x="${X0-10}" y="${cy+4}" text-anchor="end" style="fill:#e9e6df">${m(W)}</text>`;
+  // Sitz
+  g+=`<circle cx="${x(seat)}" cy="${cy}" r="7" fill="#7fa6e8"/><text x="${x(seat)+12}" y="${cy+4}" style="fill:#7fa6e8">${m(seat)}</text>`;
+  svg.innerHTML=g;
+}
+
+$('form').addEventListener('input',calc);
+$('form').addEventListener('submit',e=>e.preventDefault());
+$('m-zoom').addEventListener('click',()=>{method='zoom';$('m-zoom').setAttribute('aria-pressed','true');$('m-lens').setAttribute('aria-pressed','false');calc()});
+$('m-lens').addEventListener('click',()=>{method='lens';$('m-lens').setAttribute('aria-pressed','true');$('m-zoom').setAttribute('aria-pressed','false');calc()});
+$('l-de').addEventListener('click',()=>{lang='de';applyLang()});
+$('l-en').addEventListener('click',()=>{lang='en';applyLang()});
+applyLang();
+</script>
