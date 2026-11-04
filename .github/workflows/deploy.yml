@@ -1,5 +1,5 @@
 # Baut die Seite, führt die Tests aus und lädt dist/ per FTPS zu ALL-INKL hoch.
-# Benötigte Repository-Secrets: FTP_HOST, FTP_USER, FTP_PASSWORD, DRIVE_UPLOAD_URL, DRIVE_UPLOAD_KEY
+# Benötigte Repository-Secrets: FTP_HOST, FTP_USER, FTP_PASSWORD, DRIVE_UPLOAD_KEY
 # Vor jedem Upload werden Serverstand und neue Version als ZIP im Google Drive gesichert
 # (Ordner „Plan My Cinema/Sicherungen“). Schlägt die Sicherung fehl, wird nicht hochgeladen.
 # FTP_USER sollte ein FTP-Zusatzkonto sein, das nur auf das Verzeichnis der Website zugreifen darf
@@ -22,7 +22,8 @@ jobs:
       FTP_USER: ${{ secrets.FTP_USER }}
       FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
       # Google Apps Script (scripts/drive-upload.gs) im Konto des Inhabers, schreibt nur in „Plan My Cinema/Sicherungen“
-      DRIVE_UPLOAD_URL: ${{ secrets.DRIVE_UPLOAD_URL }}
+      # Adresse ist nicht geheim (ohne DRIVE_UPLOAD_KEY nimmt das Skript nichts an)
+      DRIVE_UPLOAD_URL: https://script.google.com/macros/s/AKfycby4Si54k2tU21xs_bGNpUSV1ItWn98YePNKwnbeM8WYQTjngrb9LoVSq9lvXfPGMke9/exec
       DRIVE_UPLOAD_KEY: ${{ secrets.DRIVE_UPLOAD_KEY }}
     steps:
       - uses: actions/checkout@v7
@@ -39,7 +40,7 @@ jobs:
 
       - name: Sicherung ins Google Drive (Serverstand + neue Version)
         run: |
-          if [ -z "$DRIVE_UPLOAD_URL" ] || [ -z "$DRIVE_UPLOAD_KEY" ]; then echo "::error::Secrets DRIVE_UPLOAD_URL/DRIVE_UPLOAD_KEY fehlen – ohne Sicherung kein Upload."; exit 1; fi
+          if [ -z "$DRIVE_UPLOAD_URL" ] || [ -z "$DRIVE_UPLOAD_KEY" ]; then echo "::error::Secret DRIVE_UPLOAD_KEY fehlt – ohne Sicherung kein Upload."; exit 1; fi
           if [ -z "$FTP_HOST" ] || [ -z "$FTP_USER" ] || [ -z "$FTP_PASSWORD" ]; then echo "::error::FTP-Secrets fehlen."; exit 1; fi
           # Leerzeichen/Zeilenumbrüche aus kopierten Werten entfernen und Adresse prüfen (ohne sie auszugeben)
           DRIVE_UPLOAD_URL="$(printf '%s' "$DRIVE_UPLOAD_URL" | tr -d '[:space:]')"

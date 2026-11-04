@@ -30,4 +30,4 @@ ALL-INKL (PrivatPlus). Manueller Start (Actions → Deploy) → GitHub Action ba
 ## Google-Drive-Kopie
 Ordner „Plan My Cinema“: Dokumente (PROJEKTPLAN.md, CLAUDE.md, Dolby-Tabelle, Logo-Vorschau, später Verträge) nach Änderungen aktualisieren, alte Versionen in den Papierkorb. Quellcode liegt auf GitHub.
 
-**Sicherungen (Wunsch des Inhabers, immer):** Jeder Deploy legt vor dem Upload zwei ZIPs in „Plan My Cinema/Sicherungen“ ab: `server_<Datum>_<Commit>.zip` (Serverstand vorher) und `neu_<Datum>_<Commit>.zip` (hochgeladene Version). Ohne erfolgreiche Sicherung kein Upload. Empfänger ist ein Google Apps Script im Konto des Inhabers (`scripts/drive-upload.gs`), Secrets `DRIVE_UPLOAD_URL` und `DRIVE_UPLOAD_KEY`.
+**Sicherungen (Wunsch des Inhabers, immer):** Jeder Deploy legt vor dem Upload zwei ZIPs in „Plan My Cinema/Sicherungen“ ab: `server_<Datum>_<Commit>.zip` (Serverstand vorher) und `neu_<Datum>_<Commit>.zip` (hochgeladene Version). Ohne erfolgreiche Sicherung kein Upload. Empfänger ist ein Google Apps Script im Konto des Inhabers (`scripts/drive-upload.gs`), Adresse fest im Workflow, Schlüssel im Secret `DRIVE_UPLOAD_KEY`.
