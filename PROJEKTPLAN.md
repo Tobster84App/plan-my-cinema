@@ -63,8 +63,13 @@ Hosting: Cloudflare (Pages oder Workers Static Assets, wird vor dem Deploy gepr�
 
 **Später:** zweite Sitzreihe mit Podest, mehrere Raumvarianten, Capacitor-App, ggf. DTS:X.
 
-## Offene Entscheidungen
-- Logo: Vorschläge A/B/C in `docs/logo-vorschlaege/` (Platzhalter bis zur Wahl: B)
-- Dolby-Widersprüche (L/R 22–30° vs. 22–40°, Surround 5.1 vs. 5.1.x) – Vorschlag in der Dolby-Datei
+## Entscheidungen
+- 2026-11-04: Logo B „Grundriss & Blickwinkel“ (`public/favicon.svg`)
+- 2026-11-04: Dolby-Tabelle freigegeben, Widersprüche wie vorgeschlagen aufgelöst
+- Normangaben: 14 fL = SMPTE ST 431-1 (48 cd/m²); 30° = SMPTE EG 18-1994 (2003 zurückgezogen); THX 36° vom entferntesten Sitz, THX-TV-Regel 0,835 ≈ 40°
+
+## Offen
+- Hosting: Cloudflare oder GitHub Pages wie bei Rate My Throne (GitHub Pages bei privatem Repo nur mit kostenpflichtigem Plan)
+- Postfach info@plan-my-cinema.com anlegen, Anbieter in Datenschutzerklärung eintragen
 - GitHub-Repo `plan-my-cinema` (privat) muss noch angelegt werden
 - Analytics: vorerst keine

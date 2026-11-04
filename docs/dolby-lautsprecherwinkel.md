@@ -1,7 +1,7 @@
 # Dolby Atmos – Lautsprecherwinkel (Quellenauswertung)
 
 Stand der Auswertung: 2026-11-04. Maschinenlesbar in `data/speaker-guidelines.json`.
-Status: **ENTWURF – vom Projektinhaber freizugeben, bevor der Planer gebaut wird.**
+Status: **FREIGEGEBEN am 2026-11-04** (inkl. Auflösung der Widersprüche wie unten vorgeschlagen).
 
 ## Quellen
 
@@ -68,7 +68,7 @@ Zu Dolby-Atmos-enabled-Aufsatzlautsprechern (G S. 11–12, nur Hinweis, nicht im
 - Weitere Positionen aus G Abschnitt 4 (Lc/Rc, Ls1/Ls2, Lrs1/Lrs2, Front Height an der Wand) sind für 5.1–9.1.6 nicht nötig und deshalb nicht übernommen.
 - 7.1.6 und 11.1.8 hat Dolby als Blätter, gehören aber nicht zum Umfang „5.1 bis 9.1.6“.
 
-## Vorschlag zur Auflösung der Widersprüche (Freigabe nötig)
+## Auflösung der Widersprüche (freigegeben 2026-11-04)
 
 1. **L/R**: Grün bei 22–30° (alle Layout-Blätter), Gelb bei 30–40° mit Hinweis auf G Abb. 3.
 2. **Ls/Rs bei 5.1.x**: Grün bei 90–120° (Vereinigung beider Angaben), Hinweistext zur Abweichung innerhalb G.
