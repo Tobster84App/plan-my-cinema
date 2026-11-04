@@ -64,6 +64,8 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 **Später:** zweite Sitzreihe mit Podest, mehrere Raumvarianten, Capacitor-App, ggf. DTS:X.
 
 ## Entscheidungen
+- 2026-11-04: Sicherung bei jedem Deploy ins Google Drive (Serverstand vorher + neue Version), Upload nur nach erfolgreicher Sicherung
+- 2026-11-04: Deploy ohne Löschen, nur manuell, nur mit Markierungsdatei im Ziel (nach Löschvorfall beim ersten Upload)
 - 2026-11-04: Hosting und Postfach bei ALL-INKL (PrivatPlus)
 - 2026-11-04: Logo B „Grundriss & Blickwinkel“ (`public/favicon.svg`)
 - 2026-11-04: Dolby-Tabelle freigegeben, Widersprüche wie vorgeschlagen aufgelöst
@@ -71,6 +73,5 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 
 ## Offen
 - Speicherdauer/Anonymisierung der Server-Logfiles bei ALL-INKL prüfen und in Datenschutzerklärung eintragen
-- KAS: Domain-Verzeichnis, SSL, FTP-Zusatzkonto; danach GitHub-Secrets FTP_HOST/FTP_USER/FTP_PASSWORD
-- GitHub-Repo `plan-my-cinema` (privat) muss noch angelegt werden
+- Secret RCLONE_DRIVE_TOKEN anlegen (Anleitung im Chat)
 - Analytics: vorerst keine

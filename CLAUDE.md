@@ -25,7 +25,9 @@ Heimkino-Rechner (DE/EN) auf plan-my-cinema.com. Projektplan: `PROJEKTPLAN.md`.
 - `npm run preview` – Build lokal ansehen (Service Worker nur hier aktiv, nicht in `dev`)
 
 ## Hosting
-ALL-INKL (PrivatPlus). Manueller Start (Actions → Deploy) → GitHub Action baut, testet und spiegelt `dist/` per FTPS (ohne Löschen, nur mit Markierungsdatei `.plan-my-cinema-deploy` im Ziel) ins Website-Verzeichnis. Server-Konfiguration in `public/.htaccess`.
+ALL-INKL (PrivatPlus). Manueller Start (Actions → Deploy) → GitHub Action baut, testet und spiegelt `dist/` per FTPS (ohne Löschen, nur mit Markierungsdatei `.plan-my-cinema-deploy` im Ziel) ins Website-Verzeichnis, vorher Sicherung ins Google Drive. Server-Konfiguration in `public/.htaccess`.
 
 ## Google-Drive-Kopie
-Ordner „Plan My Cinema“: nur Dokumente (PROJEKTPLAN.md, CLAUDE.md, Dolby-Tabelle, Logo-Vorschau, später Verträge) nach Änderungen aktualisieren, alte Versionen in den Papierkorb. Code nicht im Drive – Sicherung über GitHub.
+Ordner „Plan My Cinema“: Dokumente (PROJEKTPLAN.md, CLAUDE.md, Dolby-Tabelle, Logo-Vorschau, später Verträge) nach Änderungen aktualisieren, alte Versionen in den Papierkorb. Quellcode liegt auf GitHub.
+
+**Sicherungen (Wunsch des Inhabers, immer):** Jeder Deploy legt vor dem Upload zwei ZIPs in „Plan My Cinema/Sicherungen“ ab: `server_<Datum>_<Commit>.zip` (Serverstand vorher) und `neu_<Datum>_<Commit>.zip` (hochgeladene Version). Ohne erfolgreiche Sicherung kein Upload. Zugang über Secret `RCLONE_DRIVE_TOKEN` (rclone).
