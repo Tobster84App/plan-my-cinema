@@ -45,7 +45,9 @@ jobs:
           DRIVE_UPLOAD_URL="$(printf '%s' "$DRIVE_UPLOAD_URL" | tr -d '[:space:]')"
           DRIVE_UPLOAD_KEY="$(printf '%s' "$DRIVE_UPLOAD_KEY" | tr -d '[:space:]')"; export DRIVE_UPLOAD_KEY
           case "$DRIVE_UPLOAD_URL" in https://script.google.com/macros/s/*/exec) echo "Adresse: Form ok (…/macros/s/…/exec)";;
-            *) echo "::error::DRIVE_UPLOAD_URL hat nicht die Form https://script.google.com/macros/s/…/exec"
+            *) echo "::error::DRIVE_UPLOAD_URL hat nicht die erwartete Form (Web-App-Adresse, endet auf /exec)"
+               U="$DRIVE_UPLOAD_URL"
+               echo "Diagnose: Länge=${#U}, beginnt mit https://script.google.com: $([ "${U#https://script.google.com}" != "$U" ] && echo ja || echo nein), enthält /macros/: $(case "$U" in *"/macros/"*) echo ja;; *) echo nein;; esac), Ende='${U: -6}', Schrägstriche=$(printf '%s' "$U" | tr -cd '/' | wc -c)"
                case "$DRIVE_UPLOAD_URL" in *"/dev") echo "Hinweis: endet auf /dev – das ist die Test-Adresse, gebraucht wird die /exec-Adresse der Bereitstellung.";; esac
                case "$DRIVE_UPLOAD_URL" in *"/macros/u/"*|*"/u/"[0-9]*) echo "Hinweis: enthält /u/<Zahl>/ (mehrere Google-Konten angemeldet) – diesen Teil entfernen.";; esac
                case "$DRIVE_UPLOAD_URL" in *"/home/projects/"*|*"/d/"*"/edit"*) echo "Hinweis: das ist die Editor-Adresse, nicht die Web-App-Adresse.";; esac
