@@ -1,0 +1,95 @@
+---
+import '../styles/global.css';
+import UnitSwitch from '../components/UnitSwitch.tsx';
+import { UI } from '../i18n/ui';
+import { LANGS, ROUTES, path, type PageId } from '../i18n/routes';
+import type { Lang } from '../lib/format';
+
+interface Props {
+  lang: Lang;
+  page: PageId;
+  title: string;
+  description: string;
+  jsonLd?: object[];
+  noindex?: boolean;
+}
+const { lang, page, title, description, jsonLd = [], noindex = false } = Astro.props;
+const t = UI[lang];
+const site = Astro.site!;
+const abs = (p: string) => new URL(p, site).href;
+const canonical = abs(path(page, lang));
+const fullTitle = page === 'home' ? `${t.siteName} – ${t.tagline}` : `${title} | ${t.siteName}`;
+const nav: { id: PageId | null; label: string }[] = [
+  { id: 'screen', label: t.navScreen },
+  { id: null, label: t.navModes },
+  { id: null, label: t.navSpeakers },
+];
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {LANGS.map((l) => <link rel="alternate" hreflang={l} href={abs(ROUTES[page][l])} />)}
+    <link rel="alternate" hreflang="x-default" href={abs(ROUTES[page].de)} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#0d0f14" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={t.siteName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'en_US'} />
+    {jsonLd.map((j) => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
+    {import.meta.env.PROD && (
+      <script is:inline>
+        if ('serviceWorker' in navigator) addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });
+      </script>
+    )}
+  </head>
+  <body>
+    <a class="skip" href="#main">{t.skip}</a>
+    <div class="wrap">
+      <header class="site-head">
+        <a class="logo" href={path('home', lang)}>
+          <img src="/favicon.svg" alt="" width="32" height="32" />
+          <span>Plan <b>My</b> Cinema</span>
+        </a>
+        <div class="head-r">
+          <UnitSwitch client:idle lang={lang} />
+          <nav class="switch" aria-label={t.langLabel}>
+            {LANGS.map((l) => (
+              <a href={ROUTES[page][l]} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined}>{l.toUpperCase()}</a>
+            ))}
+          </nav>
+        </div>
+      </header>
+      <nav class="main" aria-label="Rechner">
+        {nav.map((n) =>
+          n.id ? (
+            <a href={path(n.id, lang)} aria-current={n.id === page ? 'page' : undefined}>{n.label}</a>
+          ) : (
+            <span class="soon">{n.label}<small>{t.soon}</small></span>
+          ),
+        )}
+      </nav>
+      <main id="main">
+        <slot />
+      </main>
+      <footer class="site-foot">
+        <span>© {new Date().getFullYear()} Plan My Cinema · {t.footerNote}</span>
+        <nav>
+          <a href={path('imprint', lang)}>{t.footerImprint}</a>
+          <a href={path('privacy', lang)}>{t.footerPrivacy}</a>
+        </nav>
+      </footer>
+    </div>
+  </body>
+</html>

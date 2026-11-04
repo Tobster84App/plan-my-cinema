@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import { path } from '../../i18n/routes';
+const jsonLd = [{ '@context': 'https://schema.org', '@type': 'WebSite', name: 'Plan My Cinema', url: 'https://plan-my-cinema.com/en/', inLanguage: 'en' }];
+---
+<Base lang="en" page="home" title="Home" description="Home cinema calculators for enthusiasts: screen, throw, brightness in nits and foot-lamberts, room modes and Dolby Atmos speaker layouts – all built on your room." jsonLd={jsonLd}>
+  <div class="page-head">
+    <h1>Plan <span>My</span> Cinema</h1>
+    <p>Describe your room once – dimensions, screen, projector, seat. Every calculator on this site works from that same model. Nothing leaves your browser.</p>
+  </div>
+  <div class="tiles">
+    <a class="tile" href={path('screen', 'en')}>
+      <span class="tag">Calculator 1</span>
+      <h2>Screen &amp; projection</h2>
+      <p>Throw distance, brightness in nits and fL, AT fabric loss, zoom vs. anamorphic lens, lens shift and seating distance.</p>
+    </a>
+    <div class="tile off" aria-disabled="true">
+      <span class="tag">Calculator 2 · soon</span>
+      <h2>Room modes</h2>
+      <p>Axial, tangential and oblique modes of your room – and which of them reach your seat.</p>
+    </div>
+    <div class="tile off" aria-disabled="true">
+      <span class="tag">Calculator 3 · soon</span>
+      <h2>Speakers</h2>
+      <p>Dolby Atmos layouts from 5.1 to 9.1.6, checked against Dolby’s placement angles.</p>
+    </div>
+  </div>
+</Base>

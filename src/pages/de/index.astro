@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import { path } from '../../i18n/routes';
+const jsonLd = [{ '@context': 'https://schema.org', '@type': 'WebSite', name: 'Plan My Cinema', url: 'https://plan-my-cinema.com/de/', inLanguage: 'de' }];
+---
+<Base lang="de" page="home" title="Start" description="Heimkino-Rechner für Enthusiasten: Leinwand, Projektion, Helligkeit in nits und fL, Raummoden und Dolby-Atmos-Lautsprecher – alles auf Basis deines Raums." jsonLd={jsonLd}>
+  <div class="page-head">
+    <h1>Plan <span>My</span> Cinema</h1>
+    <p>Gib deinen Raum einmal ein – Maße, Leinwand, Projektor, Sitzplatz. Jeder Rechner hier greift auf dieselben Daten zu. Gespeichert wird nur in deinem Browser.</p>
+  </div>
+  <div class="tiles">
+    <a class="tile" href={path('screen', 'de')}>
+      <span class="tag">Rechner 1</span>
+      <h2>Leinwand &amp; Projektion</h2>
+      <p>Projektionsabstand, Bildhelligkeit in nits und fL, AT-Tuch, Zoom oder anamorphotische Linse, Lens Shift, Sitzabstand.</p>
+    </a>
+    <div class="tile off" aria-disabled="true">
+      <span class="tag">Rechner 2 · bald</span>
+      <h2>Raummoden</h2>
+      <p>Axiale, tangentiale und oblique Moden deines Raums – und was davon an deinem Sitzplatz ankommt.</p>
+    </div>
+    <div class="tile off" aria-disabled="true">
+      <span class="tag">Rechner 3 · bald</span>
+      <h2>Lautsprecher</h2>
+      <p>Dolby-Atmos-Layouts von 5.1 bis 9.1.6 mit Winkelprüfung nach den Dolby-Richtlinien.</p>
+    </div>
+  </div>
+</Base>

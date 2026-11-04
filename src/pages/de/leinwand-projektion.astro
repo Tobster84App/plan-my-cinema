@@ -1,0 +1,132 @@
+---
+import Base from '../../layouts/Base.astro';
+import ScreenCalculator from '../../components/ScreenCalculator.tsx';
+
+const title = 'Leinwand & Projektion';
+const description =
+  'Projektionsabstand, Bildhelligkeit in nits und Foot-Lambert, AT-Tuchverlust, Scope per Zoom oder anamorphotischer Linse, Lens Shift und Sitzabstand – maßstäblich für deinen Raum berechnet.';
+
+const faq = [
+  {
+    q: 'Wie rechne ich Lumen in nits oder Foot-Lambert um?',
+    a: 'Leuchtdichte (nits, cd/m²) = Lumen × Gain × (1 − Tuchverlust) ÷ (π × beleuchtete Fläche in m²). Ein Foot-Lambert entspricht 3,426 nits. Für Lumen sollte ein kalibrierter, gemessener Wert eingesetzt werden, nicht die Datenblattangabe.',
+  },
+  {
+    q: 'Wie hell sollte das Bild im Heimkino sein?',
+    a: 'Für SDR-Filme gelten im dunklen Raum etwa 14 bis 16 fL (rund 48 bis 55 nits) als Kino-Referenz. Mehr Helligkeit ist für HDR-Tonemapping nützlich. Unter 12 fL wirkt das Bild matt.',
+  },
+  {
+    q: 'Zoom oder anamorphotische Linse für eine Scope-Leinwand?',
+    a: 'Beim Zoomen bleibt das 16:9-Panel unverändert, die Balken oben und unten fallen auf die Maskierung – rund ein Viertel des Lichts geht bei 2,35:1 verloren. Eine anamorphotische Linse nutzt das ganze Panel, kostet aber selbst einige Prozent Licht und Geld.',
+  },
+  {
+    q: 'Welcher Sitzabstand ist richtig?',
+    a: 'Häufig genannt werden ein horizontaler Blickwinkel von mindestens 30° (SMPTE) und etwa 36 bis 40° (THX). Der Rechner zeigt die passenden Abstände für deine Bildbreite.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Plan My Cinema – Leinwand & Projektion',
+    url: 'https://plan-my-cinema.com/de/leinwand-projektion/',
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Web',
+    inLanguage: 'de',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+];
+---
+<Base lang="de" page="screen" title={title} description={description} jsonLd={jsonLd}>
+  <div class="page-head">
+    <h1>Leinwand <span>&amp;</span> Projektion</h1>
+    <p>Projektionsabstand, Bildhelligkeit und Sitzabstand für deinen Raum – mit Lens Shift, AT-Tuch und Scope per Zoom oder Linse.</p>
+  </div>
+
+  <ScreenCalculator client:load lang="de" />
+
+  <article class="prose">
+    <h2>So rechnet der Rechner</h2>
+
+    <h3>Helligkeit: Lumen sind nicht gleich Helligkeit</h3>
+    <p>
+      Entscheidend ist die Leuchtdichte auf der Leinwand. Sie hängt vom Lichtstrom des Projektors, von der beleuchteten Fläche und vom Gain der
+      Leinwand ab:
+    </p>
+    <p><code>nits = Lumen × Gain × (1 − Tuchverlust) × (1 − Linsenverlust) ÷ (π × Fläche in m²)</code></p>
+    <p>
+      Ein Foot-Lambert (fL) sind 3,426 nits. Die Formel gilt für eine ideal streuende Leinwand; der Gain beschreibt die Abweichung davon in
+      Blickrichtung. Bei hohen Gain-Werten sinkt die Helligkeit seitlich der Mitte – das berücksichtigt der Rechner nicht.
+    </p>
+    <p>
+      Für den Lichtstrom zählt der kalibrierte Wert. Datenblatt-Lumen werden meist im hellsten Bildmodus gemessen und liegen oft deutlich über dem,
+      was nach einer Kalibrierung auf D65 übrig bleibt. Wählst du einen Projektor aus der Liste, setzen wir deshalb 70 % der Herstellerangabe ein –
+      eine grobe Annahme. Wenn du gemessen hast, trag deinen Wert ein.
+    </p>
+
+    <h3>Bewertung der Helligkeit</h3>
+    <table>
+      <thead><tr><th>fL</th><th>nits</th><th>Einordnung</th></tr></thead>
+      <tbody>
+        <tr><td>unter 12</td><td>unter 41</td><td>zu dunkel, Bild wirkt matt</td></tr>
+        <tr><td>12–16</td><td>41–55</td><td>SDR-Kino-Referenz (dunkler Raum)</td></tr>
+        <tr><td>16–24</td><td>55–82</td><td>helles SDR, etwas Reserve</td></tr>
+        <tr><td>ab 24</td><td>ab 82</td><td>Reserve für HDR-Tonemapping</td></tr>
+      </tbody>
+    </table>
+    <p>
+      Die Grenzen sind Orientierungswerte. Die oft zitierte Kino-Referenz von 14 fL (48 cd/m²) stammt aus der digitalen Kinoprojektion. Für HDR
+      mit Projektoren gibt es keinen festen Zielwert – mehr Helligkeit hilft dem Tonemapping.
+    </p>
+
+    <h3>AT-Tuch</h3>
+    <p>
+      Akustisch transparente Leinwände lassen Schall durch kleine Öffnungen oder ein Gewebe. Dadurch geht Licht verloren. Typische
+      Herstellerangaben liegen im Bereich von wenigen bis über 20 Prozent – nimm den Wert aus dem Datenblatt deines Tuchs.
+    </p>
+
+    <h3>Scope: Zoom oder anamorphotische Linse</h3>
+    <p>
+      Projektoren haben fast immer ein 16:9-Panel. Für eine Scope-Leinwand (2,35:1 bis 2,40:1) gibt es zwei Wege. <strong>Zoom:</strong> Das
+      16:9-Bild wird so groß gezoomt, dass der Film die Leinwandbreite füllt. Die schwarzen Balken landen ober- und unterhalb der Leinwand. Bei
+      2,35:1 fallen etwa 24 % des Lichts auf diese Balken. <strong>Anamorphotische Linse:</strong> Der Projektor streckt das Bild vertikal auf
+      das ganze Panel, die Linse dehnt es horizontal wieder auf. So wird das ganze Panel genutzt. Die Linse selbst kostet etwas Licht – den Wert
+      kannst du eintragen. Wichtig: Die Throw Ratio bezieht sich dann auf die <em>ungedehnte</em> Bildbreite, also Bildhöhe × 16/9. Der
+      Projektor kann dadurch näher an der Leinwand stehen.
+    </p>
+
+    <h3>Projektionsabstand und Lens Shift</h3>
+    <p>
+      Abstand = Throw Ratio × Bildbreite. Hersteller messen den Abstand unterschiedlich – manche ab Objektivfront, manche ab Gehäuse. Plane etwas
+      Reserve ein.
+    </p>
+    <p>
+      Lens Shift verschiebt das Bild, ohne es zu verzerren. Der Rechner ermittelt, wie weit die Bildmitte von der Objektivachse entfernt ist – in
+      Prozent der projizierten Bildhöhe bzw. -breite, so wie die meisten Datenblätter es angeben. Bei Scope per Zoom zählt die Höhe des ganzen
+      16:9-Bildes. Viele Projektoren können nicht gleichzeitig den vollen vertikalen und horizontalen Shift nutzen. Der Rechner prüft das
+      vereinfacht (Rautenform). Wie sich dein Modell verhält, steht im Datenblatt.
+    </p>
+
+    <h3>Sitzabstand</h3>
+    <p>
+      Der horizontale Blickwinkel ist 2 × arctan(Bildbreite ÷ 2 × Abstand). Häufig genannte Orientierungswerte: mindestens 30° (SMPTE) und
+      36–40° (THX). Viele Enthusiasten sitzen bei Scope bewusst näher. Ein Richtig oder Falsch gibt es nicht – Bildschärfe, Sitzreihen und
+      Geschmack spielen mit.
+    </p>
+
+    <h2>Häufige Fragen</h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </article>
+</Base>

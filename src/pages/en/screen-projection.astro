@@ -1,0 +1,126 @@
+---
+import Base from '../../layouts/Base.astro';
+import ScreenCalculator from '../../components/ScreenCalculator.tsx';
+
+const title = 'Screen & projection';
+const description =
+  'Throw distance, on-screen brightness in nits and foot-lamberts, AT fabric loss, scope via zoom or anamorphic lens, lens shift and seating distance – calculated to scale for your room.';
+
+const faq = [
+  {
+    q: 'How do I convert lumens to nits or foot-lamberts?',
+    a: 'Luminance (nits, cd/m²) = lumens × gain × (1 − fabric loss) ÷ (π × lit area in m²). One foot-lambert is 3.426 nits. Use a calibrated, measured lumen figure rather than the spec sheet.',
+  },
+  {
+    q: 'How bright should a home cinema image be?',
+    a: 'For SDR films in a dark room, roughly 14 to 16 fL (about 48 to 55 nits) is the usual cinema reference. Extra brightness helps HDR tone mapping. Below 12 fL the picture looks flat.',
+  },
+  {
+    q: 'Zoom or anamorphic lens for a scope screen?',
+    a: 'Zooming leaves the 16:9 panel as it is and throws the letterbox bars onto the masking – about a quarter of the light at 2.35:1. An anamorphic lens uses the whole panel but costs a few percent of light itself, and money.',
+  },
+  {
+    q: 'What is the right seating distance?',
+    a: 'Commonly quoted guidelines are a horizontal viewing angle of at least 30° (SMPTE) and around 36 to 40° (THX). The calculator shows the matching distances for your screen width.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Plan My Cinema – Screen & projection',
+    url: 'https://plan-my-cinema.com/en/screen-projection/',
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Web',
+    inLanguage: 'en',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+];
+---
+<Base lang="en" page="screen" title={title} description={description} jsonLd={jsonLd}>
+  <div class="page-head">
+    <h1>Screen <span>&amp;</span> projection</h1>
+    <p>Throw distance, brightness and seating distance for your room – including lens shift, AT fabric and scope via zoom or lens.</p>
+  </div>
+
+  <ScreenCalculator client:load lang="en" />
+
+  <article class="prose">
+    <h2>How it works</h2>
+
+    <h3>Lumens are not brightness</h3>
+    <p>What you see is luminance on the screen. It depends on the projector’s light output, the lit area and the screen gain:</p>
+    <p><code>nits = lumens × gain × (1 − fabric loss) × (1 − lens loss) ÷ (π × area in m²)</code></p>
+    <p>
+      One foot-lambert (fL) equals 3.426 nits. The formula assumes a perfectly diffusing screen; gain describes how far the real screen departs from
+      that on axis. High-gain screens get dimmer off-centre, which this calculator does not model.
+    </p>
+    <p>
+      Use a calibrated figure. Spec-sheet lumens are usually measured in the brightest picture mode and tend to sit well above what is left after
+      calibrating to D65. When you pick a projector from the list we prefill 70 % of the rated output – a rough assumption. If you have a
+      measurement, enter it.
+    </p>
+
+    <h3>Brightness rating</h3>
+    <table>
+      <thead><tr><th>fL</th><th>nits</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>below 12</td><td>below 41</td><td>too dim, flat picture</td></tr>
+        <tr><td>12–16</td><td>41–55</td><td>SDR cinema reference (dark room)</td></tr>
+        <tr><td>16–24</td><td>55–82</td><td>bright SDR with some headroom</td></tr>
+        <tr><td>24 and up</td><td>82 and up</td><td>headroom for HDR tone mapping</td></tr>
+      </tbody>
+    </table>
+    <p>
+      These limits are guidance, not rules. The often-quoted 14 fL (48 cd/m²) comes from digital cinema projection. There is no fixed target for
+      projected HDR – more light simply gives tone mapping more room.
+    </p>
+
+    <h3>AT fabric</h3>
+    <p>
+      Acoustically transparent screens let sound through perforations or a weave, and lose light in the process. Manufacturers quote anything
+      from a few percent to over 20 % – take the figure from your fabric’s spec sheet.
+    </p>
+
+    <h3>Scope: zoom or anamorphic lens</h3>
+    <p>
+      Almost every projector has a 16:9 panel. For a scope screen (2.35:1 to 2.40:1) you have two options. <strong>Zoom:</strong> enlarge the
+      16:9 image until the film fills the screen width; the black bars land above and below the screen, taking about 24 % of the light at 2.35:1
+      with them. <strong>Anamorphic lens:</strong> the projector stretches the image vertically across the whole panel and the lens widens it
+      again. All panel pixels and all the light end up on screen, minus the lens’s own loss, which you can enter. Note that throw ratio then
+      refers to the <em>unstretched</em> image width (image height × 16/9), so the projector can sit closer.
+    </p>
+
+    <h3>Throw distance and lens shift</h3>
+    <p>
+      Distance = throw ratio × image width. Manufacturers measure from the lens front or from the chassis, so leave some margin.
+    </p>
+    <p>
+      Lens shift moves the image without keystone distortion. The calculator works out how far the image centre sits from the lens axis, as a
+      percentage of projected image height or width – the way most spec sheets state it. With scope via zoom, the full 16:9 image height counts.
+      Many projectors cannot use full vertical and horizontal shift at the same time; the calculator applies a simple diamond-shaped check. Your
+      spec sheet has the real limits.
+    </p>
+
+    <h3>Seating distance</h3>
+    <p>
+      Horizontal viewing angle = 2 × arctan(image width ÷ 2 × distance). Commonly quoted guidelines: at least 30° (SMPTE) and 36–40° (THX). Many
+      enthusiasts sit closer for scope. There is no single right answer – resolution, seating rows and taste all play a part.
+    </p>
+
+    <h2>FAQ</h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </article>
+</Base>

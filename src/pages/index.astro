@@ -1,0 +1,27 @@
+---
+// Sprachweiche: statisch, daher per Script. Ohne JS führen die Links weiter.
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plan My Cinema</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="https://plan-my-cinema.com/de/" />
+    <link rel="alternate" hreflang="de" href="https://plan-my-cinema.com/de/" />
+    <link rel="alternate" hreflang="en" href="https://plan-my-cinema.com/en/" />
+    <link rel="alternate" hreflang="x-default" href="https://plan-my-cinema.com/de/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>
+      (function () {
+        var l = (navigator.languages && navigator.languages[0]) || navigator.language || 'de';
+        location.replace(/^de\b/i.test(l) ? '/de/' : '/en/');
+      })();
+    </script>
+    <style>body{background:#0d0f14;color:#e9e6df;font:16px system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0}a{color:#f2b544;margin:0 10px}</style>
+  </head>
+  <body>
+    <p><a href="/de/">Deutsch</a><a href="/en/">English</a></p>
+  </body>
+</html>
