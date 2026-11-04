@@ -45,8 +45,20 @@ jobs:
           # Leerzeichen/Zeilenumbrüche aus kopierten Werten entfernen und Adresse prüfen (ohne sie auszugeben)
           DRIVE_UPLOAD_URL="$(printf '%s' "$DRIVE_UPLOAD_URL" | tr -d '[:space:]')"
           # Schlüssel = 64 Hex-Zeichen; falls die ganze Protokollzeile kopiert wurde, nur diese herauslösen
+          export RAW_KEY="$DRIVE_UPLOAD_KEY"
           DRIVE_UPLOAD_KEY="$(printf '%s' "$DRIVE_UPLOAD_KEY" | grep -oE '[0-9a-f]{64}' | head -1)"; export DRIVE_UPLOAD_KEY
-          if [ -z "$DRIVE_UPLOAD_KEY" ]; then echo "::error::Im Secret DRIVE_UPLOAD_KEY steht kein gültiger Schlüssel (64 Zeichen 0-9/a-f)."; exit 1; fi
+          if [ -z "$DRIVE_UPLOAD_KEY" ]; then
+            echo "::error::Im Secret DRIVE_UPLOAD_KEY steht kein gültiger Schlüssel (64 Zeichen 0-9/a-f)."
+            python3 - <<'PY'
+          import os,re
+          k=os.environ.get('RAW_KEY','')
+          print('Diagnose: Länge', len(k), '| Ziffern', sum(c.isdigit() for c in k), '| Kleinbuchst.', sum(c.islower() for c in k), '| Großbuchst.', sum(c.isupper() for c in k), '| Sonstige', sorted(set(c for c in k if not c.isalnum())))
+          for probe in ['script.google','macros','AKfyc','exec','DRIVE_UPLOAD_KEY','Schl','KEY','http']:
+              print('  enthält', repr(probe)+':', probe in k)
+          print('  längste Hex-Folge:', max((len(m) for m in re.findall(r'[0-9a-fA-F]+',k)), default=0))
+          PY
+            exit 1
+          fi
           case "$DRIVE_UPLOAD_URL" in https://script.google.com/macros/s/*/exec) echo "Adresse: Form ok (…/macros/s/…/exec)";;
             *) echo "::error::DRIVE_UPLOAD_URL hat nicht die erwartete Form (Web-App-Adresse, endet auf /exec)"
                U="$DRIVE_UPLOAD_URL"
