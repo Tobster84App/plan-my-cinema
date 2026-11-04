@@ -1,5 +1,5 @@
 # Baut die Seite, führt die Tests aus und lädt dist/ per FTPS zu ALL-INKL hoch.
-# Benötigte Repository-Secrets: FTP_HOST, FTP_USER, FTP_PASSWORD, RCLONE_DRIVE_TOKEN
+# Benötigte Repository-Secrets: FTP_HOST, FTP_USER, FTP_PASSWORD, DRIVE_UPLOAD_URL, DRIVE_UPLOAD_KEY
 # Vor jedem Upload werden Serverstand und neue Version als ZIP im Google Drive gesichert
 # (Ordner „Plan My Cinema/Sicherungen“). Schlägt die Sicherung fehl, wird nicht hochgeladen.
 # FTP_USER sollte ein FTP-Zusatzkonto sein, das nur auf das Verzeichnis der Website zugreifen darf
@@ -21,10 +21,9 @@ jobs:
       FTP_HOST: ${{ secrets.FTP_HOST }}
       FTP_USER: ${{ secrets.FTP_USER }}
       FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-      RCLONE_DRIVE_TOKEN: ${{ secrets.RCLONE_DRIVE_TOKEN }}
-      # Google-Drive-Ordner „Plan My Cinema/Sicherungen“
-      DRIVE_FOLDER_ID: 1BTRH3_4xhyCpzHhpLI74nupi6NjvbKEq
-      RCLONE_VERSION: v1.75.2
+      # Google Apps Script (scripts/drive-upload.gs) im Konto des Inhabers, schreibt nur in „Plan My Cinema/Sicherungen“
+      DRIVE_UPLOAD_URL: ${{ secrets.DRIVE_UPLOAD_URL }}
+      DRIVE_UPLOAD_KEY: ${{ secrets.DRIVE_UPLOAD_KEY }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -35,37 +34,29 @@ jobs:
       - run: npm test
       - run: npm run check
       - run: npm run build
-      - name: Werkzeuge installieren (lftp, rclone)
-        run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq lftp unzip
-          cd /tmp
-          curl -fsSLO "https://downloads.rclone.org/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-linux-amd64.zip"
-          curl -fsSL "https://downloads.rclone.org/${RCLONE_VERSION}/SHA256SUMS" | grep " rclone-${RCLONE_VERSION}-linux-amd64.zip$" | sha256sum -c -
-          unzip -q "rclone-${RCLONE_VERSION}-linux-amd64.zip"
-          sudo install -m 755 "rclone-${RCLONE_VERSION}-linux-amd64/rclone" /usr/local/bin/rclone
-          rclone version | head -1
+      - name: Werkzeuge installieren (lftp)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
 
       - name: Sicherung ins Google Drive (Serverstand + neue Version)
         run: |
-          if [ -z "$RCLONE_DRIVE_TOKEN" ]; then echo "::error::Secret RCLONE_DRIVE_TOKEN fehlt – ohne Sicherung kein Upload."; exit 1; fi
+          if [ -z "$DRIVE_UPLOAD_URL" ] || [ -z "$DRIVE_UPLOAD_KEY" ]; then echo "::error::Secrets DRIVE_UPLOAD_URL/DRIVE_UPLOAD_KEY fehlen – ohne Sicherung kein Upload."; exit 1; fi
           if [ -z "$FTP_HOST" ] || [ -z "$FTP_USER" ] || [ -z "$FTP_PASSWORD" ]; then echo "::error::FTP-Secrets fehlen."; exit 1; fi
           STAMP="$(TZ=Europe/Berlin date +%Y-%m-%d_%H%M%S)_${GITHUB_SHA::7}"
           LFTP_SET="set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate true;"
-          # 1. aktuellen Serverstand herunterladen
+          # 1. aktuellen Serverstand herunterladen und packen
           mkdir -p /tmp/server
           lftp -u "$FTP_USER","$FTP_PASSWORD" "$FTP_HOST" -e "$LFTP_SET mirror --verbose=0 ./ /tmp/server/; quit"
           (cd /tmp/server && zip -qr -y "/tmp/server_${STAMP}.zip" .)
           # 2. neue Version packen
           (cd dist && zip -qr "/tmp/neu_${STAMP}.zip" .)
-          ls -la /tmp/*_"${STAMP}".zip
-          # 3. ins Drive hochladen (Konfiguration nur im Arbeitsspeicher, Token aus Secret)
-          export RCLONE_CONFIG_GDRIVE_TYPE=drive
-          export RCLONE_CONFIG_GDRIVE_SCOPE=drive
-          export RCLONE_CONFIG_GDRIVE_ROOT_FOLDER_ID="$DRIVE_FOLDER_ID"
-          export RCLONE_CONFIG_GDRIVE_TOKEN="$RCLONE_DRIVE_TOKEN"
-          rclone copy "/tmp/server_${STAMP}.zip" gdrive: --retries 3
-          rclone copy "/tmp/neu_${STAMP}.zip" gdrive: --retries 3
-          rclone lsl gdrive: --include "*_${STAMP}.zip"
+          # 3. an das Apps Script schicken (Schlüssel nur im Request-Body, nicht in der URL)
+          for f in "/tmp/server_${STAMP}.zip" "/tmp/neu_${STAMP}.zip"; do
+            python3 -c 'import base64,json,os,sys; p=sys.argv[1]; print(json.dumps({"key":os.environ["DRIVE_UPLOAD_KEY"],"name":os.path.basename(p),"data":base64.b64encode(open(p,"rb").read()).decode()}))' "$f" > /tmp/payload.json
+            RESP="$(curl -sS -L --fail --max-time 120 -H 'Content-Type: application/json' --data-binary @/tmp/payload.json "$DRIVE_UPLOAD_URL")"
+            rm -f /tmp/payload.json
+            echo "$(basename "$f"): $RESP"
+            echo "$RESP" | python3 -c 'import json,sys; sys.exit(0 if json.load(sys.stdin).get("ok") else 1)' || { echo "::error::Sicherung von $(basename "$f") fehlgeschlagen – Upload abgebrochen."; exit 1; }
+          done
 
       - name: Upload zu ALL-INKL (FTPS)
         run: |

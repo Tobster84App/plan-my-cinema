@@ -73,5 +73,5 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 
 ## Offen
 - Speicherdauer/Anonymisierung der Server-Logfiles bei ALL-INKL prüfen und in Datenschutzerklärung eintragen
-- Secret RCLONE_DRIVE_TOKEN anlegen (Anleitung im Chat)
+- Apps Script einrichten, Secrets DRIVE_UPLOAD_URL/DRIVE_UPLOAD_KEY anlegen (Anleitung im Chat)
 - Analytics: vorerst keine
