@@ -9,8 +9,13 @@ export default function UnitSwitch({ lang }: { lang: Lang }) {
   useEffect(() => initBrowserState(), []);
   return (
     <div class="switch" role="group" aria-label={t.unitsLabel}>
-      <button type="button" aria-pressed={units.value === 'metric'} onClick={() => (units.value = 'metric')}>m</button>
-      <button type="button" aria-pressed={units.value === 'imperial'} onClick={() => (units.value = 'imperial')}>ft</button>
+      <span class="switch-lbl" aria-hidden="true">{t.unitsLabel}</span>
+      <button type="button" aria-pressed={units.value === 'metric'} onClick={() => (units.value = 'metric')} title={t.metric}>
+        m · cm
+      </button>
+      <button type="button" aria-pressed={units.value === 'imperial'} onClick={() => (units.value = 'imperial')} title={t.imperial}>
+        ft · in
+      </button>
     </div>
   );
 }
