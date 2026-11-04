@@ -4,9 +4,8 @@
 # (mirror --delete löscht im Zielverzeichnis alles, was nicht in dist/ liegt).
 name: Deploy
 
+# Vorerst nur manuell, bis Zielverzeichnis und FTP-Konto geprüft sind.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 concurrency:
@@ -35,9 +34,13 @@ jobs:
         if: env.FTP_HOST != '' && env.FTP_USER != '' && env.FTP_PASSWORD != ''
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq lftp
-          lftp -u "$FTP_USER","$FTP_PASSWORD" "$FTP_HOST" -e "
-            set ftp:ssl-force true;
-            set ftp:ssl-protect-data true;
-            set ssl:verify-certificate true;
-            mirror --reverse --delete --verbose --exclude-glob .well-known/ dist/ ./;
-            quit"
+          LFTP_SET="set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate true;"
+          # Sicherung: Nur hochladen, wenn im Zielverzeichnis die Markierungsdatei liegt.
+          # Sie wird einmalig von Hand angelegt und belegt, dass das FTP-Konto auf das
+          # Website-Verzeichnis beschränkt ist. Ohne sie bricht der Upload ab.
+          if ! lftp -u "$FTP_USER","$FTP_PASSWORD" "$FTP_HOST" -e "$LFTP_SET cls -1 .plan-my-cinema-deploy; quit" | grep -qx '.plan-my-cinema-deploy'; then
+            echo "::error::Markierungsdatei .plan-my-cinema-deploy fehlt im Zielverzeichnis – Upload abgebrochen."
+            exit 1
+          fi
+          # Ohne --delete: alte Dateien bleiben liegen, es wird nie etwas gelöscht.
+          lftp -u "$FTP_USER","$FTP_PASSWORD" "$FTP_HOST" -e "$LFTP_SET mirror --reverse --verbose dist/ ./; quit"
