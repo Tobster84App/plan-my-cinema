@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "projectors": [
+    {
+      "id": "beispiel-a-1000",
+      "example": true,
+      "manufacturer": "BEISPIEL",
+      "model": "A-1000 (Platzhalter, keine echten Daten)",
+      "throwRatio": { "min": 1.35, "max": 2.84 },
+      "lensShift": { "vertical": 96, "horizontal": 47 },
+      "lumensSpec": 2600,
+      "source": "https://example.com/datenblatt-a-1000.pdf",
+      "asOf": "2026-11-04"
+    },
+    {
+      "id": "beispiel-b-2000",
+      "example": true,
+      "manufacturer": "BEISPIEL",
+      "model": "B-2000 (Platzhalter, keine echten Daten)",
+      "throwRatio": { "min": 1.38, "max": 2.82 },
+      "lensShift": { "vertical": 80, "horizontal": 34 },
+      "lumensSpec": 2200,
+      "source": "https://example.com/datenblatt-b-2000.pdf",
+      "asOf": "2026-11-04"
+    },
+    {
+      "id": "beispiel-c-300",
+      "example": true,
+      "manufacturer": "BEISPIEL",
+      "model": "C-300 (Platzhalter, keine echten Daten)",
+      "throwRatio": { "min": 1.2, "max": 1.5 },
+      "lensShift": { "vertical": null, "horizontal": null },
+      "lumensSpec": 3500,
+      "source": "https://example.com/datenblatt-c-300.pdf",
+      "asOf": "2026-11-04",
+      "notes": "ohne Lens Shift"
+    }
+  ]
+}

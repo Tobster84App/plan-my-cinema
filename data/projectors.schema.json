@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://plan-my-cinema.com/schema/projectors.json",
+  "title": "Plan My Cinema – Projektordaten",
+  "description": "Von Hand gepflegte Projektordaten aus Hersteller-Datenblättern. Keine Übernahme aus fremden Datenbanken.",
+  "type": "object",
+  "required": ["version", "projectors"],
+  "properties": {
+    "version": { "const": 1 },
+    "projectors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "manufacturer", "model", "throwRatio", "lensShift", "lumensSpec", "source", "asOf"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$", "description": "stabile ID, z. B. hersteller-modell" },
+          "example": { "type": "boolean", "description": "true = Platzhalter, keine echten Daten" },
+          "manufacturer": { "type": "string" },
+          "model": { "type": "string" },
+          "throwRatio": {
+            "type": "object",
+            "required": ["min", "max"],
+            "properties": { "min": { "type": "number", "exclusiveMinimum": 0 }, "max": { "type": "number", "exclusiveMinimum": 0 } }
+          },
+          "lensShift": {
+            "type": "object",
+            "description": "± in % der Bildhöhe (vertikal) bzw. Bildbreite (horizontal), Verschiebung der Bildmitte. null = kein/unbekannt",
+            "required": ["vertical", "horizontal"],
+            "properties": {
+              "vertical": { "type": ["number", "null"], "minimum": 0 },
+              "horizontal": { "type": ["number", "null"], "minimum": 0 }
+            }
+          },
+          "lumensSpec": { "type": "number", "exclusiveMinimum": 0, "description": "Herstellerangabe (Datenblatt), nicht kalibriert" },
+          "source": { "type": "string", "format": "uri", "description": "URL des Hersteller-Datenblatts" },
+          "asOf": { "type": "string", "format": "date", "description": "Stand der Angabe (JJJJ-MM-TT)" },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}
