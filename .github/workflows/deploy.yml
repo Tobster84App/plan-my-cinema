@@ -41,6 +41,15 @@ jobs:
         run: |
           if [ -z "$DRIVE_UPLOAD_URL" ] || [ -z "$DRIVE_UPLOAD_KEY" ]; then echo "::error::Secrets DRIVE_UPLOAD_URL/DRIVE_UPLOAD_KEY fehlen – ohne Sicherung kein Upload."; exit 1; fi
           if [ -z "$FTP_HOST" ] || [ -z "$FTP_USER" ] || [ -z "$FTP_PASSWORD" ]; then echo "::error::FTP-Secrets fehlen."; exit 1; fi
+          # Leerzeichen/Zeilenumbrüche aus kopierten Werten entfernen und Adresse prüfen (ohne sie auszugeben)
+          DRIVE_UPLOAD_URL="$(printf '%s' "$DRIVE_UPLOAD_URL" | tr -d '[:space:]')"
+          DRIVE_UPLOAD_KEY="$(printf '%s' "$DRIVE_UPLOAD_KEY" | tr -d '[:space:]')"; export DRIVE_UPLOAD_KEY
+          case "$DRIVE_UPLOAD_URL" in https://script.google.com/macros/s/*/exec) echo "Adresse: Form ok (…/macros/s/…/exec)";;
+            *) echo "::error::DRIVE_UPLOAD_URL hat nicht die Form https://script.google.com/macros/s/…/exec"
+               case "$DRIVE_UPLOAD_URL" in *"/dev") echo "Hinweis: endet auf /dev – das ist die Test-Adresse, gebraucht wird die /exec-Adresse der Bereitstellung.";; esac
+               case "$DRIVE_UPLOAD_URL" in *"/macros/u/"*|*"/u/"[0-9]*) echo "Hinweis: enthält /u/<Zahl>/ (mehrere Google-Konten angemeldet) – diesen Teil entfernen.";; esac
+               case "$DRIVE_UPLOAD_URL" in *"/home/projects/"*|*"/d/"*"/edit"*) echo "Hinweis: das ist die Editor-Adresse, nicht die Web-App-Adresse.";; esac
+               exit 1;; esac
           STAMP="$(TZ=Europe/Berlin date +%Y-%m-%d_%H%M%S)_${GITHUB_SHA::7}"
           LFTP_SET="set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate true;"
           # 1. aktuellen Serverstand herunterladen und packen
@@ -52,7 +61,15 @@ jobs:
           # 3. an das Apps Script schicken (Schlüssel nur im Request-Body, nicht in der URL)
           for f in "/tmp/server_${STAMP}.zip" "/tmp/neu_${STAMP}.zip"; do
             python3 -c 'import base64,json,os,sys; p=sys.argv[1]; print(json.dumps({"key":os.environ["DRIVE_UPLOAD_KEY"],"name":os.path.basename(p),"data":base64.b64encode(open(p,"rb").read()).decode()}))' "$f" > /tmp/payload.json
-            RESP="$(curl -sS -L --fail --max-time 120 -H 'Content-Type: application/json' --data-binary @/tmp/payload.json "$DRIVE_UPLOAD_URL")"
+            CODE="$(curl -sS -L --max-time 120 -o /tmp/resp.txt -w '%{http_code}' -H 'Content-Type: application/json' --data-binary @/tmp/payload.json "$DRIVE_UPLOAD_URL")"
+            if [ "$CODE" != "200" ]; then
+              echo "::error::Apps Script antwortet mit HTTP $CODE."
+              [ "$CODE" = "404" ] && echo "Bei 404: Bereitstellung als Web-App mit Zugriff „Jeder“ fehlt, oder die Adresse gehört zu einer gelöschten/alten Bereitstellung."
+              [ "$CODE" = "401" ] || [ "$CODE" = "403" ] && echo "Bei 401/403: Zugriff steht nicht auf „Jeder“."
+              head -c 300 /tmp/resp.txt | sed -E 's/<[^>]+>/ /g' | tr -s ' '; echo
+              exit 1
+            fi
+            RESP="$(cat /tmp/resp.txt)"
             rm -f /tmp/payload.json
             echo "$(basename "$f"): $RESP"
             echo "$RESP" | python3 -c 'import json,sys; sys.exit(0 if json.load(sys.stdin).get("ok") else 1)' || { echo "::error::Sicherung von $(basename "$f") fehlgeschlagen – Upload abgebrochen."; exit 1; }
