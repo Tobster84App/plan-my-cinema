@@ -18,7 +18,7 @@ Zweisprachige Website (DE zuerst, EN zweitrangig) mit Heimkino-Rechnern auf eine
 | Preact + @preact/signals | 11.1.1 / 2.11.4 | interaktive Inseln, gemeinsamer Raum-Store |
 | TypeScript | 6.0.3 | 7.x wird von @astrojs/check (0.9.12) noch nicht unterstützt |
 | Vitest | 5.1.0 | Tests der Rechenlogik |
-| @vite-pwa/astro | 2.0.0 | Manifest, Service Worker (Workbox), offline |
+| eigener Service Worker | – | `scripts/build-sw.mjs` erzeugt `dist/sw.js` mit inhaltsbasierter Cache-Version (ersetzt @vite-pwa/astro 2.0.0: erst 4 Tage alt, zusätzliche Peer-Abhängigkeiten, 10 Audit-Warnungen) |
 | @astrojs/sitemap | 3.7.4 | Sitemap mit hreflang |
 | @fontsource/* | 5.3.0 | Schriften selbst gehostet (kein Google-Fonts-Abruf, DSGVO) |
 | Node | ≥ 22.23.4 | von Astro 7.4 vorausgesetzt |
@@ -26,6 +26,7 @@ Hosting: Cloudflare (Pages oder Workers Static Assets, wird vor dem Deploy gepr�
 
 ## Architektur
 - `src/lib/` – reine Rechenfunktionen ohne DOM (screen, room, storage, projectors, units), mit Vitest-Tests.
+- `scripts/build-sw.mjs` + `scripts/sw-template.js` – Service Worker (Seiten: Netz zuerst, Assets: Cache zuerst)
 - `src/state/room.ts` – Raummodell als Preact-Signal, wird in localStorage gespeichert (try/catch), Teilen-Link `#r=…`, Export/Import als JSON.
 - `src/components/` – Inseln (Rechner, Draufsicht, Seitenansicht, Eingabefelder).
 - `src/i18n/` – Texte DE/EN, Routenzuordnung mit übersetzten Slugs.
@@ -33,7 +34,7 @@ Hosting: Cloudflare (Pages oder Workers Static Assets, wird vor dem Deploy gepr�
 - `data/speaker-guidelines.json` + `docs/dolby-lautsprecherwinkel.md` – Dolby-Werte mit Quellen.
 
 ## Meilensteine
-**M1 – Gerüst + Rechner 1 „Leinwand & Projektion“** (in Arbeit)
+**M1 – Gerüst + Rechner 1 „Leinwand & Projektion“** (fertig, lokal lauffähig, 2026-11-04)
 - Astro-Projekt, i18n DE/EN mit übersetzten Slugs, Sprachweiche auf `/`
 - Raummodell v1 + Speicherung, Teilen-Link, Export/Import
 - Rechner 1: Seitenverhältnis, Breite oder Diagonale (cm/Zoll), Gain, AT-Verlust, Lumen, Throw Ratio, Zoom/Linse, Lens Shift V/H, Projektorhöhe, Sitzabstand
@@ -43,7 +44,7 @@ Hosting: Cloudflare (Pages oder Workers Static Assets, wird vor dem Deploy gepr�
 - Einheiten metrisch/imperial umschaltbar
 - Erklärtext DE/EN, Meta, hreflang, Sitemap, JSON-LD (WebApplication + FAQ)
 - Impressum/Datenschutz als Platzhalter, Affiliate-Link-Komponente
-- PWA-Grundlage (Manifest, Service Worker, Icons)
+- PWA-Grundlage (Manifest, Service Worker, Icons) – offline geprüft
 - Tests der Rechenlogik
 
 **M2 – Rechner 2 „Raummoden“**

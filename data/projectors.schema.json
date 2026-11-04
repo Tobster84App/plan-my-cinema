@@ -25,7 +25,7 @@
           },
           "lensShift": {
             "type": "object",
-            "description": "± in % der Bildhöhe (vertikal) bzw. Bildbreite (horizontal), Verschiebung der Bildmitte. null = kein/unbekannt",
+            "description": "± in % der Bildhöhe (vertikal) bzw. Bildbreite (horizontal), Verschiebung der Bildmitte. 0 = kein Lens Shift, null = unbekannt",
             "required": ["vertical", "horizontal"],
             "properties": {
               "vertical": { "type": ["number", "null"], "minimum": 0 },

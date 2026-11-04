@@ -21,7 +21,8 @@ Heimkino-Rechner (DE/EN) auf plan-my-cinema.com. Projektplan: `PROJEKTPLAN.md`.
 - `npm run dev` – Entwicklungsserver
 - `npm test` – Tests
 - `npm run check` – Typprüfung
-- `npm run build` – statischer Build nach `dist/`
+- `npm run build` – statischer Build nach `dist/` inkl. `dist/sw.js`
+- `npm run preview` – Build lokal ansehen (Service Worker nur hier aktiv, nicht in `dev`)
 
 ## Google-Drive-Kopie
 Ordner „Plan My Cinema“: nur Dokumente (PROJEKTPLAN.md, CLAUDE.md, Dolby-Tabelle, Logo-Vorschau, später Verträge) nach Änderungen aktualisieren, alte Versionen in den Papierkorb. Code nicht im Drive – Sicherung über GitHub.
