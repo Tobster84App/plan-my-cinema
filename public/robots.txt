@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://plan-my-cinema.com/sitemap-index.xml

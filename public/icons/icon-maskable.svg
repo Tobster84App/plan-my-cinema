@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#0d0f14"/><g transform="translate(51.2 51.2) scale(.8)">
+  <!-- Raum im Grundriss -->
+  <rect x="116" y="116" width="280" height="300" rx="10" fill="none" stroke="#262c3a" stroke-width="10"/>
+  <!-- Leinwand -->
+  <line x1="156" y1="136" x2="356" y2="136" stroke="#e9e6df" stroke-width="18" stroke-linecap="round"/>
+  <!-- Blickwinkel -->
+  <polygon points="256,330 156,146 356,146" fill="#f2b544" opacity=".18"/>
+  <line x1="256" y1="330" x2="156" y2="146" stroke="#f2b544" stroke-width="8" stroke-linecap="round"/>
+  <line x1="256" y1="330" x2="356" y2="146" stroke="#f2b544" stroke-width="8" stroke-linecap="round"/>
+  <path d="M220 264 A 76 76 0 0 1 292 264" fill="none" stroke="#f2b544" stroke-width="8" stroke-linecap="round"/>
+  <!-- Sitzplatz -->
+  <circle cx="256" cy="336" r="26" fill="#f2b544"/>
+</g></svg>
