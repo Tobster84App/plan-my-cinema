@@ -21,7 +21,7 @@ const faq = [
   },
   {
     q: 'Welcher Sitzabstand ist richtig?',
-    a: 'Häufig genannt werden ein horizontaler Blickwinkel von mindestens 30° (SMPTE) und etwa 36 bis 40° (THX). Der Rechner zeigt die passenden Abstände für deine Bildbreite.',
+    a: 'Häufig genannt werden ein horizontaler Blickwinkel von mindestens 30° (aus der 2003 zurückgezogenen SMPTE-Richtlinie EG 18) und 36 bis 40° (THX). Der Rechner zeigt die passenden Abstände für deine Bildbreite.',
   },
 ];
 
@@ -82,8 +82,8 @@ const jsonLd = [
       </tbody>
     </table>
     <p>
-      Die Grenzen sind Orientierungswerte. Die oft zitierte Kino-Referenz von 14 fL (48 cd/m²) stammt aus der digitalen Kinoprojektion. Für HDR
-      mit Projektoren gibt es keinen festen Zielwert – mehr Helligkeit hilft dem Tonemapping.
+      Die Grenzen sind Orientierungswerte. Die Kino-Referenz von 14 fL (48 cd/m², Toleranz ±3,5 cd/m²) legt SMPTE ST 431-1 für die digitale
+      Kinoprojektion fest. Für HDR mit Projektoren gibt es keinen festen Zielwert – mehr Helligkeit hilft dem Tonemapping.
     </p>
 
     <h3>AT-Tuch</h3>
@@ -116,9 +116,10 @@ const jsonLd = [
 
     <h3>Sitzabstand</h3>
     <p>
-      Der horizontale Blickwinkel ist 2 × arctan(Bildbreite ÷ 2 × Abstand). Häufig genannte Orientierungswerte: mindestens 30° (SMPTE) und
-      36–40° (THX). Viele Enthusiasten sitzen bei Scope bewusst näher. Ein Richtig oder Falsch gibt es nicht – Bildschärfe, Sitzreihen und
-      Geschmack spielen mit.
+      Der horizontale Blickwinkel ist 2 × arctan(Bildbreite ÷ 2 × Abstand). Zwei Werte werden besonders oft genannt: mindestens 30° geht auf die
+      SMPTE-Richtlinie EG 18-1994 zurück, die SMPTE 2003 zurückgezogen hat. THX empfiehlt Kinoplanern 36° vom entferntesten Sitz; die
+      THX-Faustregel für Fernseher (Bilddiagonale = 0,835 × Sitzabstand) entspricht bei 16:9 rund 40°. Viele Enthusiasten sitzen bei Scope
+      bewusst näher. Ein Richtig oder Falsch gibt es nicht – Bildschärfe, Sitzreihen und Geschmack spielen mit.
     </p>
 
     <h2>Häufige Fragen</h2>

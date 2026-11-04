@@ -21,7 +21,7 @@ const faq = [
   },
   {
     q: 'What is the right seating distance?',
-    a: 'Commonly quoted guidelines are a horizontal viewing angle of at least 30° (SMPTE) and around 36 to 40° (THX). The calculator shows the matching distances for your screen width.',
+    a: 'Commonly quoted guidelines are a horizontal viewing angle of at least 30° (from SMPTE EG 18, withdrawn in 2003) and 36 to 40° (THX). The calculator shows the matching distances for your screen width.',
   },
 ];
 
@@ -79,8 +79,8 @@ const jsonLd = [
       </tbody>
     </table>
     <p>
-      These limits are guidance, not rules. The often-quoted 14 fL (48 cd/m²) comes from digital cinema projection. There is no fixed target for
-      projected HDR – more light simply gives tone mapping more room.
+      These limits are guidance, not rules. The 14 fL cinema reference (48 cd/m², tolerance ±3.5 cd/m²) is set by SMPTE ST 431-1 for digital
+      cinema projection. There is no fixed target for projected HDR – more light simply gives tone mapping more room.
     </p>
 
     <h3>AT fabric</h3>
@@ -111,8 +111,10 @@ const jsonLd = [
 
     <h3>Seating distance</h3>
     <p>
-      Horizontal viewing angle = 2 × arctan(image width ÷ 2 × distance). Commonly quoted guidelines: at least 30° (SMPTE) and 36–40° (THX). Many
-      enthusiasts sit closer for scope. There is no single right answer – resolution, seating rows and taste all play a part.
+      Horizontal viewing angle = 2 × arctan(image width ÷ 2 × distance). Two figures come up again and again: the 30° minimum goes back to
+      SMPTE EG 18-1994, which SMPTE withdrew in 2003. THX advises cinema designers to plan for 36° from the farthest seat, and THX’s rule of
+      thumb for TVs (diagonal = 0.835 × seating distance) works out at about 40° for 16:9. Many enthusiasts sit closer for scope. There is no
+      single right answer – resolution, seating rows and taste all play a part.
     </p>
 
     <h2>FAQ</h2>

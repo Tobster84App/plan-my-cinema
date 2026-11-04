@@ -110,6 +110,11 @@ describe('Blickwinkel', () => {
     expect(distanceForAngle(3, 36)).toBeCloseTo(4.6165, 3);
     expect(distanceForAngle(3, 40)).toBeCloseTo(4.1212, 3);
   });
+  it('THX-Faustregel Diagonale = 0,835 · Abstand entspricht bei 16:9 rund 40° (39,99°)', () => {
+    const d = 3; // Abstand beliebig
+    const w = widthFromDiagonal(0.835 * d, 16 / 9);
+    expect(viewingAngleDeg(w, d)).toBeCloseTo(39.99, 2);
+  });
   it('Umkehrbarkeit', () => {
     expect(viewingAngleDeg(2.5, distanceForAngle(2.5, 33))).toBeCloseTo(33, 10);
   });
