@@ -44,7 +44,9 @@ jobs:
           if [ -z "$FTP_HOST" ] || [ -z "$FTP_USER" ] || [ -z "$FTP_PASSWORD" ]; then echo "::error::FTP-Secrets fehlen."; exit 1; fi
           # Leerzeichen/Zeilenumbrüche aus kopierten Werten entfernen und Adresse prüfen (ohne sie auszugeben)
           DRIVE_UPLOAD_URL="$(printf '%s' "$DRIVE_UPLOAD_URL" | tr -d '[:space:]')"
-          DRIVE_UPLOAD_KEY="$(printf '%s' "$DRIVE_UPLOAD_KEY" | tr -d '[:space:]')"; export DRIVE_UPLOAD_KEY
+          # Schlüssel = 64 Hex-Zeichen; falls die ganze Protokollzeile kopiert wurde, nur diese herauslösen
+          DRIVE_UPLOAD_KEY="$(printf '%s' "$DRIVE_UPLOAD_KEY" | grep -oE '[0-9a-f]{64}' | head -1)"; export DRIVE_UPLOAD_KEY
+          if [ -z "$DRIVE_UPLOAD_KEY" ]; then echo "::error::Im Secret DRIVE_UPLOAD_KEY steht kein gültiger Schlüssel (64 Zeichen 0-9/a-f)."; exit 1; fi
           case "$DRIVE_UPLOAD_URL" in https://script.google.com/macros/s/*/exec) echo "Adresse: Form ok (…/macros/s/…/exec)";;
             *) echo "::error::DRIVE_UPLOAD_URL hat nicht die erwartete Form (Web-App-Adresse, endet auf /exec)"
                U="$DRIVE_UPLOAD_URL"
@@ -53,7 +55,6 @@ jobs:
                case "$DRIVE_UPLOAD_URL" in *"/macros/u/"*|*"/u/"[0-9]*) echo "Hinweis: enthält /u/<Zahl>/ (mehrere Google-Konten angemeldet) – diesen Teil entfernen.";; esac
                case "$DRIVE_UPLOAD_URL" in *"/home/projects/"*|*"/d/"*"/edit"*) echo "Hinweis: das ist die Editor-Adresse, nicht die Web-App-Adresse.";; esac
                exit 1;; esac
-          K="$DRIVE_UPLOAD_KEY"; echo "Schlüssel: Länge=${#K} (erwartet 64), nur 0-9/a-f: $(printf '%s' "$K" | grep -qx '[0-9a-f]*' && echo ja || echo nein)"
           STAMP="$(TZ=Europe/Berlin date +%Y-%m-%d_%H%M%S)_${GITHUB_SHA::7}"
           LFTP_SET="set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate true;"
           # 1. aktuellen Serverstand herunterladen und packen
