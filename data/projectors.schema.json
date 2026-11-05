@@ -2,11 +2,11 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://plan-my-cinema.com/schema/projectors.json",
   "title": "Plan My Cinema – Projektordaten",
-  "description": "Von Hand gepflegte Projektordaten aus Hersteller-Datenblättern. Keine Übernahme aus fremden Datenbanken.",
+  "description": "Projektordaten ausschließlich aus Hersteller-Datenblättern bzw. -Produktseiten. Keine Übernahme aus fremden Datenbanken.",
   "type": "object",
   "required": ["version", "projectors"],
   "properties": {
-    "version": { "const": 1 },
+    "version": { "const": 2 },
     "projectors": {
       "type": "array",
       "items": {
@@ -14,27 +14,34 @@
         "required": ["id", "manufacturer", "model", "throwRatio", "lensShift", "lumensSpec", "source", "asOf"],
         "additionalProperties": false,
         "properties": {
-          "id": { "type": "string", "pattern": "^[a-z0-9-]+$", "description": "stabile ID, z. B. hersteller-modell" },
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$", "description": "stabile ID: hersteller-modell" },
           "example": { "type": "boolean", "description": "true = Platzhalter, keine echten Daten" },
           "manufacturer": { "type": "string" },
-          "model": { "type": "string" },
+          "model": { "type": "string", "description": "Modellname; Farbvarianten mit gleichen Daten durch „ / “ getrennt" },
           "throwRatio": {
             "type": "object",
+            "description": "Optische Throw Ratio (Abstand ÷ Bildbreite). Bei Digitalzoom: min = max = optischer Wert.",
             "required": ["min", "max"],
             "properties": { "min": { "type": "number", "exclusiveMinimum": 0 }, "max": { "type": "number", "exclusiveMinimum": 0 } }
           },
+          "zoom": { "enum": ["optical", "digital", "fixed"] },
           "lensShift": {
             "type": "object",
-            "description": "± in % der Bildhöhe (vertikal) bzw. Bildbreite (horizontal), Verschiebung der Bildmitte. 0 = kein Lens Shift, null = unbekannt",
-            "required": ["vertical", "horizontal"],
+            "description": "In % der Bildhöhe (oben/unten) bzw. Bildbreite (links/rechts, Blick zur Leinwand). 0 = kein Shift, null = unbekannt/keine eindeutige Angabe",
+            "required": ["up", "down", "left", "right"],
             "properties": {
-              "vertical": { "type": ["number", "null"], "minimum": 0 },
-              "horizontal": { "type": ["number", "null"], "minimum": 0 }
+              "up": { "type": ["number", "null"], "minimum": 0 },
+              "down": { "type": ["number", "null"], "minimum": 0 },
+              "left": { "type": ["number", "null"], "minimum": 0 },
+              "right": { "type": ["number", "null"], "minimum": 0 }
             }
           },
-          "lumensSpec": { "type": "number", "exclusiveMinimum": 0, "description": "Herstellerangabe (Datenblatt), nicht kalibriert" },
-          "source": { "type": "string", "format": "uri", "description": "URL des Hersteller-Datenblatts" },
-          "asOf": { "type": "string", "format": "date", "description": "Stand der Angabe (JJJJ-MM-TT)" },
+          "lumensSpec": { "type": "number", "exclusiveMinimum": 0, "description": "Herstellerangabe, nicht kalibriert" },
+          "lumensStandard": { "type": "string", "description": "Messnorm der Lumenangabe, z. B. ISO 21118:2020 oder ANSI" },
+          "statedThrowRatio": { "type": "string", "description": "Originalangabe, falls von throwRatio abweichend" },
+          "statedLensShift": { "type": "string", "description": "Originalangabe, falls nicht eindeutig übertragbar" },
+          "source": { "type": "string", "format": "uri", "description": "URL der Hersteller-Produkt-/Datenblattseite" },
+          "asOf": { "type": "string", "format": "date", "description": "Abrufdatum (JJJJ-MM-TT)" },
           "notes": { "type": "string" }
         }
       }

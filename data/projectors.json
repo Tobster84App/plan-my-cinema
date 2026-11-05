@@ -1,57 +1,1056 @@
 {
-  "version": 1,
+  "version": 2,
   "projectors": [
     {
-      "id": "beispiel-a-1000",
-      "example": true,
-      "manufacturer": "BEISPIEL",
-      "model": "A-1000 (Platzhalter, keine echten Daten)",
+      "id": "benq-gp520",
+      "manufacturer": "BenQ",
+      "model": "GP520",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 2600,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/cinema/gp520/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-gv32",
+      "manufacturer": "BenQ",
+      "model": "GV32",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 500,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/portable/gv32/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-gv50",
+      "manufacturer": "BenQ",
+      "model": "GV50",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 500,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/portable/gv50/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-gv50p",
+      "manufacturer": "BenQ",
+      "model": "GV50P",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 500,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/portable/gv50p/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-th575i",
+      "manufacturer": "BenQ",
+      "model": "TH575i",
+      "throwRatio": {
+        "min": 1.49,
+        "max": 1.64
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3800,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/cinema/th575i/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-th585p",
+      "manufacturer": "BenQ",
+      "model": "TH585P",
+      "throwRatio": {
+        "min": 1.5,
+        "max": 1.65
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3500,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/cinema/th585p/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-th671st",
+      "manufacturer": "BenQ",
+      "model": "TH671ST",
+      "throwRatio": {
+        "min": 0.69,
+        "max": 0.83
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/cinema/th671st/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-th685p",
+      "manufacturer": "BenQ",
+      "model": "TH685P",
+      "throwRatio": {
+        "min": 1.127,
+        "max": 1.46
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3500,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/cinema/th685p/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-tk700",
+      "manufacturer": "BenQ",
+      "model": "TK700",
+      "throwRatio": {
+        "min": 1.127,
+        "max": 1.46
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3200,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/gaming/tk700/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-tk700st",
+      "manufacturer": "BenQ",
+      "model": "TK700ST",
+      "throwRatio": {
+        "min": 0.9,
+        "max": 1.08
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/gaming/tk700st/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-tk700sti",
+      "manufacturer": "BenQ",
+      "model": "TK700STi",
+      "throwRatio": {
+        "min": 0.9,
+        "max": 1.08
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/gaming/tk700sti/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-tk705sti",
+      "manufacturer": "BenQ",
+      "model": "TK705STi",
+      "throwRatio": {
+        "min": 0.8,
+        "max": 0.8
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/cinema/tk705sti/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-tk705i",
+      "manufacturer": "BenQ",
+      "model": "TK705i",
+      "throwRatio": {
+        "min": 1.0,
+        "max": 1.3
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/cinema/tk705i/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-tk710",
+      "manufacturer": "BenQ",
+      "model": "TK710",
+      "throwRatio": {
+        "min": 1.15,
+        "max": 1.5
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3200,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/gaming/tk710/spec.html",
+      "asOf": "2026-11-05",
+      "statedLensShift": "vertikal: +10%",
+      "notes": "Lens-Shift-Angabe von BenQ nicht eindeutig in ±% übertragbar, Originalangabe siehe statedLensShift. BenQ nennt keinen horizontalen Lens Shift."
+    },
+    {
+      "id": "benq-tk710sti",
+      "manufacturer": "BenQ",
+      "model": "TK710STi",
+      "throwRatio": {
+        "min": 0.69,
+        "max": 0.83
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3200,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/gaming/tk710sti/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-w2720i",
+      "manufacturer": "BenQ",
+      "model": "W2720i",
+      "throwRatio": {
+        "min": 1.0,
+        "max": 1.3
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 5.0,
+        "down": 5.0,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 2500,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/cinema/w2720i/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen horizontalen Lens Shift."
+    },
+    {
+      "id": "benq-w4100i",
+      "manufacturer": "BenQ",
+      "model": "W4100i",
+      "throwRatio": {
+        "min": 1.15,
+        "max": 1.5
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3200,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/cinema/w4100i/spec.html",
+      "asOf": "2026-11-05",
+      "statedLensShift": "vertikal: 0%-60%; horizontal: max +15%~-15% H @ 20.9% V",
+      "notes": "Lens-Shift-Angabe von BenQ nicht eindeutig in ±% übertragbar, Originalangabe siehe statedLensShift."
+    },
+    {
+      "id": "benq-w5800",
+      "manufacturer": "BenQ",
+      "model": "W5800",
+      "throwRatio": {
+        "min": 1.52,
+        "max": 2.45
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 50.0,
+        "down": 50.0,
+        "left": 21.0,
+        "right": 21.0
+      },
+      "lumensSpec": 2600,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/cinema/w5800/spec.html",
+      "asOf": "2026-11-05"
+    },
+    {
+      "id": "benq-x300g",
+      "manufacturer": "BenQ",
+      "model": "X300G",
+      "throwRatio": {
+        "min": 0.69,
+        "max": 0.83
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 2000,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/gaming/x300g/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "benq-x3100i",
+      "manufacturer": "BenQ",
+      "model": "X3100i",
+      "throwRatio": {
+        "min": 1.15,
+        "max": 1.5
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3300,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/gaming/x3100i/spec.html",
+      "asOf": "2026-11-05",
+      "statedLensShift": "vertikal: 40%~60%",
+      "notes": "Lens-Shift-Angabe von BenQ nicht eindeutig in ±% übertragbar, Originalangabe siehe statedLensShift. BenQ nennt keinen horizontalen Lens Shift."
+    },
+    {
+      "id": "benq-x500i",
+      "manufacturer": "BenQ",
+      "model": "X500i",
+      "throwRatio": {
+        "min": 0.69,
+        "max": 0.83
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 2200,
+      "lumensStandard": "ANSI",
+      "source": "https://www.benq.eu/de-de/projector/gaming/x500i/spec.html",
+      "asOf": "2026-11-05",
+      "notes": "BenQ nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-co-fh01",
+      "manufacturer": "Epson",
+      "model": "CO-FH01",
+      "throwRatio": {
+        "min": 1.19,
+        "max": 1.19
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/epson-co-fh01%2C-erschwinglicher-full-hd-1080-projektor%2C-heimkino%2C-gaming%2C-3-000-lumen%2C-3lcd%2C-bild-bis-zu-391%22%2C-2-jahre-garantie/p/35472",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "statedThrowRatio": "1,19 - 1,61:1",
+      "notes": "Nur Digitalzoom: Throw Ratio optisch fest, Herstellerangabe enthält die elektronische Verkleinerung. Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-co-fh02",
+      "manufacturer": "Epson",
+      "model": "CO-FH02",
+      "throwRatio": {
+        "min": 1.19,
+        "max": 1.19
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/co-fh02/p/35475",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "statedThrowRatio": "1,19 - 1,61:1",
+      "notes": "Nur Digitalzoom: Throw Ratio optisch fest, Herstellerangabe enthält die elektronische Verkleinerung. Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-co-w01",
+      "manufacturer": "Epson",
+      "model": "CO-W01",
+      "throwRatio": {
+        "min": 1.27,
+        "max": 1.27
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/epson-co-w01%2C-erschwinglicher-wxga-projektor%2C-heimkino%2C-gaming%2C-3-000-lumen%2C-3lcd%2C-bild-bis-zu-378%22%2C-2-jahre-garantie/p/35469",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "statedThrowRatio": "1,27 - 1,71:1",
+      "notes": "Nur Digitalzoom: Throw Ratio optisch fest, Herstellerangabe enthält die elektronische Verkleinerung. Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-eb-fh08",
+      "manufacturer": "Epson",
+      "model": "EB-FH08",
+      "throwRatio": {
+        "min": 1.21,
+        "max": 1.45
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3600,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eb-fh08-full-hd-lampenprojektor%2C-2x-hdmi-anschl%C3%BCsse%2C-3-600%C2%A0lumen%2C-bis-zu-337%C2%A0zoll-%28ca-8%2C56-m%29-gro%C3%9Fe-projektionsfl%C3%A4che/p/52644",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "notes": "Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-eb-fh18",
+      "manufacturer": "Epson",
+      "model": "EB-FH18",
+      "throwRatio": {
+        "min": 1.3,
+        "max": 2.09
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 4100,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eb-fh18-full-hd-lampenprojektor%2C-apple-airplay-2%2C-2x-hdmi-anschl%C3%BCsse%2C-4-100%C2%A0lumen%2C-bis-zu-304%C2%A0zoll-gro%C3%9Fe-projektionsfl%C3%A4che/p/52647",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "notes": "Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-eb-w53",
+      "manufacturer": "Epson",
+      "model": "EB-W53",
+      "throwRatio": {
+        "min": 1.27,
+        "max": 1.27
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 4000,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eb-w53-wxga-lampenprojektor%2C-2x-hdmi-anschl%C3%BCsse%2C-4-000%C2%A0lumen%2C-bis-zu-375%C2%A0zoll-gro%C3%9Fe-projektionsfl%C3%A4che/p/52638",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "statedThrowRatio": "1,27 - 2,54:1",
+      "notes": "Nur Digitalzoom: Throw Ratio optisch fest, Herstellerangabe enthält die elektronische Verkleinerung. Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-eb-w55",
+      "manufacturer": "Epson",
+      "model": "EB-W55",
+      "throwRatio": {
+        "min": 1.3,
+        "max": 1.56
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 4000,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eb-w55-wxga-lampenprojektor%2C-integriertes-wifi%2C-2x-hdmi-anschl%C3%BCsse%2C-4-000%C2%A0lumen%2C-bis-zu-320%C2%A0zoll-%28ca-8%2C13-m%29-gro%C3%9Fe-projektionsfl%C3%A4che/p/52641",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "notes": "Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-eh-ls11000",
+      "manufacturer": "Epson",
+      "model": "EH-LS11000W",
       "throwRatio": {
         "min": 1.35,
         "max": 2.84
       },
+      "zoom": "optical",
       "lensShift": {
-        "vertical": 96,
-        "horizontal": 47
+        "up": 96.3,
+        "down": 96.3,
+        "left": 47.1,
+        "right": 47.1
       },
-      "lumensSpec": 2600,
-      "source": "https://example.com/datenblatt-a-1000.pdf",
-      "asOf": "2026-11-04"
+      "lumensSpec": 2500,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eh-ls11000w/p/33204",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020"
     },
     {
-      "id": "beispiel-b-2000",
-      "example": true,
-      "manufacturer": "BEISPIEL",
-      "model": "B-2000 (Platzhalter, keine echten Daten)",
+      "id": "epson-eh-ls12000",
+      "manufacturer": "Epson",
+      "model": "EH-LS12000B",
       "throwRatio": {
-        "min": 1.38,
-        "max": 2.82
+        "min": 1.35,
+        "max": 2.84
       },
+      "zoom": "optical",
       "lensShift": {
-        "vertical": 80,
-        "horizontal": 34
+        "up": 96.3,
+        "down": 96.3,
+        "left": 47.1,
+        "right": 47.1
       },
-      "lumensSpec": 2200,
-      "source": "https://example.com/datenblatt-b-2000.pdf",
-      "asOf": "2026-11-04"
+      "lumensSpec": 2700,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eh-ls12000b/p/33201",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020"
     },
     {
-      "id": "beispiel-c-300",
-      "example": true,
-      "manufacturer": "BEISPIEL",
-      "model": "C-300 (Platzhalter, keine echten Daten)",
+      "id": "epson-eh-ls5000",
+      "manufacturer": "Epson",
+      "model": "EH-LS5000",
       "throwRatio": {
-        "min": 1.2,
-        "max": 1.5
+        "min": 1.32,
+        "max": 2.15
       },
+      "zoom": "optical",
       "lensShift": {
-        "vertical": 0,
-        "horizontal": 0
+        "up": 59.0,
+        "down": 59.0,
+        "left": 21.0,
+        "right": 21.0
+      },
+      "lumensSpec": 2500,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/epson-eh-ls5000%2C-erschwinglicher-4k-laser-heimkino-projektor%2C-ki-bildverarbeitung%2C-matter-f%C3%A4hig%2C-2-500-lumen%2C-5-jahren-ger%C3%A4teschutz%2C-500%22-display/p/58197",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020"
+    },
+    {
+      "id": "epson-eh-ls6000",
+      "manufacturer": "Epson",
+      "model": "EH-LS6000",
+      "throwRatio": {
+        "min": 1.32,
+        "max": 2.15
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 59.0,
+        "down": 59.0,
+        "left": 21.0,
+        "right": 21.0
+      },
+      "lumensSpec": 3400,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/epson-eh-ls6000%2C-preisg%C3%BCnstiger-4k-laser-heimkino-projektor%2C-ki-bildverarbeitung%2C-matter-kompatibel%2C-3-400-lumen%2C-bis-zu-500-zoll-bildgr%C3%B6%C3%9Fe%2C-5-jahre-garantie/p/58206",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020"
+    },
+    {
+      "id": "epson-eh-ls7000",
+      "manufacturer": "Epson",
+      "model": "EH-LS7000",
+      "throwRatio": {
+        "min": 1.32,
+        "max": 2.15
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 59.0,
+        "down": 59.0,
+        "left": 21.0,
+        "right": 21.0
+      },
+      "lumensSpec": 3600,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eh-ls7000-4k-3lcd-premium-laserprojektor-f%C3%BCr-zuhause/p/58528",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020"
+    },
+    {
+      "id": "epson-eh-ls7500",
+      "manufacturer": "Epson",
+      "model": "EH-LS7500",
+      "throwRatio": {
+        "min": 1.0,
+        "max": 1.31
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 59.0,
+        "down": 59.0,
+        "left": 21.0,
+        "right": 21.0
       },
       "lumensSpec": 3500,
-      "source": "https://example.com/datenblatt-c-300.pdf",
-      "asOf": "2026-11-04",
-      "notes": "ohne Lens Shift"
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eh-ls7500-4k-3lcd-laser-kurzdistanz-home-entertainment-projektor/p/58525",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020"
+    },
+    {
+      "id": "epson-eh-ls800",
+      "manufacturer": "Epson",
+      "model": "EH-LS800B",
+      "throwRatio": {
+        "min": 0.16,
+        "max": 0.16
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 4000,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eh-ls800b/p/36911",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "statedThrowRatio": "0,16 - 0,40:1",
+      "notes": "Nur Digitalzoom: Throw Ratio optisch fest, Herstellerangabe enthält die elektronische Verkleinerung. Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-eh-ls9000",
+      "manufacturer": "Epson",
+      "model": "EH-LS9000B / EH-LS9000W",
+      "throwRatio": {
+        "min": 1.35,
+        "max": 2.84
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 96.3,
+        "down": 96.3,
+        "left": 24.0,
+        "right": 24.0
+      },
+      "lumensSpec": 2200,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eh-ls9000b-%E2%80%93-4k-laserprojektor-f%C3%BCr-heimkino/p/54433",
+      "asOf": "2026-11-05"
+    },
+    {
+      "id": "epson-eh-qb1000",
+      "manufacturer": "Epson",
+      "model": "EH-QB1000B / EH-QB1000W",
+      "throwRatio": {
+        "min": 1.35,
+        "max": 2.84
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 96.3,
+        "down": 96.3,
+        "left": 47.1,
+        "right": 47.1
+      },
+      "lumensSpec": 3300,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eh-qb1000b---pro-home-projector/p/45513",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020"
+    },
+    {
+      "id": "epson-eh-ql3000",
+      "manufacturer": "Epson",
+      "model": "EH-QL3000B / EH-QL3000W",
+      "throwRatio": {
+        "min": 1.52,
+        "max": 2.47
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 6000,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eh-ql3000b-pro-home-projector/p/45651",
+      "asOf": "2026-11-05",
+      "statedThrowRatio": "1,52 - 2,47:1, Varies by lens",
+      "statedLensShift": "Varies by lens",
+      "notes": "Wechselobjektive; Throw Ratio laut Epson-Seite (Standardobjektiv), andere Objektive abweichend. Lens Shift abhängig vom Objektiv, Werte im Objektiv-Datenblatt."
+    },
+    {
+      "id": "epson-eh-ql7000",
+      "manufacturer": "Epson",
+      "model": "EH-QL7000B / EH-QL7000W",
+      "throwRatio": {
+        "min": 1.52,
+        "max": 2.47
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 10000,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eh-ql7000b-pro-home-projector/p/45657",
+      "asOf": "2026-11-05",
+      "statedThrowRatio": "1,52 - 2,47:1, Varies by lens",
+      "statedLensShift": "Varies by lens",
+      "notes": "Wechselobjektive; Throw Ratio laut Epson-Seite (Standardobjektiv), andere Objektive abweichend. Lens Shift abhängig vom Objektiv, Werte im Objektiv-Datenblatt."
+    },
+    {
+      "id": "epson-eh-qs100",
+      "manufacturer": "Epson",
+      "model": "EH-QS100B / EH-QS100W",
+      "throwRatio": {
+        "min": 0.16,
+        "max": 0.16
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 4500,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eh-qs100b%3A-4k-pro-uhd-kurzdistanz-projektor-mit-4-500%C2%A0lumen-und-ip-steuerungen-f%C3%BCr-immersive-unterhaltung-/p/46794",
+      "asOf": "2026-11-05",
+      "statedThrowRatio": "0,16 - 0,22:1",
+      "notes": "Nur Digitalzoom: Throw Ratio optisch fest, Herstellerangabe enthält die elektronische Verkleinerung. Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-eh-tw6250",
+      "manufacturer": "Epson",
+      "model": "EH-TW6250",
+      "throwRatio": {
+        "min": 1.32,
+        "max": 2.15
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 60.0,
+        "down": 60.0,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 2800,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/epson-eh-tw6250%2C-erschwinglicher-4k-pro-uhd-projektor%2C-heimkino%2C-gaming%2C-2-800-lumen%2C-3lcd%2C-bild-bis-zu-500%22%2C-2-jahre-garantie/p/36986",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "statedLensShift": "Manuell -  Vertikal ±60 %",
+      "notes": "Epson nennt nur vertikalen Lens Shift."
+    },
+    {
+      "id": "epson-eh-tw7000",
+      "manufacturer": "Epson",
+      "model": "EH-TW7000",
+      "throwRatio": {
+        "min": 1.32,
+        "max": 2.15
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 60.0,
+        "down": 60.0,
+        "left": 24.0,
+        "right": 24.0
+      },
+      "lumensSpec": 3000,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eh-tw7000/p/28495",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020"
+    },
+    {
+      "id": "epson-eh-tw7100",
+      "manufacturer": "Epson",
+      "model": "EH-TW7100",
+      "throwRatio": {
+        "min": 1.32,
+        "max": 2.15
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 60.0,
+        "down": 60.0,
+        "left": 24.0,
+        "right": 24.0
+      },
+      "lumensSpec": 3000,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eh-tw7100-with-hc-lamp-warranty/p/28496",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020"
+    },
+    {
+      "id": "epson-eh-tw840",
+      "manufacturer": "Epson",
+      "model": "EH-TW840",
+      "throwRatio": {
+        "min": 1.21,
+        "max": 1.45
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 4000,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/eh-tw840-full-hd-lampenprojektor%2C-2x-hdmi-anschl%C3%BCsse%2C-4-000%C2%A0lumen%2C-bis-zu-337%C2%A0zoll-%28ca-8%2C56-m%29-gro%C3%9Fe-projektionsfl%C3%A4che/p/52650",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "notes": "Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-ef-71",
+      "manufacturer": "Epson",
+      "model": "Lifestudio Flex EF-71",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 700,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/epson-lifestudio-flex-ef-71%2C-full-hd-1080p-smart-tv-projektor%2C-tragbar%2C-700%C2%A0lumen%2C-sound-by-bose%2C-google-tv%2C-150-zoll-bildschirm/p/54151",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "notes": "Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-ef-72",
+      "manufacturer": "Epson",
+      "model": "Lifestudio Flex Plus EF-72",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 1000,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/epson-lifestudio-flex-plus-ef-72%2C-4k-pro-uhd-smart-tv-projektor%2C-tragbar%2C-1-000%C2%A0lumen%2C-sound-by-bose%2C-google-tv%2C-150-zoll-display/p/54160",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "notes": "Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-eh-ls670",
+      "manufacturer": "Epson",
+      "model": "Lifestudio Grand EH-LS670B / EH-LS670W",
+      "throwRatio": {
+        "min": 0.25,
+        "max": 0.25
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3600,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/epson-lifestudio-grand-eh-ls670b%2C-smart-laserprojektor-mit-ultrakurzdistanz-projektion-als-tv-ersatz%2C-4k-pro-uhd%2C-3-600%C2%A0lumen%2C-sound-by-bose%2C-google-tv%2C-120-zoll-display%2C-5-jahre-garantie/p/54379",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "statedThrowRatio": "0,25 - 0,62:1",
+      "notes": "Nur Digitalzoom: Throw Ratio optisch fest, Herstellerangabe enthält die elektronische Verkleinerung. Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-eh-ls970",
+      "manufacturer": "Epson",
+      "model": "Lifestudio Grand Plus EH-LS970B / EH-LS970W",
+      "throwRatio": {
+        "min": 0.16,
+        "max": 0.16
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 4000,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/epson-lifestudio-grand-plus-eh-ls970b%2C-ultrakurzdistanz-smart-laserprojektor-als-tv-ersatz%2C-heimkino-4k%2C-4-000%C2%A0lumen%2C-sound-by-bose%2C-google-tv%2C-150-zoll-display%2C-5-jahre-garantie/p/55383",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "statedThrowRatio": "0,16 - 0,40:1",
+      "notes": "Nur Digitalzoom: Throw Ratio optisch fest, Herstellerangabe enthält die elektronische Verkleinerung. Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-ef-61",
+      "manufacturer": "Epson",
+      "model": "Lifestudio Pop EF-61G / EF-61R / EF-61W",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 700,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/epson-lifestudio-pop-ef-61g%2C-full-hd-1080p-smart-tv-projektor%2C-tragbar%2C-700%C2%A0lumen%2C-sound-by-bose%2C-google-tv%2C-150-zoll-bildschirm/p/54148",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "notes": "Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "epson-ef-62",
+      "manufacturer": "Epson",
+      "model": "Lifestudio Pop Plus EF-62B / EF-62N",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 700,
+      "source": "https://www.epson.de/de_DE/produkte/projector/heimkino/epson-lifestudio-pop-plus-ef-62b%2C-4k-pro-uhd-smart-tv-projektor%2C-tragbar%2C-700%C2%A0lumen%2C-sound-by-bose%2C-google-tv%2C-150-zoll-display/p/54154",
+      "asOf": "2026-11-05",
+      "lumensStandard": "ISO 21118:2020",
+      "notes": "Epson nennt keinen Lens Shift."
     }
   ]
 }
