@@ -1,0 +1,109 @@
+---
+import Base from '../../layouts/Base.astro';
+import ModesCalculator from '../../components/ModesCalculator.tsx';
+
+const title = 'Room modes';
+const description =
+  'Room mode calculator for home cinemas: axial, tangential and oblique modes up to 300 Hz, mode density, pressure at the listening position and the effect of one or more subwoofers.';
+
+const faq = [
+  {
+    q: 'What are room modes?',
+    a: 'Standing waves between the walls of a room. At certain frequencies sound piles up into strong peaks or cancels into deep dips, depending on where you sit. Below roughly 200 Hz they shape the bass in almost every home cinema.',
+  },
+  {
+    q: 'How are room modes calculated?',
+    a: 'For a rectangular room, f = c/2 · √((nx/L)² + (ny/W)² + (nz/H)²), where c is the speed of sound (343 m/s at 20 °C), L, W, H are length, width and height, and nx, ny, nz are whole numbers starting at 0.',
+  },
+  {
+    q: 'Do multiple subwoofers help?',
+    a: 'Yes, if they are placed well. Two subs on opposite walls drive the odd modes along that axis in opposite phase, so those modes largely cancel. Todd Welti’s research (AES, 2002) found that symmetrical layouts with up to four subs give the most even bass across several seats.',
+  },
+  {
+    q: 'Does this replace a measurement?',
+    a: 'No. It assumes rigid walls and no damping. It tells you which frequencies and positions are critical; only a measurement – for example with REW and a measurement microphone – shows how strong the effects really are.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Plan My Cinema – Room modes',
+    url: 'https://plan-my-cinema.com/en/room-modes/',
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Web',
+    inLanguage: 'en',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+];
+---
+<Base lang="en" page="modes" title={title} description={description} jsonLd={jsonLd}>
+  <div class="page-head">
+    <h1>Room <span>modes</span></h1>
+    <p>Which bass frequencies your room boosts or swallows – and how much of that reaches your seat. Room size and seat come from your saved room.</p>
+  </div>
+
+  <ModesCalculator client:load lang="en" />
+
+  <article class="prose">
+    <h2>How it works</h2>
+
+    <h3>Modes in a box</h3>
+    <p>In a rectangular room with rigid walls, the modes sit at</p>
+    <p><code>f = c/2 · √((nx/L)² + (ny/W)² + (nz/H)²)</code></p>
+    <p>
+      The speed of sound depends on air temperature: <code>c = 331.3 · √(1 + T/273.15)</code> m/s (dry-air approximation), which gives 343 m/s at
+      20 °C. The calculator includes every mode up to 300 Hz.
+    </p>
+    <ul>
+      <li><strong>Axial modes</strong> bounce between two opposite walls and are the strongest.</li>
+      <li><strong>Tangential modes</strong> involve four surfaces and are weaker.</li>
+      <li><strong>Oblique modes</strong> involve all six surfaces and are the weakest.</li>
+    </ul>
+    <p>Sloped ceilings, L-shaped rooms or open doorways change the picture; for those rooms the result is only a rough guide.</p>
+
+    <h3>What reaches the seat?</h3>
+    <p>
+      Every mode has pressure peaks (loud) and nulls (quiet). Walls and corners are always peaks, so a sub in a corner drives every mode. Your seat
+      decides which ones you hear: sit in the middle of the room and the first length and width modes all but disappear, while the second length
+      mode is at full strength.
+    </p>
+    <p>
+      The “Modes at the listening position” chart multiplies the two: how hard the subs drive a mode and how much of it arrives at the seat.
+      Damping from furniture, absorbers or flexible walls is not included. The split into null (below 0.3), transition and peak (above 0.7) is our
+      own simplification.
+    </p>
+
+    <h3>Multiple subwoofers</h3>
+    <p>
+      Two subs on opposite walls are in opposite phase for the first mode along that axis, so it is barely driven – while the second mode adds up.
+      Four subs at the wall midpoints or in the corners can calm several axes at once. Todd Welti studied this at the 2002 AES Convention (“How Many
+      Subwoofers are Enough?”). The presets in the calculator offer these layouts.
+    </p>
+    <p>
+      The calculator assumes all subs play at the same level and in phase. With DSP (such as miniDSP) and a measurement you can set level, delay and
+      EQ per sub – which often helps more than position alone.
+    </p>
+
+    <h3>Mode density</h3>
+    <p>
+      At low frequencies the modes stand alone and far apart – that is where the familiar boomy notes and holes come from. Higher up they crowd
+      together and the room behaves more evenly. The “Mode density” chart shows where that happens in your room.
+    </p>
+
+    <h2>FAQ</h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </article>
+</Base>

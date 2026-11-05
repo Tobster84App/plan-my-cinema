@@ -21,7 +21,7 @@ const canonical = abs(path(page, lang));
 const fullTitle = page === 'home' ? `${t.siteName} – ${t.tagline}` : `${title} | ${t.siteName}`;
 const nav: { id: PageId | null; label: string }[] = [
   { id: 'screen', label: t.navScreen },
-  { id: null, label: t.navModes },
+  { id: 'modes', label: t.navModes },
   { id: null, label: t.navSpeakers },
 ];
 ---

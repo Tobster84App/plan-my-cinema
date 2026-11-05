@@ -1,0 +1,112 @@
+---
+import Base from '../../layouts/Base.astro';
+import ModesCalculator from '../../components/ModesCalculator.tsx';
+
+const title = 'Raummoden';
+const description =
+  'Raummoden-Rechner fürs Heimkino: axiale, tangentiale und oblique Moden bis 300 Hz, Modendichte, Druckverteilung am Sitzplatz und der Einfluss von einem oder mehreren Subwoofern.';
+
+const faq = [
+  {
+    q: 'Was sind Raummoden?',
+    a: 'Stehende Wellen zwischen den Wänden eines Raums. Bei bestimmten Frequenzen addiert sich der Schall zu deutlichen Überhöhungen oder löscht sich zu Löchern aus – je nachdem, wo man sitzt. Unterhalb von etwa 200 Hz prägen sie den Bass in fast jedem Heimkino.',
+  },
+  {
+    q: 'Wie berechnet man Raummoden?',
+    a: 'Für einen quaderförmigen Raum gilt f = c/2 · √((nx/L)² + (ny/B)² + (nz/H)²). c ist die Schallgeschwindigkeit (343 m/s bei 20 °C), L, B, H sind Länge, Breite und Höhe, nx, ny, nz ganze Zahlen ab 0.',
+  },
+  {
+    q: 'Helfen mehrere Subwoofer gegen Raummoden?',
+    a: 'Ja, wenn sie an passenden Stellen stehen. Zwei Subs an gegenüberliegenden Wänden regen ungerade Moden in dieser Richtung gegenphasig an, sodass sie sich weitgehend aufheben. Untersuchungen von Todd Welti (AES, 2002) zeigen, dass symmetrische Anordnungen mit bis zu vier Subs den Bass über mehrere Sitzplätze am deutlichsten ausgleichen.',
+  },
+  {
+    q: 'Ersetzt der Rechner eine Messung?',
+    a: 'Nein. Er nimmt schallharte Wände und keine Dämpfung an. Er zeigt, welche Frequenzen und Positionen kritisch sind. Wie stark die Effekte wirklich sind, zeigt nur eine Messung, etwa mit REW und einem Messmikrofon.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Plan My Cinema – Raummoden',
+    url: 'https://plan-my-cinema.com/de/raummoden/',
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Web',
+    inLanguage: 'de',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+];
+---
+<Base lang="de" page="modes" title={title} description={description} jsonLd={jsonLd}>
+  <div class="page-head">
+    <h1>Raum<span>moden</span></h1>
+    <p>Welche Bassfrequenzen dein Raum betont oder verschluckt – und was davon an deinem Platz ankommt. Raummaße und Sitzplatz kommen aus deinem gespeicherten Raum.</p>
+  </div>
+
+  <ModesCalculator client:load lang="de" />
+
+  <article class="prose">
+    <h2>So rechnet der Rechner</h2>
+
+    <h3>Moden im Quader</h3>
+    <p>Für einen rechteckigen Raum mit festen Wänden liegen die Moden bei</p>
+    <p><code>f = c/2 · √((nx/L)² + (ny/B)² + (nz/H)²)</code></p>
+    <p>
+      Die Schallgeschwindigkeit hängt von der Lufttemperatur ab: <code>c = 331,3 · √(1 + T/273,15)</code> m/s (Näherung für trockene Luft). Bei
+      20 °C sind das 343 m/s. Der Rechner berücksichtigt alle Moden bis 300 Hz.
+    </p>
+    <ul>
+      <li><strong>Axiale Moden</strong> laufen zwischen zwei gegenüberliegenden Wänden. Sie sind die stärksten.</li>
+      <li><strong>Tangentiale Moden</strong> laufen über vier Wände und sind schwächer.</li>
+      <li><strong>Oblique Moden</strong> nutzen alle sechs Flächen und sind am schwächsten.</li>
+    </ul>
+    <p>
+      Dachschrägen, L-förmige Räume oder offene Durchgänge verändern das Bild. Für solche Räume gilt die Rechnung nur grob.
+    </p>
+
+    <h3>Was kommt am Sitz an?</h3>
+    <p>
+      Jede Mode hat Druckbäuche (laut) und Knoten (leise). Wände und Ecken sind immer Druckbäuche. Ein Subwoofer in der Ecke regt daher jede
+      Mode an. Am Sitzplatz entscheidet die Position, welche Moden du hörst: Sitzt du in der Raummitte, fehlt dir die erste Längs- und
+      Breitenmode fast völlig. Die zweite Längsmode hast du dort dafür voll.
+    </p>
+    <p>
+      Das Diagramm „Moden am Sitzplatz“ multipliziert beides: wie stark die Subs eine Mode anregen und wie stark sie am Platz ankommt. Dämpfung durch
+      Möbel, Absorber oder nachgiebige Wände ist nicht berücksichtigt. Die Einordnung in Knoten (unter 0,3), Übergang und Bauch (über 0,7) ist eine
+      eigene, vereinfachte Festlegung.
+    </p>
+
+    <h3>Mehrere Subwoofer</h3>
+    <p>
+      Zwei Subs an gegenüberliegenden Wänden schwingen für die erste Mode dieser Richtung gegenphasig – die Mode wird kaum noch angeregt. Für die
+      zweite Mode addieren sie sich dagegen. Mit vier Subs an den Wandmitten oder in den Ecken lassen sich mehrere Richtungen gleichzeitig
+      beruhigen. Todd Welti hat das 2002 auf der AES Convention untersucht („How Many Subwoofers are Enough?“). Die Schnellauswahl im Rechner
+      bietet diese Anordnungen an.
+    </p>
+    <p>
+      Der Rechner nimmt an, dass alle Subs gleich laut und gleichphasig spielen. Mit DSP (z. B. miniDSP) und einer Messung lassen sich Pegel, Delay
+      und EQ je Sub anpassen – oft bringt das mehr als jede Position allein.
+    </p>
+
+    <h3>Modendichte</h3>
+    <p>
+      Unterhalb einer bestimmten Frequenz liegen die Moden einzeln und weit auseinander – dort entstehen die typischen Dröhnfrequenzen und Löcher.
+      Darüber werden sie so dicht, dass der Raum sich gleichmäßiger verhält. Das Diagramm „Modendichte“ zeigt, ab wo das in deinem Raum der Fall ist.
+    </p>
+
+    <h2>Häufige Fragen</h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </article>
+</Base>
