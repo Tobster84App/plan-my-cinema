@@ -10,8 +10,19 @@ describe('data/projectors.json', () => {
     expect(valid.length).toBeGreaterThanOrEqual(50);
     expect(valid.some((p) => p.example)).toBe(false);
   });
-  it('nur Herstellerquellen (epson.de, benq.eu)', () => {
-    expect(valid.every((p) => /^https:\/\/www\.(epson\.de|benq\.eu)\//.test(p.source))).toBe(true);
+  it('nur Herstellerquellen', () => {
+    const allowed = /^https:\/\/(www\.epson\.de|www\.benq\.eu|de\.jvc\.com|www\.optoma\.de|www\.valerion\.com|www\.lg\.com)\//;
+    expect(valid.filter((p) => !allowed.test(p.source)).map((p) => p.source)).toEqual([]);
+  });
+  it('Stichprobe JVC DLA-NZ800BE wie auf de.jvc.com: 1,43–2,92, ±80 % / ±34 %, 2.700 lm', () => {
+    const p = valid.find((x) => x.id === 'jvc-dla-nz800')!;
+    expect(p.throwRatio).toEqual({ min: 1.43, max: 2.92 });
+    expect(p.lensShift).toEqual({ up: 80, down: 80, left: 34, right: 34 });
+    expect(p.lumensSpec).toBe(2700);
+  });
+  it('Valerion: Lens Shift nur beim Max (±105 % vertikal), Pro 2 ohne', () => {
+    expect(valid.find((x) => x.id === 'valerion-visionmaster-max')!.lensShift).toEqual({ up: 105, down: 105, left: null, right: null });
+    expect(valid.find((x) => x.id === 'valerion-visionmaster-pro2')!.lensShift).toEqual({ up: 0, down: 0, left: 0, right: 0 });
   });
   it('Stichprobe EH-LS12000B wie auf epson.de: 1,35–2,84, ±96,3 % / ±47,1 %, 2.700 lm', () => {
     const p = valid.find((x) => x.id === 'epson-eh-ls12000')!;

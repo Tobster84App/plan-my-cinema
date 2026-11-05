@@ -1051,6 +1051,557 @@
       "asOf": "2026-11-05",
       "lumensStandard": "ISO 21118:2020",
       "notes": "Epson nennt keinen Lens Shift."
+    },
+    {
+      "id": "jvc-dla-nz500",
+      "manufacturer": "JVC",
+      "model": "DLA-NZ500BE / DLA-NZ500WE",
+      "throwRatio": {
+        "min": 1.34,
+        "max": 2.14
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 70.0,
+        "down": 70.0,
+        "left": 28.0,
+        "right": 28.0
+      },
+      "lumensSpec": 2000,
+      "lumensStandard": "ANSI",
+      "source": "https://de.jvc.com/projektoren/d-ila-projektor/DLA-NZ500BE/",
+      "asOf": "2026-11-05",
+      "statedThrowRatio": "1.34 - 2.14 (16:9)",
+      "notes": "JVC gibt das Projektionsverhältnis für 16:9 an."
+    },
+    {
+      "id": "jvc-dla-nz700",
+      "manufacturer": "JVC",
+      "model": "DLA-NZ700BE",
+      "throwRatio": {
+        "min": 1.34,
+        "max": 2.14
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 70.0,
+        "down": 70.0,
+        "left": 28.0,
+        "right": 28.0
+      },
+      "lumensSpec": 2300,
+      "lumensStandard": "ANSI",
+      "source": "https://de.jvc.com/projektoren/d-ila-projektor/DLA-NZ700BE/",
+      "asOf": "2026-11-05",
+      "statedThrowRatio": "1.34 - 2.14 (16:9)",
+      "notes": "JVC gibt das Projektionsverhältnis für 16:9 an."
+    },
+    {
+      "id": "jvc-dla-nz7",
+      "manufacturer": "JVC",
+      "model": "DLA-NZ7B",
+      "throwRatio": {
+        "min": 1.43,
+        "max": 2.92
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 80.0,
+        "down": 80.0,
+        "left": 34.0,
+        "right": 34.0
+      },
+      "lumensSpec": 2200,
+      "lumensStandard": "ANSI",
+      "source": "https://de.jvc.com/projektoren/d-ila-projektor/DLA-NZ7B/",
+      "asOf": "2026-11-05"
+    },
+    {
+      "id": "jvc-dla-nz800",
+      "manufacturer": "JVC",
+      "model": "DLA-NZ800BE",
+      "throwRatio": {
+        "min": 1.43,
+        "max": 2.92
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 80.0,
+        "down": 80.0,
+        "left": 34.0,
+        "right": 34.0
+      },
+      "lumensSpec": 2700,
+      "lumensStandard": "ANSI",
+      "source": "https://de.jvc.com/projektoren/d-ila-projektor/DLA-NZ800BE/",
+      "asOf": "2026-11-05"
+    },
+    {
+      "id": "jvc-dla-nz8",
+      "manufacturer": "JVC",
+      "model": "DLA-NZ8B",
+      "throwRatio": {
+        "min": 1.43,
+        "max": 2.92
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 80.0,
+        "down": 80.0,
+        "left": 34.0,
+        "right": 34.0
+      },
+      "lumensSpec": 2500,
+      "lumensStandard": "ANSI",
+      "source": "https://de.jvc.com/projektoren/d-ila-projektor/DLA-NZ8B/",
+      "asOf": "2026-11-05"
+    },
+    {
+      "id": "jvc-dla-nz900",
+      "manufacturer": "JVC",
+      "model": "DLA-NZ900BE",
+      "throwRatio": {
+        "min": 1.35,
+        "max": 2.75
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 100.0,
+        "down": 100.0,
+        "left": 43.0,
+        "right": 43.0
+      },
+      "lumensSpec": 3300,
+      "lumensStandard": "ANSI",
+      "source": "https://de.jvc.com/projektoren/d-ila-projektor/DLA-NZ900BE/",
+      "asOf": "2026-11-05"
+    },
+    {
+      "id": "jvc-dla-nz9",
+      "manufacturer": "JVC",
+      "model": "DLA-NZ9B",
+      "throwRatio": {
+        "min": 1.35,
+        "max": 2.75
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 100.0,
+        "down": 100.0,
+        "left": 43.0,
+        "right": 43.0
+      },
+      "lumensSpec": 3000,
+      "lumensStandard": "ANSI",
+      "source": "https://de.jvc.com/projektoren/d-ila-projektor/DLA-NZ9B/",
+      "asOf": "2026-11-05"
+    },
+    {
+      "id": "lg-hu715qw",
+      "manufacturer": "LG",
+      "model": "CineBeam HU715QW",
+      "throwRatio": {
+        "min": 0.22,
+        "max": 0.22
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 2500,
+      "source": "https://www.lg.com/de/beamer/heimkinoprojektoren/hu715qw/",
+      "asOf": "2026-11-05",
+      "notes": "Ultrakurzdistanz (Projektionsabstand 21,7–49,6 cm laut LG). Die LG-Seite nennt widersprüchlich auch „1,6x optischer Zoom“; übernommen ist die feste Throw Ratio 0,22."
+    },
+    {
+      "id": "lg-hu810pw",
+      "manufacturer": "LG",
+      "model": "CineBeam HU810PW",
+      "throwRatio": {
+        "min": 1.3,
+        "max": 2.08
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 60,
+        "down": 60,
+        "left": 24,
+        "right": 24
+      },
+      "lumensSpec": 2700,
+      "source": "https://www.lg.com/de/beamer/heimkinoprojektoren/hu810pw/",
+      "asOf": "2026-11-05",
+      "statedLensShift": "Lens Shift; H: ±24%, V: ±60% (Produkttext)",
+      "notes": "Lens Shift aus dem Produkttext der LG-Seite, nicht aus der Datentabelle. Lumen „Helligkeit 2D/3D“ ohne Normangabe."
+    },
+    {
+      "id": "lg-hu915qe",
+      "manufacturer": "LG",
+      "model": "CineBeam HU915QE",
+      "throwRatio": {
+        "min": 0.19,
+        "max": 0.19
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3700,
+      "lumensStandard": "ANSI",
+      "source": "https://www.lg.com/de/beamer/heimkinoprojektoren/hu915qe/",
+      "asOf": "2026-11-05",
+      "notes": "Ultrakurzdistanz. LG nennt keinen Lens Shift, Projektion-Offset 1,2."
+    },
+    {
+      "id": "lg-pu615u",
+      "manufacturer": "LG",
+      "model": "CineBeam S PU615U",
+      "throwRatio": {
+        "min": 0.25,
+        "max": 0.25
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 500,
+      "lumensStandard": "ANSI",
+      "source": "https://www.lg.com/de/beamer/portable-und-lifestyle-projektoren/pu615u/",
+      "asOf": "2026-11-05",
+      "notes": "LG nennt keinen Lens Shift."
+    },
+    {
+      "id": "optoma-cinemax-d2",
+      "manufacturer": "Optoma",
+      "model": "CinemaX D2",
+      "throwRatio": {
+        "min": 0.25,
+        "max": 0.25
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "source": "https://www.optoma.de/service-and-support/distancecalculator?product=cinemaxd2",
+      "asOf": "2026-11-05",
+      "notes": "Werte aus dem Optoma-Abstandsrechner; Lens Shift dort nicht angegeben – Datenblatt prüfen."
+    },
+    {
+      "id": "optoma-cinemax-d2-smart",
+      "manufacturer": "Optoma",
+      "model": "CinemaX D2 Smart",
+      "throwRatio": {
+        "min": 0.25,
+        "max": 0.25
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "source": "https://www.optoma.de/service-and-support/distancecalculator?product=cinemaxd2smart",
+      "asOf": "2026-11-05",
+      "notes": "Werte aus dem Optoma-Abstandsrechner; Lens Shift dort nicht angegeben – Datenblatt prüfen."
+    },
+    {
+      "id": "optoma-cinemax-p2",
+      "manufacturer": "Optoma",
+      "model": "CinemaX P2",
+      "throwRatio": {
+        "min": 0.25,
+        "max": 0.25
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "source": "https://www.optoma.de/service-and-support/distancecalculator?product=cinemaxp2",
+      "asOf": "2026-11-05",
+      "notes": "Werte aus dem Optoma-Abstandsrechner; Lens Shift dort nicht angegeben – Datenblatt prüfen."
+    },
+    {
+      "id": "optoma-uhz2000",
+      "manufacturer": "Optoma",
+      "model": "UHZ2000",
+      "throwRatio": {
+        "min": 1.21,
+        "max": 1.59
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3400,
+      "source": "https://www.optoma.de/service-and-support/distancecalculator?product=uhz2000",
+      "asOf": "2026-11-05",
+      "notes": "Werte aus dem Optoma-Abstandsrechner; Lens Shift dort nicht angegeben – Datenblatt prüfen."
+    },
+    {
+      "id": "optoma-uhz4000",
+      "manufacturer": "Optoma",
+      "model": "UHZ4000",
+      "throwRatio": {
+        "min": 1.39,
+        "max": 2.22
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 5500,
+      "source": "https://www.optoma.de/service-and-support/distancecalculator?product=uhz4000",
+      "asOf": "2026-11-05",
+      "notes": "Werte aus dem Optoma-Abstandsrechner; Lens Shift dort nicht angegeben – Datenblatt prüfen."
+    },
+    {
+      "id": "optoma-uhz45",
+      "manufacturer": "Optoma",
+      "model": "UHZ45",
+      "throwRatio": {
+        "min": 1.5,
+        "max": 1.66
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3800,
+      "source": "https://www.optoma.de/service-and-support/distancecalculator?product=uhz45",
+      "asOf": "2026-11-05",
+      "notes": "Werte aus dem Optoma-Abstandsrechner; Lens Shift dort nicht angegeben – Datenblatt prüfen."
+    },
+    {
+      "id": "optoma-uhz50",
+      "manufacturer": "Optoma",
+      "model": "UHZ50",
+      "throwRatio": {
+        "min": 1.21,
+        "max": 1.59
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "source": "https://www.optoma.de/service-and-support/distancecalculator?product=uhz50",
+      "asOf": "2026-11-05",
+      "notes": "Werte aus dem Optoma-Abstandsrechner; Lens Shift dort nicht angegeben – Datenblatt prüfen."
+    },
+    {
+      "id": "optoma-uhz55",
+      "manufacturer": "Optoma",
+      "model": "UHZ55",
+      "throwRatio": {
+        "min": 1.21,
+        "max": 1.59
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "source": "https://www.optoma.de/service-and-support/distancecalculator?product=uhz55",
+      "asOf": "2026-11-05",
+      "notes": "Werte aus dem Optoma-Abstandsrechner; Lens Shift dort nicht angegeben – Datenblatt prüfen."
+    },
+    {
+      "id": "optoma-uhz58lv",
+      "manufacturer": "Optoma",
+      "model": "UHZ58LV",
+      "throwRatio": {
+        "min": 1.4,
+        "max": 2.24
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "source": "https://www.optoma.de/service-and-support/distancecalculator?product=uhz58lv",
+      "asOf": "2026-11-05",
+      "notes": "Werte aus dem Optoma-Abstandsrechner; Lens Shift dort nicht angegeben – Datenblatt prüfen."
+    },
+    {
+      "id": "optoma-uhz65",
+      "manufacturer": "Optoma",
+      "model": "UHZ65",
+      "throwRatio": {
+        "min": 1.39,
+        "max": 2.22
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3000,
+      "source": "https://www.optoma.de/service-and-support/distancecalculator?product=uhz65",
+      "asOf": "2026-11-05",
+      "notes": "Werte aus dem Optoma-Abstandsrechner; Lens Shift dort nicht angegeben – Datenblatt prüfen."
+    },
+    {
+      "id": "optoma-uhz65lv",
+      "manufacturer": "Optoma",
+      "model": "UHZ65LV",
+      "throwRatio": {
+        "min": 1.39,
+        "max": 2.22
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 5000,
+      "source": "https://www.optoma.de/service-and-support/distancecalculator?product=uhz65lv",
+      "asOf": "2026-11-05",
+      "notes": "Werte aus dem Optoma-Abstandsrechner; Lens Shift dort nicht angegeben – Datenblatt prüfen."
+    },
+    {
+      "id": "optoma-uhz65ust",
+      "manufacturer": "Optoma",
+      "model": "UHZ65UST",
+      "throwRatio": {
+        "min": 0.25,
+        "max": 0.25
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3500,
+      "source": "https://www.optoma.de/service-and-support/distancecalculator?product=uhz65ust",
+      "asOf": "2026-11-05",
+      "notes": "Werte aus dem Optoma-Abstandsrechner; Lens Shift dort nicht angegeben – Datenblatt prüfen."
+    },
+    {
+      "id": "optoma-uhz78lv",
+      "manufacturer": "Optoma",
+      "model": "UHZ78LV",
+      "throwRatio": {
+        "min": 1.25,
+        "max": 2.0
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 5000,
+      "source": "https://www.optoma.de/service-and-support/distancecalculator?product=uhz78lv",
+      "asOf": "2026-11-05",
+      "notes": "Werte aus dem Optoma-Abstandsrechner; Lens Shift dort nicht angegeben – Datenblatt prüfen."
+    },
+    {
+      "id": "valerion-visionmaster-max",
+      "manufacturer": "Valerion",
+      "model": "VisionMaster Max",
+      "throwRatio": {
+        "min": 0.9,
+        "max": 1.5
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 105,
+        "down": 105,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3500,
+      "lumensStandard": "ISO",
+      "statedLensShift": "Vertical Lens Shift: +/-105% offset",
+      "source": "https://www.valerion.com/product/valerion-visionmaster-4k-rgb-triple-laser-projector",
+      "asOf": "2026-11-05",
+      "notes": "Horizontaler Lens Shift nicht angegeben. Mit optionaler Vorsatzlinse laut Valerion 0,9–2,0:1."
+    },
+    {
+      "id": "valerion-visionmaster-pro",
+      "manufacturer": "Valerion",
+      "model": "VisionMaster Pro",
+      "throwRatio": {
+        "min": 0.9,
+        "max": 1.5
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 0,
+        "down": 0,
+        "left": 0,
+        "right": 0
+      },
+      "lumensSpec": 2500,
+      "lumensStandard": "ISO",
+      "source": "https://www.valerion.com/product/valerion-visionmaster-pro2-pro-4k-rgb-triple-laser-projector",
+      "asOf": "2026-11-05",
+      "notes": "Angaben aus der Vergleichstabelle auf der Pro-2-Seite. Lens Shift laut Valerion nur beim Max-Modell."
+    },
+    {
+      "id": "valerion-visionmaster-pro2",
+      "manufacturer": "Valerion",
+      "model": "VisionMaster Pro 2",
+      "throwRatio": {
+        "min": 0.9,
+        "max": 1.5
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 0,
+        "down": 0,
+        "left": 0,
+        "right": 0
+      },
+      "lumensSpec": 3000,
+      "lumensStandard": "ISO",
+      "source": "https://www.valerion.com/product/valerion-visionmaster-pro2-pro-4k-rgb-triple-laser-projector",
+      "asOf": "2026-11-05",
+      "notes": "Lens Shift laut Valerion nur beim Max-Modell („Only Max Model“)."
     }
   ]
 }
