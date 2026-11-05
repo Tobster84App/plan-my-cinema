@@ -166,3 +166,28 @@ footer.site-foot a { color: var(--muted); }
 
 .switch .switch-lbl { font: 500 11px var(--mono); color: var(--muted); padding: 0 4px 0 12px; display: inline-flex; align-items: center; text-transform: uppercase; letter-spacing: 0.08em; }
 @media (max-width: 420px) { .switch .switch-lbl { display: none; } }
+
+/* Raummoden – Diagrammfarben (geprüft gegen #151922: Helligkeit, Chroma, Farbsehschwäche, Kontrast) */
+:root { --mode-axial: #c98500; --mode-tangential: #3987e5; --mode-oblique: #d55181; }
+.chart { border: 1px solid var(--line); border-radius: 10px; padding: 15px; display: flex; flex-direction: column; gap: 8px; margin: 0; min-width: 0; }
+.chart h2 { font: 500 11px var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--beam); margin: 0; }
+.chart .sub { font-size: 12px; color: var(--muted); margin: 0; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart svg text { font: 12px var(--mono); fill: var(--muted); }
+.chart .grid line { stroke: var(--line); stroke-width: 1; }
+.chart .bar:hover, .chart .bar:focus { opacity: 0.75; outline: none; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.small-multiples { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 720px) { .small-multiples { grid-template-columns: minmax(0, 1fr); } }
+.small-multiples h3 { font: 500 12px var(--mono); color: var(--fg); margin: 0 0 4px; }
+.tbl-wrap { overflow-x: auto; }
+table.data { border-collapse: collapse; width: 100%; font-size: 13px; }
+table.data th { text-align: left; font: 500 11px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line-strong); padding: 6px 8px; white-space: nowrap; }
+table.data td { border-bottom: 1px solid var(--line); padding: 5px 8px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.data td.num { text-align: right; font-family: var(--mono); }
+.hints { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.sub-card { border: 1px dashed var(--line-strong); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+.sub-card .head { display: flex; justify-content: space-between; align-items: center; font: 500 12px var(--mono); color: var(--fg); }
+.row3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.btn.small { min-height: 30px; padding: 4px 10px; font-size: 12px; }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; }
