@@ -1,7 +1,7 @@
 # Plan My Cinema – Projektplan
 
 Domain: plan-my-cinema.com (gekauft). Schwesterprojekt: rate-my-throne.com.
-Stand: 2026-11-04.
+Stand: 2026-11-05.
 
 ## Ziel
 Zweisprachige Website (DE zuerst, EN zweitrangig) mit Heimkino-Rechnern auf einem **gemeinsamen Raummodell**. Statisch, PWA, später ggf. als App mit Capacitor. Einnahmen später über Affiliate (Amazon, Thomann), eventuell Werbung.
@@ -64,6 +64,8 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 **Später:** zweite Sitzreihe mit Podest, mehrere Raumvarianten, Capacitor-App, ggf. DTS:X.
 
 ## Entscheidungen
+- 2026-11-05: Sicherung über Google Apps Script (`scripts/drive-upload.gs`), erster Deploy mit Sicherung erfolgreich; Seite läuft auf plan-my-cinema.com
+- 2026-11-05: Einheiten-Umschalter beschriftet (m · cm / ft · in)
 - 2026-11-04: Sicherung bei jedem Deploy ins Google Drive (Serverstand vorher + neue Version), Upload nur nach erfolgreicher Sicherung
 - 2026-11-04: Deploy ohne Löschen, nur manuell, nur mit Markierungsdatei im Ziel (nach Löschvorfall beim ersten Upload)
 - 2026-11-04: Hosting und Postfach bei ALL-INKL (PrivatPlus)
