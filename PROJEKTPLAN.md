@@ -47,15 +47,19 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - PWA-Grundlage (Manifest, Service Worker, Icons) – offline geprüft
 - Tests der Rechenlogik
 
-**M2 – Rechner 2 „Raummoden“**
-- axiale, tangentiale, oblique Moden bis 300 Hz, c aus Temperatur
-- Modendichte, Druckverteilung der axialen Moden am Sitz
-- Sub-Positionen im Raummodell: welche Moden ein Sub anregt und welche am Sitz ankommen
-- Multi-Sub-Hinweise
+**M2 – Rechner 2 „Raummoden“** (fertig, 2026-11-05)
+- axiale, tangentiale, oblique Moden bis 300 Hz, c aus Temperatur (c = 331,3 · √(1 + T/273,15))
+- Modendichte (10-Hz-Bänder), Druckverteilung der axialen Moden je Raumrichtung mit Sitz und Subs
+- Raummodell v2: bis zu 4 Subs (Position ab Stirnwand/linker Wand/Boden), Lufttemperatur; Migration v1 → v2
+- Modenspektrum am Sitz: Anregung durch Subs × Modenform am Sitz (vereinfacht, ohne Dämpfung)
+- Schnellauswahl Sub-Anordnungen (1 Ecke, 1 Mitte, 2 vorn/hinten, 4 Wandmitten, 4 Ecken), Hinweise (Knoten/Bauch, Modenhäufungen, Auslöschung)
+- Diagrammfarben mit Validator geprüft (dunkler Hintergrund, Farbsehschwäche)
+- Quelle Multi-Sub: Welti, „How Many Subwoofers are Enough?“, AES 112th Convention 2002 (Volltext nicht gelesen)
 
 **M3 – Rechner 3 „Lautsprecher-Planer“ (Dolby Atmos 5.1–9.1.6)**
 - Voraussetzung: Freigabe der Dolby-Tabelle (`docs/dolby-lautsprecherwinkel.md`)
 - Draufsicht + Seitenansicht, Winkel zum MLP, Ampel
+- Lautsprecher ins Raummodell (v3), damit Moden-Rechner und Planer dieselben Positionen nutzen
 
 **M4 – Veröffentlichung**
 - Deploy ALL-INKL, Domain, Search Console, Lighthouse/Barrierefreiheit-Prüfung

@@ -11,7 +11,9 @@ export function fmtNum(v: number, digits: number, lang: Lang): string {
     f = new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits });
     nf.set(key, f);
   }
-  return f.format(Number.isFinite(v) ? v : 0);
+  // Werte, die auf 0 runden, ohne Minuszeichen anzeigen („-0,00“ vermeiden)
+  const x = Number.isFinite(v) ? (Math.abs(v) < 0.5 * 10 ** -digits ? 0 : v) : 0;
+  return f.format(x);
 }
 
 /** Feet + Inches, auf ganze Zoll gerundet: 3,80 m → 12′ 6″. */

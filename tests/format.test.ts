@@ -6,6 +6,8 @@ describe('Formatierung', () => {
     expect(fmtNum(1234.5, 1, 'de')).toBe('1.234,5');
     expect(fmtNum(1234.5, 1, 'en')).toBe('1,234.5');
     expect(fmtNum(NaN, 0, 'de')).toBe('0');
+    expect(fmtNum(-0.001, 2, 'de')).toBe('0,00');
+    expect(fmtNum(-0.006, 2, 'de')).toBe('-0,01');
   });
   it('3,80 m = 149,6″ → 12′ 6″ (150 in = 12 · 12 + 6)', () => {
     expect(feetInches(3.8)).toBe('12′ 6″');
