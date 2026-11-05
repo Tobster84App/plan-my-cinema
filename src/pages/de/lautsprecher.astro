@@ -1,0 +1,109 @@
+---
+import Base from '../../layouts/Base.astro';
+import SpeakerPlanner from '../../components/SpeakerPlanner.tsx';
+
+const title = 'Lautsprecher-Planer Dolby Atmos';
+const description =
+  'Dolby-Atmos-Lautsprecher planen von 5.1 bis 9.1.6: automatische Platzierung in deinem Raum, Azimut- und Elevationswinkel zum Hauptsitzplatz, Prüfung gegen die Dolby-Installationsrichtlinien mit Ampel.';
+
+const faq = [
+  {
+    q: 'In welchem Winkel gehören Atmos-Deckenlautsprecher?',
+    a: 'Laut Dolby-Installationsleitfaden sollen Top-Front- und Top-Rear-Lautsprecher in der Seitenansicht etwa 45° über der Waagerechten stehen, erlaubt sind 30–55° (vorn) bzw. 125–150° von vorn gemessen (hinten). Bei nur zwei Deckenlautsprechern (.2) liegen sie bei etwa 80°, erlaubt 65–100°.',
+  },
+  {
+    q: 'Wo gehören die Surround-Lautsprecher hin?',
+    a: 'Bei 7.1 und 9.1 seitlich bei 90–110°, die Rear-Surrounds bei 135–150°. Bei 5.1 nennt Dolby 110–120°, bei 5.1.2/5.1.4 dagegen 90–110°. Der Planer akzeptiert für 5.1.x deshalb 90–120°.',
+  },
+  {
+    q: 'Wie hoch sollen die Lautsprecher hängen?',
+    a: 'Alle Lautsprecher in Ohrhöhe möglichst gleich hoch, typisch etwa 1,2 m. Hintere Lautsprecher dürfen höher hängen, aber höchstens 1,25-mal so hoch wie die Front. Deckenlautsprecher 2- bis 3-mal so hoch wie die Ohrhöhen-Lautsprecher.',
+  },
+  {
+    q: 'Gilt das auch für DTS:X?',
+    a: 'Der Planer prüft nur gegen die Dolby-Richtlinien. DTS-Vorgaben haben wir nicht ausgewertet.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Plan My Cinema – Lautsprecher-Planer',
+    url: 'https://plan-my-cinema.com/de/lautsprecher/',
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Web',
+    inLanguage: 'de',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+];
+---
+<Base lang="de" page="speakers" title={title} description={description} jsonLd={jsonLd}>
+  <div class="page-head">
+    <h1>Laut<span>sprecher</span></h1>
+    <p>Dolby-Atmos-Layouts von 5.1 bis 9.1.6 in deinem Raum: Wo die Lautsprecher hingehören und ob deine Positionen zu den Dolby-Winkeln passen.</p>
+  </div>
+
+  <SpeakerPlanner client:load lang="de" />
+
+  <article class="prose">
+    <h2>So arbeitet der Planer</h2>
+    <h3>Grundlage: Dolby-Richtlinien</h3>
+    <p>
+      Alle Winkel stammen aus dem <a href="https://www.dolby.com/siteassets/technologies/dolby-atmos/atmos-installation-guidelines-121318_r3.1.pdf" rel="noopener">Dolby Atmos Home Theater Installation Guidelines</a>
+      (Stand Dezember 2018) und den <a href="https://www.dolby.com/about/support/guide/speaker-setup-guides/" rel="noopener">Speaker Setup Guides</a> von Dolby (Stand
+      März 2020). Ein neueres Dokument haben wir nicht gefunden.
+    </p>
+    <table>
+      <thead><tr><th>Kanal</th><th>Dolby-Bereich</th></tr></thead>
+      <tbody>
+        <tr><td>Links/Rechts</td><td>22–30° (Leitfaden Abb. 3 nennt 22–40°)</td></tr>
+        <tr><td>Center</td><td>0°</td></tr>
+        <tr><td>Wides (9.1.x)</td><td>50–70°</td></tr>
+        <tr><td>Surround 7.1/9.1</td><td>90–110°</td></tr>
+        <tr><td>Surround 5.1 / 5.1.x</td><td>110–120° / 90–110° (Planer: 90–120°)</td></tr>
+        <tr><td>Rear-Surround</td><td>135–150°</td></tr>
+        <tr><td>Top Front</td><td>Elevation 45° (30–55°)</td></tr>
+        <tr><td>Top Middle (.2 / .6)</td><td>80° (65–100°) / 90° (70–110°)</td></tr>
+        <tr><td>Top Rear</td><td>135° (125–150°)</td></tr>
+      </tbody>
+    </table>
+    <p>
+      In einzelnen Punkten widersprechen sich die Dolby-Unterlagen. Bei Links/Rechts zeigen alle Layout-Grafiken 22–30°, Abbildung 3 im Leitfaden aber
+      22–40°. Bei 5.1 stehen die Surrounds bei 110–120°, bei 5.1.2/5.1.4 bei 90–110°. Der Planer zeigt den engeren Bereich grün und den weiteren gelb.
+    </p>
+
+    <h3>Winkel</h3>
+    <p>
+      <strong>Azimut</strong> ist der Winkel in der Draufsicht vom Hauptsitzplatz aus, 0° zeigt auf die Leinwandmitte. <strong>Elevation</strong> ist der
+      Winkel in der Seitenansicht: 0° nach vorn, 90° senkrecht über dem Kopf, 180° nach hinten – so zählt auch Dolby.
+    </p>
+
+    <h3>Automatische Platzierung</h3>
+    <p>
+      Ohne eigene Eingabe setzt der Planer jeden Lautsprecher auf die Mitte des Dolby-Bereichs und schiebt ihn bis an die Wand (15 cm Abstand).
+      Links, Center und Rechts stehen hinter der Leinwand. Deckenlautsprecher sitzen an der Decke, seitlich so weit außen wie Links/Rechts bei 30° –
+      das empfiehlt Dolby für die Overhead-Breite. Mit „Verschieben“ trägst du die tatsächliche Position ein.
+    </p>
+
+    <h3>Ampel</h3>
+    <p>
+      Grün heißt: im Dolby-Bereich. Gelb heißt: bis 10° außerhalb, bei Links/Rechts 30–40°. Rot liegt weiter außerhalb. Die 10°-Grenze ist unsere
+      eigene Festlegung, Dolby nennt keine Toleranz außerhalb der Bereiche. Ein gelber Lautsprecher funktioniert meist trotzdem gut.
+    </p>
+
+    <h2>Häufige Fragen</h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </article>
+</Base>

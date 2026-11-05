@@ -1,0 +1,109 @@
+---
+import Base from '../../layouts/Base.astro';
+import SpeakerPlanner from '../../components/SpeakerPlanner.tsx';
+
+const title = 'Dolby Atmos speaker planner';
+const description =
+  'Plan Dolby Atmos speakers from 5.1 to 9.1.6: automatic placement in your room, azimuth and elevation angles from the main listening position, checked against Dolby’s installation guidelines.';
+
+const faq = [
+  {
+    q: 'At what angle should Atmos ceiling speakers be mounted?',
+    a: 'Dolby’s installation guidelines put top front and top rear speakers at about 45° above horizontal in side view – 30–55° in front, 125–150° measured from the front behind you. With only two ceiling speakers (.2) they sit at about 80°, allowed 65–100°.',
+  },
+  {
+    q: 'Where do the surround speakers go?',
+    a: 'For 7.1 and 9.1, at the sides at 90–110°, with the rear surrounds at 135–150°. For 5.1 Dolby gives 110–120°, but 90–110° for 5.1.2/5.1.4, so the planner accepts 90–120° for 5.1.x.',
+  },
+  {
+    q: 'How high should the speakers be?',
+    a: 'All ear-level speakers at the same height if possible, typically about 1.2 m. Rear speakers may be higher, but no more than 1.25 times the front height. Ceiling speakers at 2 to 3 times the height of the ear-level speakers.',
+  },
+  {
+    q: 'Does this cover DTS:X?',
+    a: 'The planner checks against Dolby’s guidelines only. We have not evaluated DTS specifications.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Plan My Cinema – Speaker planner',
+    url: 'https://plan-my-cinema.com/en/speaker-layout/',
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Web',
+    inLanguage: 'en',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+];
+---
+<Base lang="en" page="speakers" title={title} description={description} jsonLd={jsonLd}>
+  <div class="page-head">
+    <h1>Speaker <span>layout</span></h1>
+    <p>Dolby Atmos layouts from 5.1 to 9.1.6 in your room: where each speaker belongs and whether your positions meet Dolby’s angles.</p>
+  </div>
+
+  <SpeakerPlanner client:load lang="en" />
+
+  <article class="prose">
+    <h2>How the planner works</h2>
+    <h3>Based on Dolby’s guidelines</h3>
+    <p>
+      All angles come from the <a href="https://www.dolby.com/siteassets/technologies/dolby-atmos/atmos-installation-guidelines-121318_r3.1.pdf" rel="noopener">Dolby Atmos Home Theater Installation Guidelines</a>
+      (December 2018) and Dolby’s <a href="https://www.dolby.com/about/support/guide/speaker-setup-guides/" rel="noopener">speaker setup guides</a> (March 2020). We did not
+      find a newer document.
+    </p>
+    <table>
+      <thead><tr><th>Channel</th><th>Dolby range</th></tr></thead>
+      <tbody>
+        <tr><td>Left/Right</td><td>22–30° (guidelines fig. 3 says 22–40°)</td></tr>
+        <tr><td>Centre</td><td>0°</td></tr>
+        <tr><td>Wides (9.1.x)</td><td>50–70°</td></tr>
+        <tr><td>Surround 7.1/9.1</td><td>90–110°</td></tr>
+        <tr><td>Surround 5.1 / 5.1.x</td><td>110–120° / 90–110° (planner: 90–120°)</td></tr>
+        <tr><td>Rear surround</td><td>135–150°</td></tr>
+        <tr><td>Top front</td><td>elevation 45° (30–55°)</td></tr>
+        <tr><td>Top middle (.2 / .6)</td><td>80° (65–100°) / 90° (70–110°)</td></tr>
+        <tr><td>Top rear</td><td>135° (125–150°)</td></tr>
+      </tbody>
+    </table>
+    <p>
+      Dolby’s documents disagree in places: every layout drawing shows 22–30° for left/right, but figure 3 of the guidelines says 22–40°. For 5.1 the
+      surrounds sit at 110–120°, for 5.1.2/5.1.4 at 90–110°. The planner shows the narrower range as green and the wider one as yellow.
+    </p>
+
+    <h3>Angles</h3>
+    <p>
+      <strong>Azimuth</strong> is the top-view angle from the main listening position, with 0° pointing at the screen centre. <strong>Elevation</strong> is the
+      side-view angle: 0° to the front, 90° straight overhead, 180° to the rear – the same convention Dolby uses.
+    </p>
+
+    <h3>Automatic placement</h3>
+    <p>
+      Unless you enter your own position, the planner puts each speaker at the middle of its Dolby range and moves it out to the wall (15 cm gap).
+      Left, centre and right sit behind the screen. Ceiling speakers go on the ceiling, as far out to the side as left/right would be at 30° – which is
+      Dolby’s advice for overhead spacing. Use “Move” to enter where a speaker actually is.
+    </p>
+
+    <h3>Traffic light</h3>
+    <p>
+      Green means within Dolby’s range. Yellow means up to 10° outside, or 30–40° for left/right. Red is further out. The 10° margin is our own choice;
+      Dolby gives no tolerance beyond its ranges. A yellow speaker usually still works well.
+    </p>
+
+    <h2>FAQ</h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </article>
+</Base>
