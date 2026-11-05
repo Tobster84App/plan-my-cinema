@@ -6,11 +6,25 @@
  *  y = seitlicher Versatz zur Raummitte, positiv = rechts (Blick zur Leinwand)
  *  z = Höhe über Fußboden
  * Der Raum ist ein Quader (Länge = Leinwandwand → Rückwand).
+ *
+ * Ausnahme Subwoofer (ab v2): Position ab den Wänden, weil Subs an Wänden/Ecken stehen:
+ *  x = Abstand von der Stirnwand (Leinwandwand), y = Abstand von der linken Wand, z = Höhe.
  */
 import { clamp, finiteOr } from './units';
 import type { ScopeMethod } from './screen';
 
-export const ROOM_MODEL_VERSION = 1;
+export const ROOM_MODEL_VERSION = 2;
+
+export interface Subwoofer {
+  /** Abstand Stirnwand (Leinwandwand) */
+  x: number;
+  /** Abstand linke Wand (Blick zur Leinwand) */
+  y: number;
+  /** Höhe der Membranmitte */
+  z: number;
+}
+
+export const MAX_SUBS = 4;
 
 export interface RoomModel {
   version: typeof ROOM_MODEL_VERSION;
@@ -51,6 +65,11 @@ export interface RoomModel {
     eyeHeight: number;
     offsetY: number;
   };
+  acoustics: {
+    /** Lufttemperatur für die Schallgeschwindigkeit */
+    temperatureC: number;
+  };
+  subs: Subwoofer[];
 }
 
 /** Beispielraum. Der Hinweis „Beispielwerte“ steht in der Oberfläche. */
@@ -72,6 +91,8 @@ export const DEFAULT_ROOM: RoomModel = {
     shiftH: 40,
   },
   seat: { distance: 3.8, eyeHeight: 1.2, offsetY: 0 },
+  acoustics: { temperatureC: 20 },
+  subs: [{ x: 0.3, y: 0.3, z: 0.25 }],
 };
 
 /** Zulässige Bereiche für Eingaben (auch für Validierung beim Import). */
@@ -94,6 +115,7 @@ export const LIMITS = {
   shift: [0, 200],
   seatDistance: [0.5, 30],
   eyeHeight: [0.5, 2.5],
+  temperature: [-10, 40],
 } as const satisfies Record<string, readonly [number, number]>;
 
 type Lim = keyof typeof LIMITS;
@@ -151,12 +173,34 @@ export function sanitizeRoom(input: unknown): RoomModel {
       eyeHeight: num(st.eyeHeight, d.seat.eyeHeight, 'eyeHeight'),
       offsetY: num(st.offsetY, d.seat.offsetY, 'offset'),
     },
+    acoustics: {
+      temperatureC: num(obj(i.acoustics).temperatureC, d.acoustics.temperatureC, 'temperature'),
+    },
+    subs: sanitizeSubs(i.subs),
   };
 }
 
-/** Versionsmigration. Aktuell nur v1; künftige Versionen hier umschreiben. */
+function sanitizeSubs(v: unknown): Subwoofer[] {
+  if (!Array.isArray(v)) return DEFAULT_ROOM.subs.map((s) => ({ ...s }));
+  return v.slice(0, MAX_SUBS).map((raw) => {
+    const s = obj(raw);
+    // Grenzen gegen die Raummaße prüft subsOutsideRoom(); hier nur grob begrenzen
+    return {
+      x: clamp(finiteOr(s.x, 0.3), 0, 30),
+      y: clamp(finiteOr(s.y, 0.3), 0, 30),
+      z: clamp(finiteOr(s.z, 0.25), 0, 10),
+    };
+  });
+}
+
+/** Versionsmigration. v1 → v2: Temperatur und Subwoofer ergänzt (Standardwerte über sanitizeRoom). */
 function migrate(i: Record<string, unknown>): Record<string, unknown> {
-  return i;
+  const out = { ...i };
+  if (out.version === 1) {
+    out.version = 2;
+    // v1 kannte keine Subs: fehlendes Feld → Standard-Sub vorn links
+  }
+  return out;
 }
 
 /* ---------- Plausibilitätsprüfungen gegen den Raum ---------- */
@@ -166,7 +210,8 @@ export type RoomIssue =
   | 'screenTopAboveCeiling'
   | 'seatBehindBackWall'
   | 'projectorBehindBackWall'
-  | 'projectorAboveCeiling';
+  | 'projectorAboveCeiling'
+  | 'subOutsideRoom';
 
 export function roomIssues(m: RoomModel): RoomIssue[] {
   const out: RoomIssue[] = [];
@@ -177,5 +222,6 @@ export function roomIssues(m: RoomModel): RoomIssue[] {
   if (m.seat.distance > usableLength) out.push('seatBehindBackWall');
   if (m.projector.distance > usableLength) out.push('projectorBehindBackWall');
   if (m.projector.lensHeight > m.room.height) out.push('projectorAboveCeiling');
+  if (m.subs.some((s) => s.x > m.room.length || s.y > m.room.width || s.z > m.room.height)) out.push('subOutsideRoom');
   return out;
 }
