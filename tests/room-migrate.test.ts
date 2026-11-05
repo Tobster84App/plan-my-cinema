@@ -1,6 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import { DEFAULT_ROOM, MAX_SUBS, ROOM_MODEL_VERSION, roomIssues, sanitizeRoom } from '../src/lib/room';
 
+describe('Raummodell v4: Lens Shift getrennt', () => {
+  it('v3 mit ±shiftV/±shiftH → oben=unten, links=rechts', () => {
+    const r = sanitizeRoom({ version: 3, projector: { shiftV: 60, shiftH: null } });
+    expect(r.projector.shift).toEqual({ up: 60, down: 60, left: null, right: null });
+  });
+  it('v1-Daten werden über alle Stufen migriert', () => {
+    const r = sanitizeRoom({ version: 1, projector: { shiftV: 50, shiftH: 20 } });
+    expect(r.projector.shift).toEqual({ up: 50, down: 50, left: 20, right: 20 });
+  });
+});
+
 describe('Raummodell v2', () => {
   it('v1-Daten (ohne Subs/Temperatur) werden ergänzt, Rest bleibt', () => {
     const v1 = { version: 1, room: { length: 7, width: 5, height: 2.8 }, screen: {}, projector: {}, seat: {} };

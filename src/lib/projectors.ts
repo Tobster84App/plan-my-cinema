@@ -7,7 +7,14 @@ export interface ProjectorEntry {
   manufacturer: string;
   model: string;
   throwRatio: { min: number; max: number };
-  lensShift: { vertical: number | null; horizontal: number | null };
+  /** % Bildhöhe/-breite je Richtung; 0 = kein Shift, null = unbekannt */
+  lensShift: { up: number | null; down: number | null; left: number | null; right: number | null };
+  /** optisch = echter Zoom; digital = elektronische Verkleinerung (Throw Ratio hier nur optisch); fixed = kein Zoom */
+  zoom?: 'optical' | 'digital' | 'fixed';
+  /** Herstellerangabe im Wortlaut, falls von den übernommenen Zahlen abweichend */
+  statedThrowRatio?: string;
+  statedLensShift?: string;
+  lumensStandard?: string;
   lumensSpec: number;
   source: string;
   asOf: string;
@@ -31,7 +38,8 @@ export function validateProjectors(data: unknown): { valid: ProjectorEntry[]; er
     if (typeof p.manufacturer !== 'string' || typeof p.model !== 'string') return errors.push(`${where}: Hersteller/Modell fehlt`);
     if (!isPosNum(p.throwRatio?.min) || !isPosNum(p.throwRatio?.max) || p.throwRatio.min > p.throwRatio.max)
       return errors.push(`${where}: throwRatio ungültig`);
-    if (!isShift(p.lensShift?.vertical) || !isShift(p.lensShift?.horizontal)) return errors.push(`${where}: lensShift ungültig`);
+    if (!['up', 'down', 'left', 'right'].every((k) => isShift(p.lensShift?.[k]))) return errors.push(`${where}: lensShift ungültig`);
+    if (p.zoom !== undefined && !['optical', 'digital', 'fixed'].includes(p.zoom)) return errors.push(`${where}: zoom ungültig`);
     if (!isPosNum(p.lumensSpec)) return errors.push(`${where}: lumensSpec ungültig`);
     if (typeof p.source !== 'string' || !/^https:\/\//.test(p.source)) return errors.push(`${where}: source muss https-URL sein`);
     if (typeof p.asOf !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(p.asOf)) return errors.push(`${where}: asOf muss JJJJ-MM-TT sein`);
@@ -54,8 +62,7 @@ export function applyProjector(m: RoomModel, p: ProjectorEntry, calibratedFactor
       modelId: p.id,
       throwMin: p.throwRatio.min,
       throwMax: p.throwRatio.max,
-      shiftV: p.lensShift.vertical,
-      shiftH: p.lensShift.horizontal,
+      shift: { ...p.lensShift },
       lumens: Math.round((p.lumensSpec * calibratedFactor) / 10) * 10,
     },
   };

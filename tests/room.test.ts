@@ -9,12 +9,13 @@ describe('sanitizeRoom', () => {
     expect(sanitizeRoom([1, 2])).toEqual(DEFAULT_ROOM);
   });
   it('begrenzt Zahlen und ersetzt falsche Typen', () => {
-    const r = sanitizeRoom({ screen: { gain: 10, width: 'abc' }, projector: { scopeMethod: 'x', modelId: 42, shiftV: null, lumens: NaN } });
+    const r = sanitizeRoom({ screen: { gain: 10, width: 'abc' }, projector: { scopeMethod: 'x', modelId: 42, shift: { up: null, down: 'x' }, lumens: NaN } });
     expect(r.screen.gain).toBe(3);
     expect(r.screen.width).toBe(DEFAULT_ROOM.screen.width);
     expect(r.projector.scopeMethod).toBe('zoom');
     expect(r.projector.modelId).toBeNull();
-    expect(r.projector.shiftV).toBeNull();
+    expect(r.projector.shift.up).toBeNull();
+    expect(r.projector.shift.down).toBe(DEFAULT_ROOM.projector.shift.down);
     expect(r.projector.lumens).toBe(DEFAULT_ROOM.projector.lumens);
   });
   it('gültiges Modell bleibt unverändert', () => {

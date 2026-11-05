@@ -13,7 +13,7 @@
 import { clamp, finiteOr } from './units';
 import type { ScopeMethod } from './screen';
 
-export const ROOM_MODEL_VERSION = 3;
+export const ROOM_MODEL_VERSION = 4;
 
 export interface Subwoofer {
   /** Abstand Stirnwand (Leinwandwand) */
@@ -25,6 +25,13 @@ export interface Subwoofer {
 }
 
 export const MAX_SUBS = 4;
+
+export interface LensShift {
+  up: number | null;
+  down: number | null;
+  left: number | null;
+  right: number | null;
+}
 
 /** Unterstützte Lautsprecher-Layouts (Dolby Atmos Home). */
 export const SPEAKER_LAYOUTS = ['5.1', '5.1.2', '5.1.4', '7.1', '7.1.2', '7.1.4', '9.1.2', '9.1.4', '9.1.6'] as const;
@@ -67,9 +74,11 @@ export interface RoomModel {
     lensHeight: number;
     /** seitlicher Versatz Objektivmitte */
     offsetY: number;
-    /** verfügbarer Lens Shift ± in % Bildhöhe / Bildbreite; null = unbekannt */
-    shiftV: number | null;
-    shiftH: number | null;
+    /**
+     * Verfügbarer Lens Shift in % der Bildhöhe (oben/unten) bzw. Bildbreite (links/rechts),
+     * Verschiebung der Bildmitte gegenüber der Objektivachse. 0 = kein Shift, null = unbekannt.
+     */
+    shift: LensShift;
   };
   seat: {
     /** Augen zur Leinwandebene */
@@ -107,8 +116,7 @@ export const DEFAULT_ROOM: RoomModel = {
     distance: 5.0,
     lensHeight: 2.2,
     offsetY: 0,
-    shiftV: 90,
-    shiftH: 40,
+    shift: { up: 90, down: 90, left: 40, right: 40 },
   },
   seat: { distance: 3.8, eyeHeight: 1.2, offsetY: 0 },
   acoustics: { temperatureC: 20 },
@@ -186,8 +194,16 @@ export function sanitizeRoom(input: unknown): RoomModel {
       distance: num(p.distance, d.projector.distance, 'projDistance'),
       lensHeight: num(p.lensHeight, d.projector.lensHeight, 'lensHeight'),
       offsetY: num(p.offsetY, d.projector.offsetY, 'offset'),
-      shiftV: numOrNull(p.shiftV, d.projector.shiftV, 'shift'),
-      shiftH: numOrNull(p.shiftH, d.projector.shiftH, 'shift'),
+      shift: (() => {
+        const sh = obj(p.shift);
+        const ds = d.projector.shift;
+        return {
+          up: numOrNull(sh.up, ds.up, 'shift'),
+          down: numOrNull(sh.down, ds.down, 'shift'),
+          left: numOrNull(sh.left, ds.left, 'shift'),
+          right: numOrNull(sh.right, ds.right, 'shift'),
+        };
+      })(),
     },
     seat: {
       distance: num(st.distance, d.seat.distance, 'seatDistance'),
@@ -237,6 +253,16 @@ function migrate(i: Record<string, unknown>): Record<string, unknown> {
   const out = { ...i };
   if (out.version === 1) out.version = 2; // v1 kannte keine Subs: Standard-Sub vorn links
   if (out.version === 2) out.version = 3; // v2 kannte keine Lautsprecher: Standard 7.1.4, automatisch platziert
+  if (out.version === 3) {
+    // v3 → v4: symmetrischer Lens Shift (± shiftV / ± shiftH) → getrennt oben/unten/links/rechts
+    const p = obj(out.projector);
+    if (!('shift' in p) && ('shiftV' in p || 'shiftH' in p)) {
+      const v = p.shiftV === undefined ? DEFAULT_ROOM.projector.shift.up : p.shiftV;
+      const h = p.shiftH === undefined ? DEFAULT_ROOM.projector.shift.left : p.shiftH;
+      out.projector = { ...p, shift: { up: v, down: v, left: h, right: h } };
+    }
+    out.version = 4;
+  }
   return out;
 }
 

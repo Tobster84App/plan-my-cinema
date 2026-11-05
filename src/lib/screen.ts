@@ -180,6 +180,18 @@ export function checkShift(requiredPct: number, availableMaxPct: number | null |
 }
 
 /**
+ * Prüfung mit getrennten Grenzen je Richtung (z. B. +90 % nach oben, −80 % nach unten).
+ * required > 0 → `plusMax` ist maßgeblich, required < 0 → `minusMax`.
+ */
+export function checkShiftDir(requiredPct: number, plusMax: number | null | undefined, minusMax: number | null | undefined): ShiftStatus {
+  return checkShift(requiredPct, requiredPct >= 0 ? plusMax : minusMax);
+}
+
+/** Verfügbarer Shift in Richtung des benötigten Werts (null = unbekannt). */
+export const shiftLimitFor = (requiredPct: number, plusMax: number | null, minusMax: number | null): number | null =>
+  requiredPct >= 0 ? plusMax : minusMax;
+
+/**
  * Vereinfachte Prüfung bei gleichzeitigem vertikalem und horizontalem Shift.
  * Viele Projektoren haben einen rautenförmigen oder elliptischen Bereich
  * (beide Richtungen voll gleichzeitig ist nicht möglich). Wir prüfen

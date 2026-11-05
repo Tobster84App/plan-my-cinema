@@ -22,6 +22,7 @@ const ASPECTS = [
 ];
 
 const PROJECTORS = validateProjectors(projectorData).valid;
+const MANUFACTURERS = [...new Set(PROJECTORS.map((p) => p.manufacturer))].sort();
 
 type SizeMode = 'width' | 'diagIn' | 'diagCm';
 
@@ -56,6 +57,13 @@ export default function ScreenCalculator({ lang }: { lang: Lang }) {
   const [sizeMode, setSizeMode] = useState<SizeMode>('width');
   const f = (v: number) => fmtLength(v, u, lang);
   const pct = (v: number) => `${fmtNum(v, 0, lang)} %`;
+  /** verfügbarer Shift: „± 90 %“ bei gleichen Werten, sonst „+90 / −80 %“ */
+  const avail = (plus: number | null, minus: number | null) =>
+    plus == null && minus == null
+      ? '–'
+      : plus === minus
+        ? `± ${fmtNum(plus!, 0, lang)} %`
+        : `+${plus == null ? '?' : fmtNum(plus, 0, lang)} / −${minus == null ? '?' : fmtNum(minus, 0, lang)} %`;
   const area = (a: number) => (u === 'imperial' ? `${fmtNum(a / 0.09290304, 1, lang)} ft²` : `${fmtNum(a, 2, lang)} m²`);
   const L = LIMITS;
 
@@ -127,16 +135,27 @@ export default function ScreenCalculator({ lang }: { lang: Lang }) {
               }}
             >
               <option value="">{t.projManual}</option>
-              {PROJECTORS.map((p) => (
-                <option value={p.id} key={p.id}>
-                  {p.manufacturer} {p.model}{p.example ? ` (${t.projExample})` : ''}
-                </option>
+              {MANUFACTURERS.map((mf) => (
+                <optgroup label={mf} key={mf}>
+                  {PROJECTORS.filter((p) => p.manufacturer === mf).map((p) => (
+                    <option value={p.id} key={p.id}>
+                      {p.model}
+                    </option>
+                  ))}
+                </optgroup>
               ))}
             </select>
             {selected && (
-              <p class="hint">
-                <a href={selected.source} rel="noopener nofollow" target="_blank">{t.projSource}</a> · {fmtNum(selected.lumensSpec, 0, lang)} lm · {selected.asOf}
-              </p>
+              <div class="hint proj-info">
+                <a href={selected.source} rel="noopener nofollow" target="_blank">{t.projSource} {selected.manufacturer}</a> · {t.projAsOf} {selected.asOf}
+                <br />
+                {fmtNum(selected.lumensSpec, 0, lang)} lm{selected.lumensStandard ? ` (${selected.lumensStandard})` : ''}
+                {selected.zoom === 'digital' && <><br />{t.projDigital}</>}
+                {selected.zoom === 'fixed' && <><br />{t.projFixed}</>}
+                {selected.statedThrowRatio && <><br />{t.projStatedTr}: {selected.statedThrowRatio}</>}
+                {selected.statedLensShift && <><br />{t.projStatedShift}: {selected.statedLensShift}</>}
+                {Object.values(selected.lensShift).every((v) => v == null) && !selected.statedLensShift && <><br />{t.projNoShiftInfo}</>}
+              </div>
             )}
             <p class="hint">{t.projHint}</p>
           </div>
@@ -162,8 +181,9 @@ export default function ScreenCalculator({ lang }: { lang: Lang }) {
           </div>
           <p class="hint">{t.offsetHint}</p>
           <div class="row2">
-            <NumberField id="shv" label={t.shiftV} value={m.projector.shiftV} nullable unit="%" digits={0} onChange={(v) => updateRoom((d) => void (d.projector.shiftV = v))} lang={lang} min={L.shift[0]} max={L.shift[1]} />
-            <NumberField id="shh" label={t.shiftH} value={m.projector.shiftH} nullable unit="%" digits={0} onChange={(v) => updateRoom((d) => void (d.projector.shiftH = v))} lang={lang} min={L.shift[0]} max={L.shift[1]} />
+            {(['up', 'down', 'left', 'right'] as const).map((k) => (
+              <NumberField key={k} id={`sh-${k}`} label={t.shiftDir[k]} value={m.projector.shift[k]} nullable unit="%" digits={0} onChange={(v) => updateRoom((d) => void (d.projector.shift[k] = v))} lang={lang} min={L.shift[0]} max={L.shift[1]} />
+            ))}
           </div>
           <p class="hint">{t.shiftUnitHint}</p>
         </fieldset>
@@ -258,9 +278,9 @@ export default function ScreenCalculator({ lang }: { lang: Lang }) {
             <h2>{t.cShift}</h2>
             <dl>
               <Row k={t.shiftVReq} v={`${fmtNum(r.shift.vReq, 0, lang)} %`} />
-              <Row k={t.shiftAvail} v={m.projector.shiftV == null ? '–' : `± ${fmtNum(m.projector.shiftV, 0, lang)} %`} />
+              <Row k={t.shiftAvail} v={avail(m.projector.shift.up, m.projector.shift.down)} />
               <Row k={t.shiftHReq} v={`${fmtNum(r.shift.hReq, 0, lang)} %`} />
-              <Row k={t.shiftAvail} v={m.projector.shiftH == null ? '–' : `± ${fmtNum(m.projector.shiftH, 0, lang)} %`} />
+              <Row k={t.shiftAvail} v={avail(m.projector.shift.right, m.projector.shift.left)} />
             </dl>
             <p class="verdict" style={{ color: shiftText[1] }}>{shiftText[0]}</p>
             {r.shift.combined != null && (

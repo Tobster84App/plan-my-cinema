@@ -3,8 +3,9 @@ import type { RoomModel } from './room';
 import { roomIssues } from './room';
 import {
   ANGLE_LIMITS_DEG,
-  checkShift,
+  checkShiftDir,
   combinedShiftUsage,
+  shiftLimitFor,
   distanceForAngle,
   isScope,
   luminanceNits,
@@ -49,12 +50,14 @@ export function computeScreen(m: RoomModel) {
   const screenCenterZ = m.screen.bottomEdge + geo.height / 2;
   const shiftVReq = requiredShiftPct(screenCenterZ, m.projector.lensHeight, img.height);
   const shiftHReq = requiredShiftPct(0, m.projector.offsetY, img.throwWidth);
-  const shiftVStatus = checkShift(shiftVReq, m.projector.shiftV);
-  const shiftHStatus = checkShift(shiftHReq, m.projector.shiftH);
+  const sh = m.projector.shift;
+  // positiv vertikal = Bild über Objektivachse → Shift nach oben; positiv horizontal = Bild rechts → nach rechts
+  const shiftVStatus = checkShiftDir(shiftVReq, sh.up, sh.down);
+  const shiftHStatus = checkShiftDir(shiftHReq, sh.right, sh.left);
+  const vLimit = shiftLimitFor(shiftVReq, sh.up, sh.down);
+  const hLimit = shiftLimitFor(shiftHReq, sh.right, sh.left);
   const combined =
-    m.projector.shiftV != null && m.projector.shiftH != null && shiftVReq !== 0 && shiftHReq !== 0
-      ? combinedShiftUsage(shiftVReq, shiftHReq, m.projector.shiftV, m.projector.shiftH)
-      : null;
+    vLimit != null && hLimit != null && shiftVReq !== 0 && shiftHReq !== 0 ? combinedShiftUsage(shiftVReq, shiftHReq, vLimit, hLimit) : null;
 
   return {
     geo,

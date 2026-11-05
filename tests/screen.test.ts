@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  checkShift, combinedShiftUsage, diagonalFromWidth, distanceForAngle, isScope, lumensForNits,
+  checkShift, checkShiftDir, combinedShiftUsage, diagonalFromWidth, distanceForAngle, isScope, lumensForNits,
   luminanceNits, nitsToFootLambert, projectedImage, rateBrightness, rateViewingAngle,
   requiredShiftPct, screenGeometry, throwRange, throwRatioAt, viewingAngleDeg, widthFromDiagonal,
 } from '../src/lib/screen';
@@ -147,6 +147,12 @@ describe('Lens Shift', () => {
     expect(checkShift(0, 0)).toBe('ok');
     expect(checkShift(5, 0)).toBe('outside');
     expect(checkShift(5, null)).toBe('unknown');
+  });
+  it('getrennte Grenzen: −57 % braucht „unten“, +57 % braucht „oben“', () => {
+    expect(checkShiftDir(-57, 90, 50)).toBe('outside');
+    expect(checkShiftDir(-57, 50, 90)).toBe('ok');
+    expect(checkShiftDir(57, 60, 0)).toBe('ok');
+    expect(checkShiftDir(57, null, 90)).toBe('unknown');
   });
   it('Raute: 45/90 + 20/40 = 1,0', () => {
     expect(combinedShiftUsage(45, -20, 90, 40)).toBeCloseTo(1, 10);
