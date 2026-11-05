@@ -9,6 +9,13 @@ describe('Raummodell v2', () => {
     expect(r.room.length).toBe(7);
     expect(r.subs).toEqual(DEFAULT_ROOM.subs);
     expect(r.acoustics.temperatureC).toBe(20);
+    expect(r.speakers).toEqual({ layout: '7.1.4', listenerHeight: null, overrides: {} });
+  });
+  it('Lautsprecher: unbekanntes Layout → 7.1.4, unbekannte Kanäle verworfen', () => {
+    const r = sanitizeRoom({ ...DEFAULT_ROOM, speakers: { layout: '11.1.8', listenerHeight: 'x', overrides: { L: { x: 1, y: 2, z: 1.1 }, Foo: { x: 1, y: 1, z: 1 } } } });
+    expect(r.speakers.layout).toBe('7.1.4');
+    expect(r.speakers.listenerHeight).toBeNull();
+    expect(r.speakers.overrides).toEqual({ L: { x: 1, y: 2, z: 1.1 } });
   });
   it('höchstens 4 Subs, ungültige Werte ersetzt', () => {
     const r = sanitizeRoom({ ...DEFAULT_ROOM, subs: Array.from({ length: 6 }, () => ({ x: 'a', y: -3, z: 1 })) });

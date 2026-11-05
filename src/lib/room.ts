@@ -13,7 +13,7 @@
 import { clamp, finiteOr } from './units';
 import type { ScopeMethod } from './screen';
 
-export const ROOM_MODEL_VERSION = 2;
+export const ROOM_MODEL_VERSION = 3;
 
 export interface Subwoofer {
   /** Abstand Stirnwand (Leinwandwand) */
@@ -25,6 +25,19 @@ export interface Subwoofer {
 }
 
 export const MAX_SUBS = 4;
+
+/** Unterstützte Lautsprecher-Layouts (Dolby Atmos Home). */
+export const SPEAKER_LAYOUTS = ['5.1', '5.1.2', '5.1.4', '7.1', '7.1.2', '7.1.4', '9.1.2', '9.1.4', '9.1.6'] as const;
+export type SpeakerLayout = (typeof SPEAKER_LAYOUTS)[number];
+export const SPEAKER_IDS = ['L', 'C', 'R', 'Lw', 'Rw', 'Ls', 'Rs', 'Lrs', 'Rrs', 'Ltf', 'Rtf', 'Ltm', 'Rtm', 'Ltr', 'Rtr'] as const;
+export type SpeakerId = (typeof SPEAKER_IDS)[number];
+
+/** Position wie bei Subs: ab Stirnwand, ab linker Wand, Höhe. */
+export interface SpeakerPos {
+  x: number;
+  y: number;
+  z: number;
+}
 
 export interface RoomModel {
   version: typeof ROOM_MODEL_VERSION;
@@ -70,6 +83,13 @@ export interface RoomModel {
     temperatureC: number;
   };
   subs: Subwoofer[];
+  speakers: {
+    layout: SpeakerLayout;
+    /** Höhe der Ohrhöhen-Lautsprecher (Hochtöner); null = Ohrhöhe am Sitz */
+    listenerHeight: number | null;
+    /** von Hand verschobene Lautsprecher; alle anderen werden automatisch platziert */
+    overrides: Partial<Record<SpeakerId, SpeakerPos>>;
+  };
 }
 
 /** Beispielraum. Der Hinweis „Beispielwerte“ steht in der Oberfläche. */
@@ -93,6 +113,7 @@ export const DEFAULT_ROOM: RoomModel = {
   seat: { distance: 3.8, eyeHeight: 1.2, offsetY: 0 },
   acoustics: { temperatureC: 20 },
   subs: [{ x: 0.3, y: 0.3, z: 0.25 }],
+  speakers: { layout: '7.1.4', listenerHeight: null, overrides: {} },
 };
 
 /** Zulässige Bereiche für Eingaben (auch für Validierung beim Import). */
@@ -177,7 +198,25 @@ export function sanitizeRoom(input: unknown): RoomModel {
       temperatureC: num(obj(i.acoustics).temperatureC, d.acoustics.temperatureC, 'temperature'),
     },
     subs: sanitizeSubs(i.subs),
+    speakers: sanitizeSpeakers(i.speakers),
   };
+}
+
+function sanitizeSpeakers(v: unknown): RoomModel['speakers'] {
+  const s = obj(v);
+  const layout = (SPEAKER_LAYOUTS as readonly string[]).includes(s.layout as string) ? (s.layout as SpeakerLayout) : DEFAULT_ROOM.speakers.layout;
+  const lh = s.listenerHeight;
+  const listenerHeight = typeof lh === 'number' && Number.isFinite(lh) ? clamp(lh, 0.2, 3) : null;
+  const overrides: Partial<Record<SpeakerId, SpeakerPos>> = {};
+  const ov = obj(s.overrides);
+  for (const id of SPEAKER_IDS) {
+    const p = ov[id];
+    if (p && typeof p === 'object') {
+      const q = obj(p);
+      overrides[id] = { x: clamp(finiteOr(q.x, 0), 0, 30), y: clamp(finiteOr(q.y, 0), 0, 30), z: clamp(finiteOr(q.z, 1.2), 0, 10) };
+    }
+  }
+  return { layout, listenerHeight, overrides };
 }
 
 function sanitizeSubs(v: unknown): Subwoofer[] {
@@ -193,13 +232,11 @@ function sanitizeSubs(v: unknown): Subwoofer[] {
   });
 }
 
-/** Versionsmigration. v1 → v2: Temperatur und Subwoofer ergänzt (Standardwerte über sanitizeRoom). */
+/** Versionsmigration. v1 → v2: Temperatur und Subwoofer; v2 → v3: Lautsprecher. Fehlende Felder füllt sanitizeRoom mit Standardwerten. */
 function migrate(i: Record<string, unknown>): Record<string, unknown> {
   const out = { ...i };
-  if (out.version === 1) {
-    out.version = 2;
-    // v1 kannte keine Subs: fehlendes Feld → Standard-Sub vorn links
-  }
+  if (out.version === 1) out.version = 2; // v1 kannte keine Subs: Standard-Sub vorn links
+  if (out.version === 2) out.version = 3; // v2 kannte keine Lautsprecher: Standard 7.1.4, automatisch platziert
   return out;
 }
 
@@ -211,7 +248,8 @@ export type RoomIssue =
   | 'seatBehindBackWall'
   | 'projectorBehindBackWall'
   | 'projectorAboveCeiling'
-  | 'subOutsideRoom';
+  | 'subOutsideRoom'
+  | 'speakerOutsideRoom';
 
 export function roomIssues(m: RoomModel): RoomIssue[] {
   const out: RoomIssue[] = [];
@@ -223,5 +261,6 @@ export function roomIssues(m: RoomModel): RoomIssue[] {
   if (m.projector.distance > usableLength) out.push('projectorBehindBackWall');
   if (m.projector.lensHeight > m.room.height) out.push('projectorAboveCeiling');
   if (m.subs.some((s) => s.x > m.room.length || s.y > m.room.width || s.z > m.room.height)) out.push('subOutsideRoom');
+  if (Object.values(m.speakers.overrides).some((s) => s && (s.x > m.room.length || s.y > m.room.width || s.z > m.room.height))) out.push('speakerOutsideRoom');
   return out;
 }
