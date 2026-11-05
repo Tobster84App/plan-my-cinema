@@ -191,3 +191,4 @@ table.data td.num { text-align: right; font-family: var(--mono); }
 .row3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .btn.small { min-height: 30px; padding: 4px 10px; font-size: 12px; }
 .presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.legend i.swatch { width: 12px; height: 12px; border-radius: 3px; }

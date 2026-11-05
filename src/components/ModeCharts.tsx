@@ -1,5 +1,5 @@
 /** Diagramme für Rechner 2: Modenspektrum am Sitz, Modendichte, axiale Druckverteilung. */
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useWidth } from './useWidth';
 import { fmtLength, fmtNum, type Lang } from '../lib/format';
 import type { DensityBin, ModeKind, Point } from '../lib/modes';
 import type { ModeAtSeat } from '../lib/modes-calc';
@@ -25,20 +25,6 @@ export function KindLegend({ t }: { t: ModesDict }) {
       ))}
     </div>
   );
-}
-
-/** Breite des Containers in px, damit Text im SVG nicht mitskaliert (bleibt auf dem Handy lesbar). */
-function useWidth(initial = 600) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [w, setW] = useState(initial);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || typeof ResizeObserver === 'undefined') return;
-    const ro = new ResizeObserver(([e]) => setW(Math.max(280, Math.round(e.contentRect.width))));
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-  return [ref, w] as const;
 }
 
 const hz = (f: number, lang: Lang) => `${fmtNum(f, 1, lang)} Hz`;
