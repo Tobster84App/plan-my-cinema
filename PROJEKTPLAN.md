@@ -56,10 +56,14 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - Diagrammfarben mit Validator geprüft (dunkler Hintergrund, Farbsehschwäche)
 - Quelle Multi-Sub: Welti, „How Many Subwoofers are Enough?“, AES 112th Convention 2002 (Volltext nicht gelesen)
 
-**M3 – Rechner 3 „Lautsprecher-Planer“ (Dolby Atmos 5.1–9.1.6)**
-- Voraussetzung: Freigabe der Dolby-Tabelle (`docs/dolby-lautsprecherwinkel.md`)
-- Draufsicht + Seitenansicht, Winkel zum MLP, Ampel
-- Lautsprecher ins Raummodell (v3), damit Moden-Rechner und Planer dieselben Positionen nutzen
+**M3 – Rechner 3 „Lautsprecher-Planer“ (Dolby Atmos 5.1–9.1.6)** (fertig, 2026-11-05)
+- Werte aus freigegebener Dolby-Tabelle (`data/speaker-guidelines.json`)
+- Raummodell v3: Layout, Höhe der Ohrhöhen-Lautsprecher, von Hand verschobene Lautsprecher (übrige automatisch)
+- Automatische Platzierung: Mitte des Dolby-Bereichs, Strahl vom MLP bis zur Wand (15 cm Abstand); Overheads an der Decke, seitlich wie L/R bei 30°
+- Azimut (Draufsicht) und Elevation (Seitenansicht) zum MLP, Ampel: Grün im Bereich, Gelb bis 10° außerhalb bzw. L/R 30–40°, Rot darüber (10° = eigene Festlegung)
+- Zusatzprüfungen: hintere Höhe ≤ 1,25 × Front, Overheads 2–3 × Ohrhöhen-Lautsprecher, Abstandsunterschiede zum MLP
+- Draufsicht + Seitenansicht maßstäblich, Tabelle mit Verschieben/Zurücksetzen
+- Korrektur: Draufsichten (auch Rechner 1) waren seitlich gespiegelt
 
 **M4 – Veröffentlichung**
 - Deploy ALL-INKL, Domain, Search Console, Lighthouse/Barrierefreiheit-Prüfung
@@ -70,6 +74,7 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 ## Entscheidungen
 - 2026-11-05: Sicherung über Google Apps Script (`scripts/drive-upload.gs`), erster Deploy mit Sicherung erfolgreich; Seite läuft auf plan-my-cinema.com
 - 2026-11-05: Einheiten-Umschalter beschriftet (m · cm / ft · in)
+- 2026-11-05: Subwoofer bleiben unabhängig von Lautsprechern (eigene Liste im Raummodell)
 - 2026-11-04: Sicherung bei jedem Deploy ins Google Drive (Serverstand vorher + neue Version), Upload nur nach erfolgreicher Sicherung
 - 2026-11-04: Deploy ohne Löschen, nur manuell, nur mit Markierungsdatei im Ziel (nach Löschvorfall beim ersten Upload)
 - 2026-11-04: Hosting und Postfach bei ALL-INKL (PrivatPlus)
