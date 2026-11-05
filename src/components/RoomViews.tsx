@@ -56,7 +56,8 @@ export function TopView({ m, r, lang, units, t }: Props) {
   const VH = Math.round(PAD.t + W * s + PAD.b);
   const x = (v: number) => PAD.l + v * s;
   const yC = PAD.t + (W * s) / 2;
-  const y = (off: number) => yC + off * s; // off: positiv = rechts → im Bild unten (Blick zur Leinwand nach links)
+  // Leinwand links im Bild: Wer zur Leinwand schaut, hat rechts oben → positiver Versatz (rechts) nach oben
+  const y = (off: number) => yC - off * s;
   const sx = m.screen.wallGap;
   const half = r.geo.width / 2;
   const f = (v: number) => fmtLength(v, units, lang);
@@ -89,8 +90,8 @@ export function TopView({ m, r, lang, units, t }: Props) {
       ].map(([d, label]) =>
         sx + (d as number) <= L ? (
           <g key={label as string}>
-            <line x1={x(sx + (d as number))} y1={y(half) + 6} x2={x(sx + (d as number))} y2={y(half) + 16} stroke={C.ok} stroke-width="2" />
-            <text x={x(sx + (d as number))} y={y(half) + 28} text-anchor="middle" fill={C.ok}>{label}</text>
+            <line x1={x(sx + (d as number))} y1={y(-half) + 6} x2={x(sx + (d as number))} y2={y(-half) + 16} stroke={C.ok} stroke-width="2" />
+            <text x={x(sx + (d as number))} y={y(-half) + 28} text-anchor="middle" fill={C.ok}>{label}</text>
           </g>
         ) : null,
       )}
