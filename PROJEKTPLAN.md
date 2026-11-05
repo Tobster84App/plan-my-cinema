@@ -72,6 +72,7 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 **Später:** zweite Sitzreihe mit Podest, mehrere Raumvarianten, Capacitor-App, ggf. DTS:X.
 
 ## Entscheidungen
+- 2026-11-05: Projektordaten aus Hersteller-Websites (Epson, BenQ: 50 Modelle), Lens Shift getrennt oben/unten/links/rechts (Raummodell v4); Regeln in `docs/projektordaten.md`
 - 2026-11-05: Sicherung über Google Apps Script (`scripts/drive-upload.gs`), erster Deploy mit Sicherung erfolgreich; Seite läuft auf plan-my-cinema.com
 - 2026-11-05: Einheiten-Umschalter beschriftet (m · cm / ft · in)
 - 2026-11-05: Subwoofer bleiben unabhängig von Lautsprechern (eigene Liste im Raummodell)
@@ -84,4 +85,5 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 
 ## Offen
 - Speicherdauer/Anonymisierung der Server-Logfiles bei ALL-INKL prüfen und in Datenschutzerklärung eintragen
+- Weitere Projektor-Hersteller: Domains freischalten (JVC, Optoma, XGIMI, Valerion, Hisense, LG, Dangbei); Sony nur per PDF
 - Analytics: vorerst keine
