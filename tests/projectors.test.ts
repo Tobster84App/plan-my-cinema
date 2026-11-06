@@ -11,7 +11,7 @@ describe('data/projectors.json', () => {
     expect(valid.some((p) => p.example)).toBe(false);
   });
   it('nur Herstellerquellen', () => {
-    const allowed = /^https:\/\/(www\.epson\.de|www\.benq\.eu|de\.jvc\.com|www\.optoma\.de|www\.valerion\.com|www\.lg\.com)\//;
+    const allowed = /^https:\/\/(www\.epson\.de|www\.benq\.eu|de\.jvc\.com|www\.optoma\.de|www\.valerion\.com|www\.lg\.com|de\.xgimi\.com|de\.dangbei\.com)\//;
     expect(valid.filter((p) => !allowed.test(p.source)).map((p) => p.source)).toEqual([]);
   });
   it('Stichprobe JVC DLA-NZ800BE wie auf de.jvc.com: 1,43–2,92, ±80 % / ±34 %, 2.700 lm', () => {

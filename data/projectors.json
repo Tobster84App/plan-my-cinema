@@ -445,6 +445,132 @@
       "notes": "BenQ nennt keinen Lens Shift."
     },
     {
+      "id": "dangbei-atom",
+      "manufacturer": "Dangbei",
+      "model": "Atom",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 1200,
+      "lumensStandard": "ISO",
+      "source": "https://de.dangbei.com/products/dangbei-atom-laser-projector-with-google-tv",
+      "asOf": "2026-11-06",
+      "notes": "Zoom laut Dangbei „100% - 50%“ (elektronisch). Dangbei nennt keinen Lens Shift."
+    },
+    {
+      "id": "dangbei-dbox02",
+      "manufacturer": "Dangbei",
+      "model": "DBOX02",
+      "throwRatio": {
+        "min": 1.27,
+        "max": 1.27
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 2450,
+      "lumensStandard": "ISO",
+      "source": "https://de.dangbei.com/products/dangbei-dbox02",
+      "asOf": "2026-11-06",
+      "notes": "Zoom laut Dangbei „100% - 50%“ (elektronisch). Dangbei nennt keinen Lens Shift."
+    },
+    {
+      "id": "dangbei-dbox02-pro",
+      "manufacturer": "Dangbei",
+      "model": "DBOX02 Pro",
+      "throwRatio": {
+        "min": 1.27,
+        "max": 1.27
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 2000,
+      "lumensStandard": "ISO",
+      "source": "https://de.dangbei.com/products/dangbei-dbox02-pro",
+      "asOf": "2026-11-06",
+      "notes": "Zoom laut Dangbei „100% - 50%“ (elektronisch). Dangbei nennt keinen Lens Shift."
+    },
+    {
+      "id": "dangbei-freedo",
+      "manufacturer": "Dangbei",
+      "model": "Freedo",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 450,
+      "lumensStandard": "ISO",
+      "source": "https://de.dangbei.com/products/dangbei-freedo",
+      "asOf": "2026-11-06",
+      "notes": "Zoom laut Dangbei „100% - 50%“ (elektronisch). Dangbei nennt keinen Lens Shift."
+    },
+    {
+      "id": "dangbei-mp1-max",
+      "manufacturer": "Dangbei",
+      "model": "MP1 Max",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 3100,
+      "lumensStandard": "ISO",
+      "source": "https://de.dangbei.com/products/dangbei-mp1-max",
+      "asOf": "2026-11-06",
+      "notes": "Zoom laut Dangbei „100% - 50%“ (elektronisch). Dangbei nennt keinen Lens Shift."
+    },
+    {
+      "id": "dangbei-n2-mini",
+      "manufacturer": "Dangbei",
+      "model": "N2 mini",
+      "throwRatio": {
+        "min": 1.25,
+        "max": 1.25
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 200,
+      "lumensStandard": "ISO",
+      "source": "https://de.dangbei.com/products/danebei-n2-mini",
+      "asOf": "2026-11-06",
+      "notes": "Zoom laut Dangbei „100% - 50%“ (elektronisch). Dangbei nennt keinen Lens Shift."
+    },
+    {
       "id": "epson-co-fh01",
       "manufacturer": "Epson",
       "model": "CO-FH01",
@@ -1602,6 +1728,387 @@
       "source": "https://www.valerion.com/product/valerion-visionmaster-pro2-pro-4k-rgb-triple-laser-projector",
       "asOf": "2026-11-05",
       "notes": "Lens Shift laut Valerion nur beim Max-Modell („Only Max Model“)."
+    },
+    {
+      "id": "xgimi-aura",
+      "manufacturer": "XGIMI",
+      "model": "AURA",
+      "throwRatio": {
+        "min": 0.233,
+        "max": 0.233
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 1800,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/aura",
+      "asOf": "2026-11-06",
+      "notes": "Ultrakurzdistanz."
+    },
+    {
+      "id": "xgimi-aura-2",
+      "manufacturer": "XGIMI",
+      "model": "AURA 2",
+      "throwRatio": {
+        "min": 0.177,
+        "max": 0.177
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 2300,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/aura-2",
+      "asOf": "2026-11-06",
+      "notes": "Ultrakurzdistanz."
+    },
+    {
+      "id": "xgimi-elfin-flip",
+      "manufacturer": "XGIMI",
+      "model": "Elfin Flip",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 400,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/elfin-flip",
+      "asOf": "2026-11-06",
+      "notes": "Kein optischer Zoom, nur Digitalzoom. XGIMI nennt keinen Lens Shift."
+    },
+    {
+      "id": "xgimi-elfin-flip-4k",
+      "manufacturer": "XGIMI",
+      "model": "Elfin Flip 4K",
+      "throwRatio": {
+        "min": 0.98,
+        "max": 1.3
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 1600,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/elfin-flip-4k",
+      "asOf": "2026-11-06",
+      "notes": "XGIMI nennt keinen Lens Shift."
+    },
+    {
+      "id": "xgimi-elfin-flip-laser",
+      "manufacturer": "XGIMI",
+      "model": "Elfin Flip Laser",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 1600,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/elfin-flip-laser",
+      "asOf": "2026-11-06",
+      "notes": "Kein optischer Zoom, nur Digitalzoom. XGIMI nennt keinen Lens Shift."
+    },
+    {
+      "id": "xgimi-elfin-flip-plus",
+      "manufacturer": "XGIMI",
+      "model": "Elfin Flip Plus",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 500,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/elfin-flip-plus",
+      "asOf": "2026-11-06",
+      "notes": "Kein optischer Zoom, nur Digitalzoom. XGIMI nennt keinen Lens Shift."
+    },
+    {
+      "id": "xgimi-halo-plus",
+      "manufacturer": "XGIMI",
+      "model": "Halo+ (New)",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 700,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/halo-plus-new",
+      "asOf": "2026-11-06",
+      "notes": "Kein optischer Zoom, nur Digitalzoom. XGIMI nennt keinen Lens Shift."
+    },
+    {
+      "id": "xgimi-horizon-20",
+      "manufacturer": "XGIMI",
+      "model": "Horizon 20",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.5
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": 45,
+        "right": 45
+      },
+      "lumensSpec": 3200,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/horizon-20",
+      "asOf": "2026-11-06",
+      "statedLensShift": "V±120%/H±45%",
+      "notes": "XGIMI: „Der vertikale Lens-Shift-Bereich beträgt ±120 %. Die Standardposition des Objektivs ist auf 100 % eingestellt und ermöglicht eine zusätzliche Verschiebung um 20 % nach oben und die vollständige Verschiebung um 120 % nach unten.“ Andere Zählweise als üblich – vertikal daher nicht als Zahl übernommen."
+    },
+    {
+      "id": "xgimi-horizon-20-max",
+      "manufacturer": "XGIMI",
+      "model": "Horizon 20 Max",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.5
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": 45,
+        "right": 45
+      },
+      "lumensSpec": 5700,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/horizon-20-max",
+      "asOf": "2026-11-06",
+      "statedLensShift": "V±120%/H±45%",
+      "notes": "XGIMI: „Der vertikale Lens-Shift-Bereich beträgt ±120 %. Die Standardposition des Objektivs ist auf 100 % eingestellt und ermöglicht eine zusätzliche Verschiebung um 20 % nach oben und die vollständige Verschiebung um 120 % nach unten.“ Andere Zählweise als üblich – vertikal daher nicht als Zahl übernommen."
+    },
+    {
+      "id": "xgimi-horizon-20-pro",
+      "manufacturer": "XGIMI",
+      "model": "Horizon 20 Pro",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.5
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": 45,
+        "right": 45
+      },
+      "lumensSpec": 4100,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/horizon-20-pro",
+      "asOf": "2026-11-06",
+      "statedLensShift": "V±120%/H±45%",
+      "notes": "XGIMI: „Der vertikale Lens-Shift-Bereich beträgt ±120 %. Die Standardposition des Objektivs ist auf 100 % eingestellt und ermöglicht eine zusätzliche Verschiebung um 20 % nach oben und die vollständige Verschiebung um 120 % nach unten.“ Andere Zählweise als üblich – vertikal daher nicht als Zahl übernommen."
+    },
+    {
+      "id": "xgimi-horizon-ultra",
+      "manufacturer": "XGIMI",
+      "model": "Horizon Ultra",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.5
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 2300,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/horizon-ultra",
+      "asOf": "2026-11-06",
+      "notes": "XGIMI nennt keinen Lens Shift."
+    },
+    {
+      "id": "xgimi-mira",
+      "manufacturer": "XGIMI",
+      "model": "MIRA",
+      "throwRatio": {
+        "min": 0.175,
+        "max": 0.175
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 2000,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/mira",
+      "asOf": "2026-11-06",
+      "notes": "Ultrakurzdistanz."
+    },
+    {
+      "id": "xgimi-mira-pro",
+      "manufacturer": "XGIMI",
+      "model": "MIRA Pro",
+      "throwRatio": {
+        "min": 0.175,
+        "max": 0.175
+      },
+      "zoom": "fixed",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 2000,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/mira-pro",
+      "asOf": "2026-11-06",
+      "notes": "Ultrakurzdistanz."
+    },
+    {
+      "id": "xgimi-mogo-2-pro",
+      "manufacturer": "XGIMI",
+      "model": "MoGo 2 Pro (New)",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 430,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/mogo-2-pro-new",
+      "asOf": "2026-11-06",
+      "notes": "Kein optischer Zoom, nur Digitalzoom. XGIMI nennt keinen Lens Shift."
+    },
+    {
+      "id": "xgimi-mogo-3-pro",
+      "manufacturer": "XGIMI",
+      "model": "MoGo 3 Pro",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 450,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/mogo-3-pro",
+      "asOf": "2026-11-06",
+      "notes": "Kein optischer Zoom, nur Digitalzoom. XGIMI nennt keinen Lens Shift."
+    },
+    {
+      "id": "xgimi-mogo-4",
+      "manufacturer": "XGIMI",
+      "model": "MoGo 4",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 450,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/mogo-4",
+      "asOf": "2026-11-06",
+      "notes": "Kein optischer Zoom, nur Digitalzoom. XGIMI nennt keinen Lens Shift."
+    },
+    {
+      "id": "xgimi-mogo-4-laser",
+      "manufacturer": "XGIMI",
+      "model": "MoGo 4 Laser",
+      "throwRatio": {
+        "min": 1.2,
+        "max": 1.2
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 550,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/mogo-4-laser",
+      "asOf": "2026-11-06",
+      "notes": "Kein optischer Zoom, nur Digitalzoom. XGIMI nennt keinen Lens Shift."
+    },
+    {
+      "id": "xgimi-vibe-one",
+      "manufacturer": "XGIMI",
+      "model": "Vibe One",
+      "throwRatio": {
+        "min": 1.3,
+        "max": 1.3
+      },
+      "zoom": "digital",
+      "lensShift": {
+        "up": null,
+        "down": null,
+        "left": null,
+        "right": null
+      },
+      "lumensSpec": 250,
+      "lumensStandard": "ISO",
+      "source": "https://de.xgimi.com/products/vibe-one",
+      "asOf": "2026-11-06",
+      "notes": "Kein optischer Zoom, nur Digitalzoom. XGIMI nennt keinen Lens Shift."
     }
   ]
 }

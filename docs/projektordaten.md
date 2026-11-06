@@ -22,7 +22,7 @@ Datei: `data/projectors.json` (Schema: `data/projectors.schema.json`). Stand: 20
 | Farbvarianten mit identischen Daten (B/W …) | ein Eintrag, Modelle mit „ / “ |
 
 ## Stand 2026-11-05
-Gesamt: **77 Modelle**.
+Gesamt: **101 Modelle** (Stand 2026-11-06).
 
 - **Epson** (www.epson.de, Kategorie Heimkino): 39 Artikel → 29 Einträge.
 - **BenQ** (www.benq.eu/de-de, Cinema/Gaming/Portable, je `/spec.html`): 23 Seiten → 21 Einträge.
@@ -33,4 +33,6 @@ Gesamt: **77 Modelle**.
 - **Valerion** (www.valerion.com, Vergleichstabelle): VisionMaster Max, Pro 2, Pro. Plus/Plus 2 ausgelassen (keine Lumenangabe gefunden).
 - **LG** (www.lg.com/de/beamer/…, eingebettete Datentabelle): HU810PW, HU915QE, HU715QW, PU615U. Ausgelassen: **HU710PB** (keine Daten auf der Seite). HU715QW: Seite nennt widersprüchlich 0,22 und „1,6x optisch“.
 - **Optoma**: Produktseiten nur per JavaScript; Werte aus dem Optoma-**Abstandsrechner** (www.optoma.de/service-and-support/distancecalculator). Bewusst nur UHZ- und CinemaX-Modelle mit vollständigen Werten (13), nicht der ganze Rechner-Datenbestand (~980 Modelle). Lens Shift dort nicht angegeben → `null`.
-- Nicht erreichbar: XGIMI (de./www.xgimi.com), Hisense (www.hisense.de), Dangbei (de.dangbei.com; www.dangbei.com ist die chinesische Seite). Sony sperrt automatische Abrufe → nur per PDF.
+- **XGIMI** (de.xgimi.com/products/…, 2026-11-06): 18 Einträge. Vertikaler Lens Shift der Horizon-20-Reihe („±120 %“, Standardposition 100 %, +20 %/−120 %) folgt einer anderen Zählweise → vertikal `null`, Originaltext in `statedLensShift`; horizontal ±45 % übernommen. Kleine Geräte ohne optischen Zoom als `digital`.
+- **Dangbei** (de.dangbei.com/products/…, 2026-11-06): 6 Einträge (DBOX02, DBOX02 Pro, MP1 Max, Atom, Freedo, N2 mini), alle mit festem Projektionsverhältnis und elektronischem Zoom. Ausgelassen: **N3 Max** (Seitentitel 1.000 ISO-Lumen, Datentabelle 2.000), Mars 4K und Neo (Seite 404).
+- Nicht erreichbar: Hisense (www.hisense.de antwortet mit Serverfehler 502). Sony sperrt automatische Abrufe → nur per PDF.
