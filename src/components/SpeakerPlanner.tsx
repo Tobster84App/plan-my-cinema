@@ -3,7 +3,7 @@ import { Fragment } from 'preact';
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import { SPEAKERS_UI } from '../i18n/speakers-ui';
 import { UI } from '../i18n/ui';
-import { fmtLength, fmtNum, type Lang } from '../lib/format';
+import { fmtLength, fmtNum, fmtSmallLength, type Lang } from '../lib/format';
 import { LIMITS, SPEAKER_LAYOUTS, type SpeakerId, type SpeakerLayout } from '../lib/room';
 import { computeSpeakers } from '../lib/speakers-calc';
 import { initBrowserState, isSample, room, units, updateRoom } from '../state/room';
@@ -19,6 +19,13 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
   const u = units.value;
   const r = useMemo(() => computeSpeakers(m), [m]);
   const [editing, setEditing] = useState<SpeakerId | null>(null);
+  const mlpIndex = Math.max(0, r.seats.findIndex((x) => x.seat.isMlp));
+  const [selRaw, setSel] = useState<number | null>(null);
+  const sel = selRaw != null && selRaw < r.seats.length ? selRaw : mlpIndex;
+  const seatRes = r.seats[sel];
+  const cnt = seatRes.counts;
+  const seatName = seatRes.seat.isMlp ? t.mlpLabel : t.seatLabel(seatRes.seat.row, seatRes.seat.index);
+  const resOf = (id: SpeakerId) => seatRes.results.find((x) => x.id === id)!;
   const f = (v: number) => fmtLength(v, u, lang);
   const deg = (v: number) => `${fmtNum(v, 0, lang)}°`;
   const n = r.speakers.length;
@@ -67,30 +74,46 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
           </div>
         </fieldset>
 
+        <fieldset>
+          <legend>{t.gSeating}</legend>
+          <div class="row2">
+            <NumberField id="rows" label={t.rows} value={m.seating.rows} digits={0} unit="" onChange={(v) => updateRoom((d) => void (d.seating.rows = Math.round(v!)))} lang={lang} min={LIMITS.rows[0]} max={LIMITS.rows[1]} />
+            <NumberField id="spr" label={t.seatsPerRow} value={m.seating.seatsPerRow} digits={0} unit="" onChange={(v) => updateRoom((d) => void (d.seating.seatsPerRow = Math.round(v!)))} lang={lang} min={LIMITS.seatsPerRow[0]} max={LIMITS.seatsPerRow[1]} />
+          </div>
+          <div class="row2">
+            <NumberField id="sps" label={t.seatSpacing} value={m.seating.seatSpacing} onChange={(v) => updateRoom((d) => void (d.seating.seatSpacing = v!))} lang={lang} units={u} kind="cm" min={LIMITS.seatSpacing[0]} max={LIMITS.seatSpacing[1]} />
+            <NumberField id="rsp" label={t.rowSpacing} value={m.seating.rowSpacing} onChange={(v) => updateRoom((d) => void (d.seating.rowSpacing = v!))} lang={lang} units={u} kind="cm" min={LIMITS.rowSpacing[0]} max={LIMITS.rowSpacing[1]} />
+          </div>
+          {m.seating.rows > 1 && (
+            <NumberField id="riser" label={t.riserStep} value={m.seating.riserStep} onChange={(v) => updateRoom((d) => void (d.seating.riserStep = v!))} lang={lang} units={u} kind="cm" min={LIMITS.riserStep[0]} max={LIMITS.riserStep[1]} />
+          )}
+          <p class="hint">{t.seatingHint}</p>
+        </fieldset>
+
         <RoomTools lang={lang} />
       </form>
 
       <a class="mini" href="#results" aria-hidden="true" tabIndex={-1}>
         <span>{m.speakers.layout}</span>
-        <span style={{ color: 'var(--ok)' }}>✓ {r.counts.ok}</span>
-        <span style={{ color: 'var(--warn)' }}>! {r.counts.warn}</span>
-        <span style={{ color: 'var(--bad)' }}>✕ {r.counts.bad}</span>
+        <span style={{ color: 'var(--ok)' }}>✓ {cnt.ok}</span>
+        <span style={{ color: 'var(--warn)' }}>! {cnt.warn}</span>
+        <span style={{ color: 'var(--bad)' }}>✕ {cnt.bad}</span>
       </a>
 
       <section class="results" id="results" aria-live="polite" aria-atomic="false">
         <div class="hero">
-          <span class="k">{m.speakers.layout} · Dolby Atmos</span>
+          <span class="k">{m.speakers.layout} · Dolby Atmos{r.seats.length > 1 ? ` · ${seatName}` : ''}</span>
           <div class="big">
             <span class="v">
-              {r.counts.ok}
+              {cnt.ok}
               <small>/ {n}</small>
             </span>
-            <span class="alt">{t.summary(r.counts.ok, n)}</span>
+            <span class="alt">{t.summary(cnt.ok, n)}</span>
           </div>
           <div class="legend">
             {(['ok', 'warn', 'bad'] as const).map((s) => (
               <span key={s}>
-                <b style={{ color: STATUS_COLOR[s] }}>{STATUS_ICON[s]}</b> {r.counts[s]} {t[s]}
+                <b style={{ color: STATUS_COLOR[s] }}>{STATUS_ICON[s]}</b> {cnt[s]} {t[s]}
               </span>
             ))}
           </div>
@@ -98,7 +121,7 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
 
         <figure class="chart">
           <h2>{t.topView}</h2>
-          <SpeakerTopView m={m} r={r} lang={lang} units={u} t={t} />
+          <SpeakerTopView m={m} r={r} selected={sel} lang={lang} units={u} t={t} />
           <div class="legend">
             <span><i class="swatch" style={{ background: 'var(--info)', borderRadius: '50%' }} />{t.legendMlp}</span>
             <span><i class="swatch" style={{ background: 'var(--fg)' }} />{t.legendScreen}</span>
@@ -107,15 +130,31 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
           </div>
         </figure>
 
-        {r.speakers.some((s) => s.rule.measure === 'elevation') && (
+        {(r.speakers.some((s) => s.rule.measure === 'elevation') || m.seating.rows > 1) && (
           <figure class="chart">
             <h2>{t.sideView}</h2>
-            <SpeakerSideView m={m} r={r} lang={lang} units={u} t={t} />
+            <SpeakerSideView m={m} r={r} selected={sel} lang={lang} units={u} t={t} />
           </figure>
         )}
 
         <figure class="chart">
           <h2>{t.tableTitle}</h2>
+          {r.seats.length > 1 && (
+            <div class="f">
+              <span class="lbl">{t.viewFrom}</span>
+              <div class="presets" role="group" aria-label={t.viewFrom}>
+                {r.seats.map((st, i) => (
+                  <button type="button" key={i} class="btn small" aria-pressed={i === sel} style={i === sel ? { borderColor: 'var(--info)', color: 'var(--fg)' } : undefined} onClick={() => setSel(i)}>
+                    {st.seat.isMlp ? t.mlpLabel : t.seatLabel(st.seat.row, st.seat.index)}
+                    {' '}
+                    <span style={{ color: st.counts.bad ? 'var(--bad)' : st.counts.warn ? 'var(--warn)' : 'var(--ok)' }}>
+                      {st.counts.bad ? '✕' : st.counts.warn ? '!' : '✓'}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           <div class="tbl-wrap">
             <table class="data">
               <thead>
@@ -124,6 +163,7 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
                   <th>{t.thAngle}</th>
                   <th>{t.thRange}</th>
                   <th>{t.thStatus}</th>
+                  {r.seats.length > 1 && <th>{t.thAll}</th>}
                   <th>{t.thDist}</th>
                   <th>{t.thPos}</th>
                   <th></th>
@@ -136,12 +176,17 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
                       <td>
                         <b>{s.id}</b> <span style={{ color: 'var(--muted)' }}>{t.names[s.id]}</span>
                       </td>
-                      <td class="num">{s.rule.measure === 'azimuth' ? `${t.az} ${deg(s.azimuth)}` : `${t.el} ${deg(s.elevation)}`}</td>
+                      <td class="num">{s.rule.measure === 'azimuth' ? `${t.az} ${deg(resOf(s.id).azimuth)}` : `${t.el} ${deg(resOf(s.id).elevation)}`}</td>
                       <td class="num">{s.rule.range.min === s.rule.range.max ? deg(s.rule.range.min) : `${fmtNum(s.rule.range.min, 0, lang)}–${deg(s.rule.range.max)}`}</td>
-                      <td style={{ color: STATUS_COLOR[s.status] }}>
-                        {STATUS_ICON[s.status]} {t[s.status]}
+                      <td style={{ color: STATUS_COLOR[resOf(s.id).status] }}>
+                        {STATUS_ICON[resOf(s.id).status]} {t[resOf(s.id).status]}
                       </td>
-                      <td class="num">{f(s.distance)}</td>
+                      {r.seats.length > 1 && (
+                        <td style={{ color: STATUS_COLOR[r.worstBySpeaker[s.id]] }} title={t.seatSummary(r.seats.length)}>
+                          {STATUS_ICON[r.worstBySpeaker[s.id]]}
+                        </td>
+                      )}
+                      <td class="num">{f(resOf(s.id).distance)}</td>
                       <td class="num">
                         {f(s.pos.x)} · {f(s.pos.y)} · {f(s.pos.z)} <span style={{ color: 'var(--muted)' }}>({s.manual ? t.manual : t.auto})</span>
                       </td>
@@ -153,7 +198,7 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
                     </tr>
                     {editing === s.id && (
                       <tr>
-                        <td colSpan={7} style={{ whiteSpace: 'normal' }}>
+                        <td colSpan={8} style={{ whiteSpace: 'normal' }}>
                           <div class="row3" style={{ maxWidth: '520px' }}>
                             <NumberField id={`${s.id}-x`} label={t.x} value={s.pos.x} onChange={(v) => setPos(s.id, 'x', v!)} lang={lang} units={u} kind="cm" min={0} max={m.room.length} />
                             <NumberField id={`${s.id}-y`} label={t.y} value={s.pos.y} onChange={(v) => setPos(s.id, 'y', v!)} lang={lang} units={u} kind="cm" min={0} max={m.room.width} />
@@ -174,6 +219,50 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
           </div>
           <p class="sub">{t.tolNote}</p>
           {r.speakers.some((s) => s.id === 'C' && s.status !== 'ok') && <p class="sub">{t.cNote}</p>}
+        </figure>
+
+        <div class="card">
+          <h2>{t.sightTitle}</h2>
+          {r.sightlines.length === 0 ? (
+            <p class="hint">{t.sightSingle}</p>
+          ) : (
+            <ul class="hints">
+              {r.sightlines.map((sl) => (
+                <li key={sl.row} style={{ color: STATUS_COLOR[sl.status] }}>
+                  {STATUS_ICON[sl.status]} {t.sightRow(sl.row)}: {t.sightC(fmtSmallLength(sl.c, u, lang))}
+                  {sl.status !== 'ok' && <span style={{ color: 'var(--muted)' }}> · {t.sightNeed(f(sl.requiredEyeZ))}</span>}
+                </li>
+              ))}
+            </ul>
+          )}
+          <p class="sub">{t.sightNote}</p>
+        </div>
+
+        <figure class="chart">
+          <h2>{t.reflTitle}</h2>
+          <div class="tbl-wrap">
+            <table class="data">
+              <thead>
+                <tr>
+                  <th>{t.thSpk}</th>
+                  <th>{t.thSurface}</th>
+                  <th>{t.thPoint}</th>
+                  <th>{t.thExtra}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {r.reflections.map((x) => (
+                  <tr key={`${x.id}${x.surface}`}>
+                    <td><b>{x.id}</b></td>
+                    <td>{t.surfaces[x.surface]}</td>
+                    <td>{x.surface === 'left' || x.surface === 'right' ? t.pointWall(f(x.point.x), f(x.point.z)) : t.pointFlat(f(x.point.x), f(x.point.y))}</td>
+                    <td class="num">{f(x.extra)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p class="sub">{t.reflNote}</p>
         </figure>
 
         <div class="card">
