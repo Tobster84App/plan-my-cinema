@@ -13,7 +13,7 @@
 import { clamp, finiteOr } from './units';
 import type { ScopeMethod } from './screen';
 
-export const ROOM_MODEL_VERSION = 4;
+export const ROOM_MODEL_VERSION = 5;
 
 export interface Subwoofer {
   /** Abstand Stirnwand (Leinwandwand) */
@@ -99,6 +99,17 @@ export interface RoomModel {
     /** von Hand verschobene Lautsprecher; alle anderen werden automatisch platziert */
     overrides: Partial<Record<SpeakerId, SpeakerPos>>;
   };
+  /** Sitzreihen; Reihe 1 liegt am Hauptsitzplatz (seat), weitere Reihen dahinter */
+  seating: {
+    rows: number;
+    seatsPerRow: number;
+    /** Mittenabstand der Plätze in einer Reihe */
+    seatSpacing: number;
+    /** Abstand der Reihen (Augenposition zu Augenposition) */
+    rowSpacing: number;
+    /** Podesthöhe je weiterer Reihe (kumulativ) */
+    riserStep: number;
+  };
 }
 
 /** Beispielraum. Der Hinweis „Beispielwerte“ steht in der Oberfläche. */
@@ -122,6 +133,7 @@ export const DEFAULT_ROOM: RoomModel = {
   acoustics: { temperatureC: 20 },
   subs: [{ x: 0.3, y: 0.3, z: 0.25 }],
   speakers: { layout: '7.1.4', listenerHeight: null, overrides: {} },
+  seating: { rows: 1, seatsPerRow: 3, seatSpacing: 0.7, rowSpacing: 1.6, riserStep: 0.3 },
 };
 
 /** Zulässige Bereiche für Eingaben (auch für Validierung beim Import). */
@@ -145,6 +157,11 @@ export const LIMITS = {
   seatDistance: [0.5, 30],
   eyeHeight: [0.5, 2.5],
   temperature: [-10, 40],
+  rows: [1, 3],
+  seatsPerRow: [1, 6],
+  seatSpacing: [0.5, 1.5],
+  rowSpacing: [0.8, 3],
+  riserStep: [0, 1],
 } as const satisfies Record<string, readonly [number, number]>;
 
 type Lim = keyof typeof LIMITS;
@@ -215,6 +232,17 @@ export function sanitizeRoom(input: unknown): RoomModel {
     },
     subs: sanitizeSubs(i.subs),
     speakers: sanitizeSpeakers(i.speakers),
+    seating: (() => {
+      const g = obj(i.seating);
+      const ds = d.seating;
+      return {
+        rows: Math.round(num(g.rows, ds.rows, 'rows')),
+        seatsPerRow: Math.round(num(g.seatsPerRow, ds.seatsPerRow, 'seatsPerRow')),
+        seatSpacing: num(g.seatSpacing, ds.seatSpacing, 'seatSpacing'),
+        rowSpacing: num(g.rowSpacing, ds.rowSpacing, 'rowSpacing'),
+        riserStep: num(g.riserStep, ds.riserStep, 'riserStep'),
+      };
+    })(),
   };
 }
 
@@ -263,6 +291,7 @@ function migrate(i: Record<string, unknown>): Record<string, unknown> {
     }
     out.version = 4;
   }
+  if (out.version === 4) out.version = 5; // v4 kannte keine Sitzreihen: Standard 1 Reihe à 3 Plätze
   return out;
 }
 
@@ -275,7 +304,8 @@ export type RoomIssue =
   | 'projectorBehindBackWall'
   | 'projectorAboveCeiling'
   | 'subOutsideRoom'
-  | 'speakerOutsideRoom';
+  | 'speakerOutsideRoom'
+  | 'rowsBehindBackWall';
 
 export function roomIssues(m: RoomModel): RoomIssue[] {
   const out: RoomIssue[] = [];
@@ -287,6 +317,7 @@ export function roomIssues(m: RoomModel): RoomIssue[] {
   if (m.projector.distance > usableLength) out.push('projectorBehindBackWall');
   if (m.projector.lensHeight > m.room.height) out.push('projectorAboveCeiling');
   if (m.subs.some((s) => s.x > m.room.length || s.y > m.room.width || s.z > m.room.height)) out.push('subOutsideRoom');
+  if (m.seating.rows > 1 && m.screen.wallGap + m.seat.distance + (m.seating.rows - 1) * m.seating.rowSpacing > m.room.length) out.push('rowsBehindBackWall');
   if (Object.values(m.speakers.overrides).some((s) => s && (s.x > m.room.length || s.y > m.room.width || s.z > m.room.height))) out.push('speakerOutsideRoom');
   return out;
 }
