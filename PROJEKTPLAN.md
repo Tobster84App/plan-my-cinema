@@ -1,7 +1,7 @@
 # Plan My Cinema – Projektplan
 
 Domain: plan-my-cinema.com (gekauft). Schwesterprojekt: rate-my-throne.com.
-Stand: 2026-11-05.
+Stand: 2026-11-07.
 
 ## Ziel
 Zweisprachige Website (DE zuerst, EN zweitrangig) mit Heimkino-Rechnern auf einem **gemeinsamen Raummodell**. Statisch, PWA, später ggf. als App mit Capacitor. Einnahmen später über Affiliate (Amazon, Thomann), eventuell Werbung.
@@ -65,11 +65,17 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - Draufsicht + Seitenansicht maßstäblich, Tabelle mit Verschieben/Zurücksetzen
 - Korrektur: Draufsichten (auch Rechner 1) waren seitlich gespiegelt
 
+**M3b – Sitzreihen, Sichtlinie, Erstreflexionen** (fertig, 2026-11-07)
+- Raummodell v5: 1–3 Reihen, 1–6 Plätze je Reihe, Platz-/Reihenabstand, Podesthöhe je Reihe; MLP = mittlerer Platz Reihe 1
+- Bewertung der Lautsprecherwinkel je Platz, Platzwahl, Spalte „alle Plätze“ (schlechteste Bewertung)
+- Sichtlinie: C-Wert zur Bildunterkante, Richtwerte 12 cm optimal / 6 cm Minimum (keine verbindliche Norm gefunden), nötige Augenhöhe für 12 cm
+- Erstreflexionen L/C/R/Wides an Seitenwänden, Decke, Boden (Spiegelquellen) mit Umweg, in Drauf- und Seitenansicht markiert
+
 **M4 – Veröffentlichung**
 - Deploy ALL-INKL, Domain, Search Console, Lighthouse/Barrierefreiheit-Prüfung
 - Inhalte überarbeiten, Affiliate-Partnerprogramme
 
-**Später:** zweite Sitzreihe mit Podest, mehrere Raumvarianten, Capacitor-App, ggf. DTS:X.
+**Später:** mehrere Raumvarianten, Capacitor-App, ggf. DTS:X.
 
 ## Entscheidungen
 - 2026-11-05: Projektordaten aus Hersteller-Websites (Epson, BenQ: 50 Modelle), Lens Shift getrennt oben/unten/links/rechts (Raummodell v4); Regeln in `docs/projektordaten.md`
