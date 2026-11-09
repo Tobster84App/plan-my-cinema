@@ -136,6 +136,7 @@ export function AxialProfile({
   len,
   freqs,
   seatPos,
+  otherSeats = [],
   subPos,
   units,
   lang,
@@ -146,6 +147,8 @@ export function AxialProfile({
   /** Frequenzen der 1.–3. Ordnung */
   freqs: number[];
   seatPos: number;
+  /** weitere Plätze (Position in dieser Raumrichtung) */
+  otherSeats?: number[];
   subPos: number[];
   units: UnitSystem;
   lang: Lang;
@@ -186,6 +189,9 @@ export function AxialProfile({
             <rect x={x(p) - 5} y={y(0) - 5} width="10" height="10" rx="2" fill="var(--fg)" stroke="var(--panel)" stroke-width="2" />
             <title>{`${t.subMark} ${i + 1}: ${fmtLength(p, units, lang)}`}</title>
           </g>
+        ))}
+        {otherSeats.map((p, i) => (
+          <circle key={`o${i}`} cx={x(p)} cy={y(1) - 2} r="4" fill="var(--panel)" stroke="var(--info)" stroke-width="1.5" />
         ))}
         <line x1={x(seatPos)} x2={x(seatPos)} y1={y(1)} y2={y(0)} stroke="var(--info)" stroke-width="2" />
         <circle cx={x(seatPos)} cy={y(1) - 2} r="5" fill="var(--info)" stroke="var(--panel)" stroke-width="2" />

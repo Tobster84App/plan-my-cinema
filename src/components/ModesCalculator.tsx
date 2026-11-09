@@ -1,15 +1,17 @@
 /** Rechner 2: Raummoden (Preact-Insel). Nutzt Raummaße, Sitz und Subs aus dem gemeinsamen Raummodell. */
-import { useEffect, useMemo } from 'preact/hooks';
+import { useEffect, useMemo, useState } from 'preact/hooks';
 import { MODES_UI } from '../i18n/modes-ui';
+import { SPEAKERS_UI } from '../i18n/speakers-ui';
 import { UI } from '../i18n/ui';
 import { fmtLength, fmtNum, type Lang } from '../lib/format';
 import { axialDirection } from '../lib/modes';
-import { computeModes } from '../lib/modes-calc';
+import { SPREAD_WARN_DB, computeModes, seatSpread } from '../lib/modes-calc';
 import { LIMITS, MAX_SUBS, type Subwoofer } from '../lib/room';
 import { initBrowserState, isSample, room, units, updateRoom } from '../state/room';
 import { AxialProfile, DensityChart, KindLegend, ProfileLegend, SpectrumChart } from './ModeCharts';
 import { NumberField } from './NumberField';
 import { RoomTools } from './RoomTools';
+import { SeatingFields } from './SeatingFields';
 
 /** Betrag der Modenform → Einordnung. Schwellen 0,3 / 0,7 sind eigene Festlegung. */
 const where = (v: number): 'node' | 'antinode' | 'between' => (Math.abs(v) < 0.3 ? 'node' : Math.abs(v) > 0.7 ? 'antinode' : 'between');
@@ -22,7 +24,18 @@ export default function ModesCalculator({ lang }: { lang: Lang }) {
   useEffect(() => initBrowserState(), []);
   const m = room.value;
   const u = units.value;
-  const r = useMemo(() => computeModes(m), [m]);
+  const ts = SPEAKERS_UI[lang];
+  const [selRaw, setSel] = useState<number | null>(null);
+  const r0 = useMemo(() => computeModes(m), [m]);
+  const mlpIndex = Math.max(0, r0.seats.findIndex((x) => x.isMlp));
+  const sel = selRaw != null && selRaw < r0.seats.length ? selRaw : mlpIndex;
+  const r = useMemo(() => (sel === mlpIndex && r0.seats[sel]?.isMlp ? r0 : computeModes(m, sel)), [m, sel, r0, mlpIndex]);
+  const seatName = (i: number) => {
+    const st = r0.seats[i];
+    return !st ? '' : st.isMlp ? ts.mlpLabel : ts.seatLabel(st.row, st.index);
+  };
+  const multi = r0.seats.length > 1;
+  const db = (v: number) => `${fmtNum(v, 1, lang)} dB`;
   const f = (v: number) => fmtLength(v, u, lang);
   const hz = (v: number) => `${fmtNum(v, 1, lang)} Hz`;
   const { length: Lr, width: Wr } = m.room;
@@ -75,13 +88,15 @@ export default function ModesCalculator({ lang }: { lang: Lang }) {
         <fieldset>
           <legend>{t.gSeat}</legend>
           <NumberField id="seat" label={t.seatDistance} value={m.seat.distance} onChange={(v) => updateRoom((d) => void (d.seat.distance = v!))} lang={lang} units={u} kind="m" min={LIMITS.seatDistance[0]} max={LIMITS.seatDistance[1]} />
-          <p class="hint">{t.seatFromWall(f(seat.x))}</p>
+          <p class="hint">{t.seatFromWall(f(r0.seat.x))}</p>
           <div class="row2">
             <NumberField id="seat-off" label={t.seatOffset} value={m.seat.offsetY} onChange={(v) => updateRoom((d) => void (d.seat.offsetY = v!))} lang={lang} units={u} kind="cm" min={LIMITS.offset[0]} max={LIMITS.offset[1]} />
             <NumberField id="ear" label={t.earHeight} value={m.seat.eyeHeight} onChange={(v) => updateRoom((d) => void (d.seat.eyeHeight = v!))} lang={lang} units={u} kind="cm" min={LIMITS.eyeHeight[0]} max={LIMITS.eyeHeight[1]} />
           </div>
           <p class="hint">{t.seatOffsetHint}</p>
         </fieldset>
+
+        <SeatingFields lang={lang} />
 
         <fieldset>
           <legend>{t.gSubs}</legend>
@@ -92,10 +107,12 @@ export default function ModesCalculator({ lang }: { lang: Lang }) {
               {presets.map((p) => (
                 <button type="button" class="btn small" key={p.label} onClick={() => updateRoom((d) => void (d.subs = p.subs.map((s) => ({ ...s }))))}>
                   {p.label}
+                  {multi && <span style={{ color: 'var(--muted)' }}> · {t.presetSpread(db(seatSpread(m.room, r.c, p.subs, r0.seats.map((x) => x.pos)).mean))}</span>}
                 </button>
               ))}
             </div>
           </div>
+          {multi && <p class="hint">{t.presetSpreadHint}</p>}
           {m.subs.map((s, i) => (
             <div class="sub-card" key={i}>
               <div class="head">
@@ -168,6 +185,18 @@ export default function ModesCalculator({ lang }: { lang: Lang }) {
         <figure class="chart">
           <h2>{t.spectrumTitle}</h2>
           <p class="sub">{t.spectrumSub}</p>
+          {multi && (
+            <div class="f">
+              <span class="lbl">{t.spectrumFor}</span>
+              <div class="presets" role="group" aria-label={t.spectrumFor}>
+                {r0.seats.map((st, i) => (
+                  <button type="button" key={i} class="btn small" aria-pressed={i === sel} style={i === sel ? { borderColor: 'var(--info)', color: 'var(--fg)' } : undefined} onClick={() => setSel(i)}>
+                    {seatName(i)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           <SpectrumChart modes={r.modes} lang={lang} t={t} />
           <KindLegend t={t} />
         </figure>
@@ -180,12 +209,45 @@ export default function ModesCalculator({ lang }: { lang: Lang }) {
               const len = [m.room.length, m.room.width, m.room.height][dir];
               const freqs = r.axial.filter((a) => axialDirection(a) === dir).slice(0, 3).map((a) => a.f);
               const seatPos = [seat.x, seat.y, seat.z][dir];
+              const otherSeats = r0.seats.filter((_, i) => i !== sel).map((st) => [st.pos.x, st.pos.y, st.pos.z][dir]);
               const subPos = m.subs.map((s) => [s.x, s.y, s.z][dir]);
-              return <AxialProfile key={dir} title={dirName[dir]} len={len} freqs={freqs} seatPos={seatPos} subPos={subPos} units={u} lang={lang} t={t} />;
+              return <AxialProfile key={dir} title={dirName[dir]} len={len} freqs={freqs} seatPos={seatPos} otherSeats={otherSeats} subPos={subPos} units={u} lang={lang} t={t} />;
             })}
           </div>
           <ProfileLegend t={t} />
         </figure>
+
+        <div class="card">
+          <h2>{t.evenTitle}</h2>
+          {!multi ? (
+            <p class="hint">{t.evenSingle}</p>
+          ) : (
+            (() => {
+              const big = r.spread.modes.filter((x) => x.spread >= SPREAD_WARN_DB - 1e-9);
+              return (
+                <>
+                  <p>{t.evenMean(db(r.spread.mean))}</p>
+                  {big.length === 0 ? (
+                    <p class="hint">{t.evenNone}</p>
+                  ) : (
+                    <>
+                      <p class="hint">{t.evenList}</p>
+                      <ul class="hints">
+                        {big.slice(0, 8).map((x) => (
+                          <li key={x.n.join()} style={{ color: x.spread >= 20 ? 'var(--bad)' : 'var(--warn)' }}>
+                            {t.evenRow(`${hz(x.f)} (${x.n.join('-')})`, x.spread >= 30 - 1e-9 ? '≥ 30 dB' : db(x.spread), seatName(x.best), seatName(x.worst))}
+                          </li>
+                        ))}
+                        {big.length > 8 && <li>{t.evenMore(big.length - 8)}</li>}
+                      </ul>
+                    </>
+                  )}
+                </>
+              );
+            })()
+          )}
+          <p class="sub">{t.evenNote}</p>
+        </div>
 
         <figure class="chart">
           <h2>{t.densityTitle}</h2>
