@@ -20,9 +20,9 @@ export interface ModeAtSeat extends Mode {
 /**
  * Quellen des Bass-Systems.
  * - free: die einzeln eingetragenen Subs (gleich laut, gleichphasig)
- * - sba: Raster an der Stirnwand – cols × rows Subs, gleichmäßig verteilt mit halbem Rasterabstand zu den Wänden
- * - dba: dasselbe Raster zusätzlich an der Rückwand, invertiert und um die Laufzeit zwischen den Arrays verzögert
- * Rasterregel und Polarität/Verzögerung: siehe Erklärtext (Quellenlage dort).
+ * - sba: Raster an der Stirnwand – cols × rows Subs, Position p = (2n + 1) · w / (2a) (Wikipedia „Double bass array“)
+ * - dba: dasselbe Raster zusätzlich an der Rückwand, verpolt und um Raumlänge ÷ c verzögert
+ *   (D. Schmelzer, Nubert, „Kompensation von Raummoden mittels einer doppelten Subwooferanordnung“, 31.01.2005; Wikipedia)
  */
 export function bassSources(m: RoomModel, c: number): Source[] {
   const b = m.bass;
@@ -34,8 +34,14 @@ export function bassSources(m: RoomModel, c: number): Source[] {
   const front = grid.map((g) => ({ x: xf, ...g }));
   if (b.mode === 'sba') return front;
   const xr = Math.max(xf, m.room.length - b.wallGap);
-  const delay = (xr - xf) / c;
+  const delay = m.room.length / c;
   return [...front, ...grid.map((g) => ({ x: xr, ...g, gain: -1, delay }))];
+}
+
+/** Obere Grenze der ebenen Welle je Raumrichtung: f = c / (2 · d), d = Abstand der Subs (Wikipedia „Double bass array“). */
+export function arrayCutoff(m: RoomModel, c: number) {
+  const b = m.bass;
+  return { width: (c * b.cols) / (2 * m.room.width), height: (c * b.rows) / (2 * m.room.height) };
 }
 
 /** Bereich, in dem einzelne Moden den Bass prägen und Platzunterschiede ausgewertet werden (eigene Festlegung). */

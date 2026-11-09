@@ -5,7 +5,7 @@ import { SPEAKERS_UI } from '../i18n/speakers-ui';
 import { UI } from '../i18n/ui';
 import { fmtLength, fmtNum, type Lang } from '../lib/format';
 import { axialDirection } from '../lib/modes';
-import { SPREAD_WARN_DB, computeModes, seatSpread } from '../lib/modes-calc';
+import { SPREAD_WARN_DB, arrayCutoff, computeModes, seatSpread } from '../lib/modes-calc';
 import { BASS_MODES, LIMITS, MAX_SUBS, type BassMode, type Subwoofer } from '../lib/room';
 import { initBrowserState, isSample, room, units, updateRoom } from '../state/room';
 import { AxialProfile, DensityChart, KindLegend, ProfileLegend, SpectrumChart } from './ModeCharts';
@@ -119,12 +119,19 @@ export default function ModesCalculator({ lang }: { lang: Lang }) {
               {presets.map((p) => (
                 <button type="button" class="btn small" key={p.label} onClick={() => updateRoom((d) => void (d.subs = p.subs.map((s) => ({ ...s }))))}>
                   {p.label}
-                  {multi && <span style={{ color: 'var(--muted)' }}> · {t.presetSpread(db(seatSpread(m.room, r.c, p.subs, r0.seats.map((x) => x.pos)).mean))}</span>}
+                  {(() => {
+                    const sp = seatSpread(m.room, r.c, p.subs, r0.seats.map((x) => x.pos));
+                    return (
+                      <span style={{ color: 'var(--muted)' }}>
+                        {multi && ` · ${t.presetSpread(db(sp.mean))}`} · {t.presetLevel(db(sp.level))}
+                      </span>
+                    );
+                  })()}
                 </button>
               ))}
             </div>
           </div>
-          {multi && <p class="hint">{t.presetSpreadHint}</p>}
+          <p class="hint">{multi ? t.presetSpreadHint : t.presetLevelHint}</p>
           {m.subs.map((s, i) => (
             <div class="sub-card" key={i}>
               <div class="head">
@@ -158,6 +165,7 @@ export default function ModesCalculator({ lang }: { lang: Lang }) {
               </div>
               <NumberField id="arr-g" label={t.arrayGap} value={m.bass.wallGap} onChange={(v) => updateRoom((d) => void (d.bass.wallGap = v!))} lang={lang} units={u} kind="cm" min={LIMITS.arrayGap[0]} max={LIMITS.arrayGap[1]} />
               <p class="hint">{t.arrayGrid}</p>
+              <p class="hint">{t.arrayCutoff(hz(arrayCutoff(m, r.c).width), hz(arrayCutoff(m, r.c).height))}</p>
               <div class="sub-card">
                 <div class="head">
                   <span>{t.arrayTotal(r.subs.length)}</span>
@@ -175,7 +183,7 @@ export default function ModesCalculator({ lang }: { lang: Lang }) {
                     </>
                   )}
                 </p>
-                {m.bass.mode === 'dba' && <p class="hint" style={{ margin: 0 }}>{t.arrayDelay(`${fmtNum((r.subs[r.subs.length - 1].delay ?? 0) * 1000, 2, lang)} ms`, f(r.subs[r.subs.length - 1].x - r.subs[0].x))}</p>}
+                {m.bass.mode === 'dba' && <p class="hint" style={{ margin: 0 }}>{t.arrayDelay(`${fmtNum((r.subs[r.subs.length - 1].delay ?? 0) * 1000, 2, lang)} ms`, f(m.room.length))}</p>}
                 {multi && <p class="hint" style={{ margin: 0 }}>{t.arraySpread(db(r.spread.mean))}</p>}
                 <p class="hint" style={{ margin: 0 }}>{t.levelMean(db(r.spread.level))}</p>
               </div>

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { closeAxialPairs, coupling, modeDensity, modeFrequency, modeKind, modeShape, roomModes, speedOfSound, toDb } from '../src/lib/modes';
-import { bassSources, seatSpread } from '../src/lib/modes-calc';
+import { arrayCutoff, bassSources, seatSpread } from '../src/lib/modes-calc';
 import { DEFAULT_ROOM, sanitizeRoom } from '../src/lib/room';
 
 const D = { length: 6, width: 4, height: 2.5 };
@@ -154,29 +154,35 @@ describe('Bass-Arrays (SBA/DBA)', () => {
     expect(Math.abs(coupling([0, 4, 0], D, seat, s).excitation)).toBeCloseTo(1, 10);
     expect(coupling([0, 0, 1], D, seat, s).excitation).toBeCloseTo(0, 10);
   });
-  it('DBA: Rückwand-Array invertiert, Verzögerung (5,7 − 0,3)/343 = 15,74 ms', () => {
+  it('DBA: Rückwand-Array verpolt, Verzögerung = Raumlänge/c = 6/343 = 17,49 ms (Nubert 2005: 6 m / 340 m/s = 17,6 ms)', () => {
     const s = bassSources(room('dba'), 343);
     expect(s).toHaveLength(8);
     const rear = s.filter((p) => p.gain === -1);
     expect(rear).toHaveLength(4);
     expect(rear[0].x).toBeCloseTo(5.7, 10);
-    expect(rear[0].delay!).toBeCloseTo(5.4 / 343, 12);
+    expect(rear[0].delay!).toBeCloseTo(6 / 343, 12);
+  });
+  it('Grenzfrequenz der ebenen Welle f = c/(2d): 2 × 2 auf 4 × 3 m → 343/(2·2) = 85,75 Hz, 343/(2·1,5) = 114,3 Hz (Wikipedia-Beispiel)', () => {
+    const m = room('sba');
+    m.room = { length: 6, width: 4, height: 3 };
+    const fc = arrayCutoff(m, 343);
+    expect(fc.width).toBeCloseTo(85.75, 6);
+    expect(fc.height).toBeCloseTo(114.333, 3);
   });
   it('DBA direkt an den Wänden: 1. Längsmode vorn 1, hinten −1 · cos π · e^(−iπ) = −1 → Summe 0', () => {
     const s = bassSources(room('dba', 0), 343);
     expect(coupling([1, 0, 0], D, seat, s, 343 / 12).excitation).toBeCloseTo(0, 10);
   });
-  it('DBA mit 0,3 m Wandabstand: 1. Längsmode je Paar ψ = cos(0,05π) = 0,98769, Phase 0,9π → |0,98769 · (1 − e^(−i0,9π))| = 0,3090', () => {
-    // Summe je Paar: 0,98769 · (1 + cos 0,9π) − i · 0,98769 · sin 0,9π → Betrag 0,98769 · 0,31287 = 0,30902
+  it('DBA mit 0,3 m Wandabstand: Verzögerung L/c → Phase bei Längsmode n = nπ; hinten −1 · (−1)ⁿψ · (−1)ⁿ = −ψ → Summe 0 für n = 1…4', () => {
     const s = bassSources(room('dba'), 343);
-    expect(Math.abs(coupling([1, 0, 0], D, seat, s, 343 / 12).excitation)).toBeCloseTo(0.30902, 4);
-    // SBA allein: 0,98769 → DBA dämpft die Mode um 20·log(0,30902/0,98769) ≈ −10,1 dB
+    for (const n of [1, 2, 3, 4]) expect(coupling([n, 0, 0], D, seat, s, (n * 343) / 12).excitation).toBeCloseTo(0, 10);
+    // SBA allein: Längsmode 1 voll angeregt, ψ = cos(0,05π) = 0,98769
     expect(Math.abs(coupling([1, 0, 0], D, seat, bassSources(room('sba'), 343), 343 / 12).excitation)).toBeCloseTo(0.98769, 4);
   });
-  it('DBA nahe an den Wänden (5 cm) schwächt die Moden an allen Plätzen deutlich stärker ab als SBA; die Spanne zwischen den Plätzen ändert das kaum', () => {
+  it('DBA schwächt die Moden an allen Plätzen deutlich stärker ab als SBA', () => {
     const seatsPts = [{ x: 4.2, y: 1.3, z: 1.2 }, { x: 4.2, y: 2, z: 1.2 }, { x: 5.8, y: 2, z: 1.5 }];
-    const sba = seatSpread(D, 343, bassSources(room('sba', 0.05), 343), seatsPts);
-    const dba = seatSpread(D, 343, bassSources(room('dba', 0.05), 343), seatsPts);
+    const sba = seatSpread(D, 343, bassSources(room('sba'), 343), seatsPts);
+    const dba = seatSpread(D, 343, bassSources(room('dba'), 343), seatsPts);
     expect(dba.level).toBeLessThan(sba.level - 10);
   });
   it('Energiemittel: Raum 6 × 1,4 × 1,4 m → bis 120 Hz nur Längsmoden 1–4 (Breite/Höhe erst bei 343/2,8 = 122,5 Hz)', () => {

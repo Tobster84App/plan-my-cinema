@@ -101,11 +101,15 @@ const jsonLd = [
     </p>
     <p>
       The calculator adds all subs with their polarity and delay, phase-correct at each mode frequency. Next to the seat-to-seat difference it shows the
-      average mode strength at the seats – a DBA mainly improves that figure because it weakens the length modes at every seat alike. In the model a DBA
-      only works fully with a very small wall distance; we have not checked whether real systems are that sensitive. Sources: inversion and the
-      travel-time delay are described in a Nubert paper (2005) and the Wikipedia article “Double bass array”, which we have only seen as search
-      excerpts; the method goes back to Celestinos and Nielsen (CABS, Journal of the Audio Engineering Society 56, 2008, full text not read). The grid
-      rule (half spacing to the walls) is widespread; we have not read a primary source for it.
+      average mode strength at the seats – a DBA mainly improves that figure because it cancels the length modes at every seat alike. The model assumes
+      rigid walls and an empty rectangular room, where a DBA works ideally. In real rooms furniture, doors, windows and flexible walls reduce the
+      effect, so measuring to fine-tune the delay is worthwhile.
+    </p>
+    <p>
+      Sources: grid formula (position = (2n + 1) · wall size ÷ (2 · count)), cut-off f = c ÷ (2 · sub spacing) and delay t = room length ÷ c from the
+      Wikipedia article “Double bass array” (retrieved 2026-11-09); delay by the travel time over the room length, inverted polarity and identical
+      front and rear layouts from D. Schmelzer, Nubert electronic, “Kompensation von Raummoden mittels einer doppelten Subwooferanordnung (DBA)”,
+      31 Jan 2005. The method goes back to Celestinos and Nielsen (CABS, Journal of the Audio Engineering Society 56, 2008; full text not read).
     </p>
     <h3>Several seats</h3>
     <p>
