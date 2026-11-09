@@ -1735,6 +1735,29 @@
       "notes": "Projektionsabstand und Lens Shift aus der Sony-Hilfe (helpguide.sony.net). Lumen nicht in der Sony-Hilfe angegeben, Wert vom Händler visunext.de (https://www.visunext.de/p/sony-bravia-8-vpl-xw6100-w-beamer-1000033065/)."
     },
     {
+      "id": "sony-vpl-xw7000es",
+      "manufacturer": "Sony",
+      "model": "VPL-XW7000ES",
+      "throwRatio": {
+        "min": 1.35,
+        "max": 2.84
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 42.5,
+        "down": 42.5,
+        "left": 18.0,
+        "right": 18.0
+      },
+      "lumensSpec": 3200,
+      "lumensStandard": "lm (Sony nennt keine Norm)",
+      "source": "https://pro.sony/de_DE/products/4k-home-cinema-projectors/vpl-xw7000es",
+      "asOf": "2026-11-09",
+      "statedThrowRatio": "1,35:1 bis 2,84:1 (pro.sony, Technische Daten); Sony-Hilfe-Formel: min L = 0,030347 × D − 0,0478, max L = 0,063337 × D − 0,0448. Zoom elektrisch, ca. 2,1-fach.",
+      "statedLensShift": "Sony: elektronisch, vertikal ±85 %, horizontal ±36 %, wobei 100 % = Objektivachse am Bildrand (halbe Bildhöhe bzw. -breite, Sony-Hilfe). Umgerechnet auf % der ganzen Bildhöhe/-breite: ±42,5 % / ±18 %. Bereich rautenförmig.",
+      "notes": "Werte von der Sony-Produktseite (pro.sony, Technische Daten; vom Inhaber per Screenshot geliefert, Seite aus der Arbeitsumgebung nicht erreichbar), Definition des Lens Shift aus der Sony-Hilfe (helpguide.sony.net/vpl/xw5000)."
+    },
+    {
       "id": "sony-vpl-xw8100",
       "manufacturer": "Sony",
       "model": "VPL-XW8100 (BRAVIA Projector 9)",
