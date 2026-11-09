@@ -85,10 +85,12 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 
 **M3e – SBA/DBA (Rechner 2)** (fertig, 2026-11-09)
 - Raummodell v7: Bass-System `free` (einzelne Subs) / `sba` / `dba`, Raster Spalten × Reihen (1–4 × 1–3), Wandabstand
-- Raster mit halbem Abstand zu den Wänden (verbreitete Regel, Primärquelle nicht gelesen); DBA-Rückwand invertiert, Verzögerung = Abstand der Arrays ÷ c (Nubert 2005 / Wikipedia nur als Suchauszug; CABS: Celestinos & Nielsen, JAES 56, 2008, nicht gelesen)
+- Raster p = (2n + 1) · w / (2a), Grenzfrequenz f = c / (2d) (Wikipedia „Double bass array“, abgerufen 2026-11-09); DBA-Rückwand verpolt, Verzögerung = Raumlänge ÷ c (D. Schmelzer, Nubert, 31.01.2005; Wikipedia). CABS: Celestinos & Nielsen, JAES 56, 2008, nicht gelesen
+- Korrektur 2026-11-09: Verzögerung war zuerst Abstand der Arrays ÷ c (falsch) → Raumlänge ÷ c; damit löscht das DBA im Modell die Längsmoden unabhängig vom Wandabstand
 - Kopplung komplex: Σ g·ψ·e^(−i2πfτ), normiert auf unverzögerte Subs
 - Neue Kennzahl „mittlere Modenstärke an den Plätzen“ (Energiemittel bis 120 Hz), weil DBA die Platzunterschiede kaum, die Modenstärke aber deutlich ändert
-- Modellbefund: DBA-Wirkung stark vom Wandabstand abhängig (5 cm: Längsmoden −14…−20 dB, 30 cm: −1…−10 dB) – an realen Anlagen nicht geprüft
+- Modell ideal (starre Wände, leerer Quader): DBA löscht alle Moden bis 120 Hz; reale Einschränkungen (Möbel, Türen, nachgiebige Wände) laut Wikipedia nur als Hinweis
+- Sub-Schnellauswahl zeigt zusätzlich die mittlere Modenstärke
 
 **M4 – Veröffentlichung**
 - Deploy ALL-INKL, Domain, Search Console, Lighthouse/Barrierefreiheit-Prüfung
@@ -110,6 +112,5 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 
 ## Offen
 - Speicherdauer/Anonymisierung der Server-Logfiles bei ALL-INKL prüfen und in Datenschutzerklärung eintragen
-- Projektordaten: Hisense (502); Definition des Lens Shift bei Epson/JVC/BenQ/XGIMI/LG/Valerion ungeprüft (Handbuch-Server gesperrt)
-- SBA/DBA: Quellen (de/en.wikipedia.org, nubert.de) aus der Arbeitsumgebung gesperrt – Rasterregel und Wandabstand-Empfindlichkeit prüfen
+- Projektordaten: Hisense (502); Definition des Lens Shift bei Epson/JVC/BenQ/XGIMI/LG/Valerion ungeprüft (manuals.jvckenwood.com gesperrt, files.support.epson.com 403, Handbuch-Links bei Epson/BenQ nicht gefunden)
 - Analytics: vorerst keine
