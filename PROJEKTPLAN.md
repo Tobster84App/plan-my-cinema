@@ -1,7 +1,7 @@
 # Plan My Cinema – Projektplan
 
 Domain: plan-my-cinema.com (gekauft). Schwesterprojekt: rate-my-throne.com.
-Stand: 2026-11-07.
+Stand: 2026-11-09.
 
 ## Ziel
 Zweisprachige Website (DE zuerst, EN zweitrangig) mit Heimkino-Rechnern auf einem **gemeinsamen Raummodell**. Statisch, PWA, später ggf. als App mit Capacitor. Einnahmen später über Affiliate (Amazon, Thomann), eventuell Werbung.
