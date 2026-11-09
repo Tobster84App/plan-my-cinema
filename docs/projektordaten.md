@@ -1,6 +1,6 @@
 # Projektordaten – Regeln und Stand
 
-Datei: `data/projectors.json` (Schema: `data/projectors.schema.json`). Stand: 2026-11-05.
+Datei: `data/projectors.json` (Schema: `data/projectors.schema.json`). Stand: 2026-11-09.
 
 ## Grundsätze
 - Nur Hersteller-Websites bzw. -Datenblätter, keine Sammeldatenbanken (projektoren-datenbank.com, projectorcentral.com, projector-database.com u. ä.).
