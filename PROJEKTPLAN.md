@@ -71,6 +71,12 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - Sichtlinie: C-Wert zur Bildunterkante, Richtwerte 12 cm optimal / 6 cm Minimum (keine verbindliche Norm gefunden), nötige Augenhöhe für 12 cm
 - Erstreflexionen L/C/R/Wides an Seitenwänden, Decke, Boden (Spiegelquellen) mit Umweg, in Drauf- und Seitenansicht markiert
 
+**M3c – Plätze verschieben, Reflexionen erweitert** (fertig, 2026-11-09)
+- Raummodell v6: einzelne Plätze von Hand verschieben (x/y, Höhe bleibt die der Reihe), MLP nur über Hauptsitzplatz
+- Sichtlinie je Platz (Person davor = nächster Platz der vorderen Reihe), Anzeige des ungünstigsten Platzes je Reihe
+- Reflexionen aller Lautsprecher an allen 6 Flächen (inkl. Stirn-/Rückwand); ausgelassen, wenn der Lautsprecher < 30 cm vor der Fläche hängt (eigene Festlegung)
+- Absorberbereich = Fläche, die die Reflexionspunkte aller Plätze abdeckt; Auswahl nach Fläche und Kanal, Bereiche in Drauf- und Seitenansicht
+
 **M4 – Veröffentlichung**
 - Deploy ALL-INKL, Domain, Search Console, Lighthouse/Barrierefreiheit-Prüfung
 - Inhalte überarbeiten, Affiliate-Partnerprogramme
