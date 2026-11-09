@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { closeAxialPairs, coupling, modeDensity, modeFrequency, modeKind, modeShape, roomModes, speedOfSound, toDb } from '../src/lib/modes';
+import { seatSpread } from '../src/lib/modes-calc';
 
 const D = { length: 6, width: 4, height: 2.5 };
 const C = 343;
@@ -100,5 +101,33 @@ describe('Modendichte und Häufungen', () => {
     // 2·343/8 = 85,75 und 3·343/12 = 85,75
     const pairs = closeAxialPairs(modes);
     expect(pairs.some(([a, b]) => Math.abs(a.f - 85.75) < 0.01 && Math.abs(b.f - 85.75) < 0.01)).toBe(true);
+  });
+});
+
+describe('Bass je Sitzplatz (seatSpread)', () => {
+  // Raum 6 × 4 × 2,5 m, c = 343 m/s, ein Sub in der Ecke (0|0|0) → Anregung jeder Mode = 1
+  const dims = { length: 6, width: 4, height: 2.5 };
+  const seats = [
+    { x: 0, y: 2, z: 1.25 },
+    { x: 1.5, y: 2, z: 1.25 },
+    { x: 3, y: 2, z: 1.25 },
+  ];
+  const r = seatSpread(dims, 343, [{ x: 0, y: 0, z: 0 }], seats);
+  it('Längsmode 1-0-0 (28,6 Hz): cos 0 = 0 dB, cos 45° = −3,01 dB, cos 90° = Knoten → −30 dB (Untergrenze); Spanne 30 dB', () => {
+    const md = r.modes.find((x) => x.n.join() === '1,0,0')!;
+    expect(md.f).toBeCloseTo(343 / 12, 6);
+    expect(md.db[0]).toBeCloseTo(0, 6);
+    expect(md.db[1]).toBeCloseTo(-3.0103, 3);
+    expect(md.db[2]).toBe(-30);
+    expect(md.spread).toBeCloseTo(30, 6);
+    expect([md.best, md.worst]).toEqual([0, 2]);
+  });
+  it('Breitenmode 0-1-0: alle Plätze in Raummitte (y = 2) liegen im Knoten → überall −30 dB, Spanne 0', () => {
+    const md = r.modes.find((x) => x.n.join() === '0,1,0')!;
+    expect(md.spread).toBe(0);
+  });
+  it('nur Moden bis 120 Hz; ein einzelner Platz hat überall Spanne 0', () => {
+    expect(r.modes.every((x) => x.f <= 120 + 1e-9)).toBe(true);
+    expect(seatSpread(dims, 343, [{ x: 0, y: 0, z: 0 }], [seats[1]]).mean).toBe(0);
   });
 });
