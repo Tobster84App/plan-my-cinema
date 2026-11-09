@@ -3,7 +3,7 @@ import guidelines from '../../data/speaker-guidelines.json';
 import type { RoomModel, SpeakerId, SpeakerPos } from './room';
 import { seatPoint } from './modes-calc';
 import { LAYOUT_CHANNELS, autoPlace, azimuthDeg, channelRule, distance3d, elevationDeg, rate, type ChannelRule, type Status } from './speakers';
-import { reflectionDelay, reflectionPoint, seatPositions, sightlines, type Seat, type Surface } from './seating';
+import { SURFACES, reflectionDelay, reflectionPoint, seatPositions, sightlines, surfaceAxes, surfacePlane, type Seat } from './seating';
 
 /** Bewertung eines Lautsprechers von einem bestimmten Platz aus. */
 export function evaluateFrom(rule: ChannelRule, listener: SpeakerPos, pos: SpeakerPos) {
@@ -16,6 +16,8 @@ export function evaluateFrom(rule: ChannelRule, listener: SpeakerPos, pos: Speak
 const WORST: Record<Status, number> = { ok: 0, warn: 1, bad: 2 };
 
 export const SPEAKER_INSET = 0.15;
+/** Lautsprecher näher als das an einer Fläche gelten als dort montiert (eigene Festlegung, ≈ 2 × Wandabstand der Automatik). */
+export const REFLECTION_MIN_GAP = 0.3;
 
 export interface SpeakerResult {
   id: SpeakerId;
@@ -79,16 +81,21 @@ export function computeSpeakers(m: RoomModel) {
     }, 'ok')]),
   ) as Record<string, Status>;
 
-  // Erstreflexionen der Front- und Wide-Lautsprecher zum MLP
-  const SURFACES: Surface[] = ['left', 'right', 'ceiling', 'floor'];
-  const reflections = speakers
-    .filter((sp) => sp.rule.group === 'front' || sp.rule.group === 'wide')
-    .flatMap((sp) =>
-      SURFACES.map((surface) => {
-        const p = reflectionPoint(sp.pos, mlp, surface, m.room);
-        return p ? { id: sp.id, surface, point: p, extra: reflectionDelay(sp.pos, mlp, p) } : null;
-      }).filter((x): x is NonNullable<typeof x> => x !== null),
-    );
+  // Erstreflexionen aller Lautsprecher an allen sechs Raumflächen: Punkt für den MLP und Bereich über alle Plätze
+  const seatList = seats.map((st) => st.seat.pos);
+  const reflections = speakers.flatMap((sp) =>
+    SURFACES.flatMap((surface) => {
+      const { axis, plane } = surfacePlane(surface, m.room);
+      // Lautsprecher an oder dicht vor dieser Fläche: Reflexion fällt mit dem Lautsprecher zusammen → keine Absorberstelle
+      if (Math.abs(sp.pos[axis] - plane) < REFLECTION_MIN_GAP) return [];
+      const p = reflectionPoint(sp.pos, mlp, surface, m.room);
+      if (!p) return [];
+      const [a, b] = surfaceAxes(surface);
+      const pts = seatList.map((lis) => reflectionPoint(sp.pos, lis, surface, m.room)).filter((q): q is SpeakerPos => q !== null);
+      const span = (k: 'x' | 'y' | 'z') => ({ min: Math.min(...pts.map((q) => q[k])), max: Math.max(...pts.map((q) => q[k])) });
+      return [{ id: sp.id, group: sp.rule.group, surface, point: p, extra: reflectionDelay(sp.pos, mlp, p), area: { a: span(a), b: span(b) } }];
+    }),
+  );
 
   return {
     mlp,
