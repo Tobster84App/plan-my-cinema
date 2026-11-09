@@ -1666,6 +1666,98 @@
       "notes": "Werte aus dem Optoma-Abstandsrechner; Lens Shift dort nicht angegeben – Datenblatt prüfen."
     },
     {
+      "id": "sony-vpl-xw5000es",
+      "manufacturer": "Sony",
+      "model": "VPL-XW5000ES",
+      "throwRatio": {
+        "min": 1.38,
+        "max": 2.21
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 35.5,
+        "down": 35.5,
+        "left": 12.5,
+        "right": 12.5
+      },
+      "lumensSpec": 2000,
+      "lumensStandard": "ANSI (Händlerangabe)",
+      "source": "https://helpguide.sony.net/vpl/xw5000/v1/de/contents/TP1000558144.html",
+      "asOf": "2026-11-09",
+      "statedThrowRatio": "Sony-Formel (D = Diagonale in Zoll, L in m): min L = 0,030791 × D − 0,0284, max L = 0,049266 × D − 0,0286; Wert für 100 Zoll 16:9 (Bildbreite 2,21 m). Zoom 1,6-fach, manuell.",
+      "statedLensShift": "Sony: vertikal ±71 %, horizontal ±25 %, wobei 100 % = Objektivachse am Bildrand (halbe Bildhöhe bzw. -breite). Umgerechnet auf % der ganzen Bildhöhe/-breite: ±35.5 % / ±12.5 %. Bereich rautenförmig.",
+      "notes": "Projektionsabstand und Lens Shift aus der Sony-Hilfe (helpguide.sony.net). Lumen nicht in der Sony-Hilfe angegeben, Wert vom Händler visunext.de (https://www.visunext.de/p/sony-vpl-xw5000es-beamer-1000023426/)."
+    },
+    {
+      "id": "sony-vpl-xw5100",
+      "manufacturer": "Sony",
+      "model": "VPL-XW5100 (BRAVIA Projector 7)",
+      "throwRatio": {
+        "min": 1.38,
+        "max": 2.21
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 35.5,
+        "down": 35.5,
+        "left": 12.5,
+        "right": 12.5
+      },
+      "lumensSpec": 2200,
+      "lumensStandard": "ISO (Händlerangabe)",
+      "source": "https://helpguide.sony.net/vpl/xw8100/v1/de/contents/TP1001689417.html",
+      "asOf": "2026-11-09",
+      "statedThrowRatio": "Sony-Formel (D = Diagonale in Zoll, L in m): min L = 0,030791 × D − 0,0284, max L = 0,049266 × D − 0,0286; Wert für 100 Zoll 16:9 (Bildbreite 2,21 m). Zoom 1,6-fach, manuell.",
+      "statedLensShift": "Sony: vertikal ±71 %, horizontal ±25 %, wobei 100 % = Objektivachse am Bildrand (halbe Bildhöhe bzw. -breite). Umgerechnet auf % der ganzen Bildhöhe/-breite: ±35.5 % / ±12.5 %. Bereich rautenförmig.",
+      "notes": "Projektionsabstand und Lens Shift aus der Sony-Hilfe (helpguide.sony.net). Lumen nicht in der Sony-Hilfe angegeben, Wert vom Händler visunext.de (https://www.visunext.de/p/sony-bravia-7-vpl-xw5100-w-beamer-1000035416/)."
+    },
+    {
+      "id": "sony-vpl-xw6100",
+      "manufacturer": "Sony",
+      "model": "VPL-XW6100 (BRAVIA Projector 8)",
+      "throwRatio": {
+        "min": 1.35,
+        "max": 2.84
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 42.5,
+        "down": 42.5,
+        "left": 18.0,
+        "right": 18.0
+      },
+      "lumensSpec": 2700,
+      "lumensStandard": "ANSI (Händlerangabe)",
+      "source": "https://helpguide.sony.net/vpl/xw8100/v1/de/contents/TP1001689417.html",
+      "asOf": "2026-11-09",
+      "statedThrowRatio": "Sony-Formel (D = Diagonale in Zoll, L in m): min L = 0,030347 × D − 0,0478, max L = 0,063337 × D − 0,0448; Wert für 100 Zoll 16:9 (Bildbreite 2,21 m). Zoom 2,1-fach, motorisch.",
+      "statedLensShift": "Sony: vertikal ±85 %, horizontal ±36 %, wobei 100 % = Objektivachse am Bildrand (halbe Bildhöhe bzw. -breite). Umgerechnet auf % der ganzen Bildhöhe/-breite: ±42.5 % / ±18 %. Bereich rautenförmig.",
+      "notes": "Projektionsabstand und Lens Shift aus der Sony-Hilfe (helpguide.sony.net). Lumen nicht in der Sony-Hilfe angegeben, Wert vom Händler visunext.de (https://www.visunext.de/p/sony-bravia-8-vpl-xw6100-w-beamer-1000033065/)."
+    },
+    {
+      "id": "sony-vpl-xw8100",
+      "manufacturer": "Sony",
+      "model": "VPL-XW8100 (BRAVIA Projector 9)",
+      "throwRatio": {
+        "min": 1.35,
+        "max": 2.84
+      },
+      "zoom": "optical",
+      "lensShift": {
+        "up": 42.5,
+        "down": 42.5,
+        "left": 18.0,
+        "right": 18.0
+      },
+      "lumensSpec": 3400,
+      "lumensStandard": "ANSI (Händlerangabe)",
+      "source": "https://helpguide.sony.net/vpl/xw8100/v1/de/contents/TP1001689417.html",
+      "asOf": "2026-11-09",
+      "statedThrowRatio": "Sony-Formel (D = Diagonale in Zoll, L in m): min L = 0,030347 × D − 0,0478, max L = 0,063337 × D − 0,0448; Wert für 100 Zoll 16:9 (Bildbreite 2,21 m). Zoom 2,1-fach, motorisch.",
+      "statedLensShift": "Sony: vertikal ±85 %, horizontal ±36 %, wobei 100 % = Objektivachse am Bildrand (halbe Bildhöhe bzw. -breite). Umgerechnet auf % der ganzen Bildhöhe/-breite: ±42.5 % / ±18 %. Bereich rautenförmig.",
+      "notes": "Projektionsabstand und Lens Shift aus der Sony-Hilfe (helpguide.sony.net). Lumen nicht in der Sony-Hilfe angegeben, Wert vom Händler visunext.de (https://www.visunext.de/p/sony-bravia-9-vpl-xw8100-w-beamer-1000033069/)."
+    },
+    {
       "id": "valerion-visionmaster-max",
       "manufacturer": "Valerion",
       "model": "VisionMaster Max",

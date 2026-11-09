@@ -5,7 +5,7 @@ Datei: `data/projectors.json` (Schema: `data/projectors.schema.json`). Stand: 20
 ## Grundsätze
 - Nur Hersteller-Websites bzw. -Datenblätter, keine Sammeldatenbanken (projektoren-datenbank.com, projectorcentral.com, projector-database.com u. ä.).
 - Jeder Eintrag hat `source` (Hersteller-URL) und `asOf` (Abrufdatum).
-- Seiten werden einzeln und mit Pause abgerufen; kein Umgehen von Bot-Schutz oder Sperren (Sony sperrt automatische Abrufe → nur per PDF).
+- Seiten werden einzeln und mit Pause abgerufen; kein Umgehen von Bot-Schutz oder Sperren (Sony-Produktseiten sperren automatische Abrufe; die Sony-Hilfe helpguide.sony.net ist erreichbar).
 - Unklare oder widersprüchliche Angaben werden **nicht** geschätzt: Feld `null` + Originalangabe in `statedThrowRatio`/`statedLensShift`, oder Modell ausgelassen.
 
 ## Übernahmeregeln
@@ -22,7 +22,7 @@ Datei: `data/projectors.json` (Schema: `data/projectors.schema.json`). Stand: 20
 | Farbvarianten mit identischen Daten (B/W …) | ein Eintrag, Modelle mit „ / “ |
 
 ## Stand 2026-11-05
-Gesamt: **101 Modelle** (Stand 2026-11-06).
+Gesamt: **105 Modelle** (Stand 2026-11-09).
 
 - **Epson** (www.epson.de, Kategorie Heimkino): 39 Artikel → 29 Einträge.
 - **BenQ** (www.benq.eu/de-de, Cinema/Gaming/Portable, je `/spec.html`): 23 Seiten → 21 Einträge.
@@ -35,4 +35,7 @@ Gesamt: **101 Modelle** (Stand 2026-11-06).
 - **Optoma**: Produktseiten nur per JavaScript; Werte aus dem Optoma-**Abstandsrechner** (www.optoma.de/service-and-support/distancecalculator). Bewusst nur UHZ- und CinemaX-Modelle mit vollständigen Werten (13), nicht der ganze Rechner-Datenbestand (~980 Modelle). Lens Shift dort nicht angegeben → `null`.
 - **XGIMI** (de.xgimi.com/products/…, 2026-11-06): 18 Einträge. Vertikaler Lens Shift der Horizon-20-Reihe („±120 %“, Standardposition 100 %, +20 %/−120 %) folgt einer anderen Zählweise → vertikal `null`, Originaltext in `statedLensShift`; horizontal ±45 % übernommen. Kleine Geräte ohne optischen Zoom als `digital`.
 - **Dangbei** (de.dangbei.com/products/…, 2026-11-06): 6 Einträge (DBOX02, DBOX02 Pro, MP1 Max, Atom, Freedo, N2 mini), alle mit festem Projektionsverhältnis und elektronischem Zoom. Ausgelassen: **N3 Max** (Seitentitel 1.000 ISO-Lumen, Datentabelle 2.000), Mars 4K und Neo (Seite 404).
-- Nicht erreichbar: Hisense (www.hisense.de antwortet mit Serverfehler 502). Sony sperrt automatische Abrufe → nur per PDF.
+- **Sony** (2026-11-09): 4 Einträge (VPL-XW5000ES, XW5100, XW6100, XW8100). Projektionsabstand und Lens Shift aus der Sony-Hilfe (helpguide.sony.net, „Projektionsentfernung“), Projektionsverhältnis aus Sonys Formel für 100 Zoll 16:9. **Lens Shift umgerechnet:** Sony zählt 100 % = Objektivachse am Bildrand (halbe Bildhöhe), der Rechner % der ganzen Bildhöhe → Sony-Wert ÷ 2, Originalangabe in `statedLensShift`. **Lumen** stehen nicht in der Sony-Hilfe → Händlerangabe von visunext.de (Inhaber-Freigabe für Händlerseiten), Norm wie vom Händler genannt. Beim XW8100 vertauscht visunext horizontalen und vertikalen Shift – deshalb Shift nur aus der Sony-Hilfe. visunext `/search` ist per robots.txt gesperrt → Produktseiten über die Sitemap gefunden.
+  - Ausgelassen: **VPL-XW7000ES** (in der Sony-Hilfe vorhanden, aber keine Lumenangabe gefunden: kein visunext-Eintrag), ältere VW-Modelle (keine Hilfe-Seite gefunden).
+  - Offen: Ob andere Hersteller Lens Shift ebenfalls auf die halbe Bildhöhe beziehen, ist nicht geprüft.
+- Nicht erreichbar: Hisense (www.hisense.de antwortet mit Serverfehler 502).

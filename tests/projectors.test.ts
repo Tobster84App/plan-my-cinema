@@ -11,7 +11,7 @@ describe('data/projectors.json', () => {
     expect(valid.some((p) => p.example)).toBe(false);
   });
   it('nur Herstellerquellen', () => {
-    const allowed = /^https:\/\/(www\.epson\.de|www\.benq\.eu|de\.jvc\.com|www\.optoma\.de|www\.valerion\.com|www\.lg\.com|de\.xgimi\.com|de\.dangbei\.com)\//;
+    const allowed = /^https:\/\/(www\.epson\.de|www\.benq\.eu|de\.jvc\.com|www\.optoma\.de|www\.valerion\.com|www\.lg\.com|de\.xgimi\.com|de\.dangbei\.com|helpguide\.sony\.net)\//;
     expect(valid.filter((p) => !allowed.test(p.source)).map((p) => p.source)).toEqual([]);
   });
   it('Stichprobe JVC DLA-NZ800BE wie auf de.jvc.com: 1,43–2,92, ±80 % / ±34 %, 2.700 lm', () => {
@@ -19,6 +19,12 @@ describe('data/projectors.json', () => {
     expect(p.throwRatio).toEqual({ min: 1.43, max: 2.92 });
     expect(p.lensShift).toEqual({ up: 80, down: 80, left: 34, right: 34 });
     expect(p.lumensSpec).toBe(2700);
+  });
+  it('Sony VPL-XW8100: Formel 100 Zoll (Breite 2,2137 m): (3,0347 − 0,0478)/2,2137 = 1,35, (6,3337 − 0,0448)/2,2137 = 2,84; Shift ±85/±36 % (Sony, 100 % = Bildrand) → ±42,5/±18 %', () => {
+    const p = valid.find((x) => x.id === 'sony-vpl-xw8100')!;
+    expect(p.throwRatio).toEqual({ min: 1.35, max: 2.84 });
+    expect(p.lensShift).toEqual({ up: 42.5, down: 42.5, left: 18, right: 18 });
+    expect(p.lumensSpec).toBe(3400);
   });
   it('Valerion: Lens Shift nur beim Max (±105 % vertikal), Pro 2 ohne', () => {
     expect(valid.find((x) => x.id === 'valerion-visionmaster-max')!.lensShift).toEqual({ up: 105, down: 105, left: null, right: null });
