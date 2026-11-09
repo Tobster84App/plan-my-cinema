@@ -6,7 +6,7 @@ import { UI } from '../i18n/ui';
 import { fmtLength, fmtNum, type Lang } from '../lib/format';
 import { axialDirection } from '../lib/modes';
 import { SPREAD_WARN_DB, computeModes, seatSpread } from '../lib/modes-calc';
-import { LIMITS, MAX_SUBS, type Subwoofer } from '../lib/room';
+import { BASS_MODES, LIMITS, MAX_SUBS, type BassMode, type Subwoofer } from '../lib/room';
 import { initBrowserState, isSample, room, units, updateRoom } from '../state/room';
 import { AxialProfile, DensityChart, KindLegend, ProfileLegend, SpectrumChart } from './ModeCharts';
 import { NumberField } from './NumberField';
@@ -100,6 +100,18 @@ export default function ModesCalculator({ lang }: { lang: Lang }) {
 
         <fieldset>
           <legend>{t.gSubs}</legend>
+          <div class="f">
+            <span class="lbl">{t.bassMode}</span>
+            <div class="presets" role="group" aria-label={t.bassMode}>
+              {BASS_MODES.map((bm: BassMode) => (
+                <button type="button" key={bm} class="btn small" aria-pressed={m.bass.mode === bm} style={m.bass.mode === bm ? { borderColor: 'var(--info)', color: 'var(--fg)' } : undefined} onClick={() => updateRoom((d) => void (d.bass.mode = bm))}>
+                  {t.bassModes[bm]}
+                </button>
+              ))}
+            </div>
+          </div>
+          {m.bass.mode === 'free' && (
+            <>
           <p class="hint">{t.subsHint}</p>
           <div class="f">
             <span class="lbl">{t.presets}</span>
@@ -135,6 +147,40 @@ export default function ModesCalculator({ lang }: { lang: Lang }) {
               + {t.addSub}
             </button>
           )}
+            </>
+          )}
+          {m.bass.mode !== 'free' && (
+            <>
+              <p class="hint">{m.bass.mode === 'sba' ? t.sbaHint : t.dbaHint}</p>
+              <div class="row2">
+                <NumberField id="arr-c" label={t.arrayCols} value={m.bass.cols} digits={0} unit="" onChange={(v) => updateRoom((d) => void (d.bass.cols = Math.round(v!)))} lang={lang} min={LIMITS.arrayCols[0]} max={LIMITS.arrayCols[1]} />
+                <NumberField id="arr-r" label={t.arrayRows} value={m.bass.rows} digits={0} unit="" onChange={(v) => updateRoom((d) => void (d.bass.rows = Math.round(v!)))} lang={lang} min={LIMITS.arrayRows[0]} max={LIMITS.arrayRows[1]} />
+              </div>
+              <NumberField id="arr-g" label={t.arrayGap} value={m.bass.wallGap} onChange={(v) => updateRoom((d) => void (d.bass.wallGap = v!))} lang={lang} units={u} kind="cm" min={LIMITS.arrayGap[0]} max={LIMITS.arrayGap[1]} />
+              <p class="hint">{t.arrayGrid}</p>
+              <div class="sub-card">
+                <div class="head">
+                  <span>{t.arrayTotal(r.subs.length)}</span>
+                </div>
+                <p class="hint" style={{ margin: 0 }}>
+                  {t.arrayY}: {[...new Set(r.subs.map((q) => q.y))].map((v) => f(v)).join(' · ')}
+                  <br />
+                  {t.arrayZ}: {[...new Set(r.subs.map((q) => q.z))].map((v) => f(v)).join(' · ')}
+                  <br />
+                  {t.arrayFront}: {f(r.subs[0].x)}
+                  {m.bass.mode === 'dba' && (
+                    <>
+                      {' · '}
+                      {t.arrayRear}: {f(r.subs[r.subs.length - 1].x)}
+                    </>
+                  )}
+                </p>
+                {m.bass.mode === 'dba' && <p class="hint" style={{ margin: 0 }}>{t.arrayDelay(`${fmtNum((r.subs[r.subs.length - 1].delay ?? 0) * 1000, 2, lang)} ms`, f(r.subs[r.subs.length - 1].x - r.subs[0].x))}</p>}
+                {multi && <p class="hint" style={{ margin: 0 }}>{t.arraySpread(db(r.spread.mean))}</p>}
+                <p class="hint" style={{ margin: 0 }}>{t.levelMean(db(r.spread.level))}</p>
+              </div>
+            </>
+          )}
         </fieldset>
 
         <RoomTools lang={lang} />
@@ -143,7 +189,7 @@ export default function ModesCalculator({ lang }: { lang: Lang }) {
       <a class="mini" href="#results" aria-hidden="true" tabIndex={-1}>
         <span>{hz(r.axial[0]?.f ?? 0)}</span>
         <span>{r.modes.length} {lang === 'de' ? 'Moden' : 'modes'}</span>
-        <span>{m.subs.length} Sub{m.subs.length > 1 ? 's' : ''}</span>
+        <span>{r.subs.length} Sub{r.subs.length > 1 ? 's' : ''}</span>
       </a>
 
       <section class="results" id="results" aria-live="polite" aria-atomic="false">
@@ -177,8 +223,8 @@ export default function ModesCalculator({ lang }: { lang: Lang }) {
             {r.closePairs.slice(0, 2).map(([a, b]) => (
               <li key={`${a.n}-${b.n}`}>{t.hintPair(`${hz(a.f)} ${dirName[axialDirection(a)]}`, `${hz(b.f)} ${dirName[axialDirection(b)]}`)}</li>
             ))}
-            {m.subs.length > 1 && cancelled > 0 && <li>{t.hintCancel(cancelled)}</li>}
-            {m.subs.length === 1 && <li>{t.hintSingle}</li>}
+            {r.subs.length > 1 && cancelled > 0 && <li>{t.hintCancel(cancelled)}</li>}
+            {r.subs.length === 1 && <li>{t.hintSingle}</li>}
           </ul>
         </div>
 
@@ -210,7 +256,7 @@ export default function ModesCalculator({ lang }: { lang: Lang }) {
               const freqs = r.axial.filter((a) => axialDirection(a) === dir).slice(0, 3).map((a) => a.f);
               const seatPos = [seat.x, seat.y, seat.z][dir];
               const otherSeats = r0.seats.filter((_, i) => i !== sel).map((st) => [st.pos.x, st.pos.y, st.pos.z][dir]);
-              const subPos = m.subs.map((s) => [s.x, s.y, s.z][dir]);
+              const subPos = r.subs.map((s) => [s.x, s.y, s.z][dir]);
               return <AxialProfile key={dir} title={dirName[dir]} len={len} freqs={freqs} seatPos={seatPos} otherSeats={otherSeats} subPos={subPos} units={u} lang={lang} t={t} />;
             })}
           </div>
@@ -227,6 +273,7 @@ export default function ModesCalculator({ lang }: { lang: Lang }) {
               return (
                 <>
                   <p>{t.evenMean(db(r.spread.mean))}</p>
+                  <p class="hint">{t.levelMean(db(r.spread.level))}</p>
                   {big.length === 0 ? (
                     <p class="hint">{t.evenNone}</p>
                   ) : (

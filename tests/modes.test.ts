@@ -173,6 +173,20 @@ describe('Bass-Arrays (SBA/DBA)', () => {
     // SBA allein: 0,98769 → DBA dämpft die Mode um 20·log(0,30902/0,98769) ≈ −10,1 dB
     expect(Math.abs(coupling([1, 0, 0], D, seat, bassSources(room('sba'), 343), 343 / 12).excitation)).toBeCloseTo(0.98769, 4);
   });
+  it('DBA nahe an den Wänden (5 cm) schwächt die Moden an allen Plätzen deutlich stärker ab als SBA; die Spanne zwischen den Plätzen ändert das kaum', () => {
+    const seatsPts = [{ x: 4.2, y: 1.3, z: 1.2 }, { x: 4.2, y: 2, z: 1.2 }, { x: 5.8, y: 2, z: 1.5 }];
+    const sba = seatSpread(D, 343, bassSources(room('sba', 0.05), 343), seatsPts);
+    const dba = seatSpread(D, 343, bassSources(room('dba', 0.05), 343), seatsPts);
+    expect(dba.level).toBeLessThan(sba.level - 10);
+  });
+  it('Energiemittel: Raum 6 × 1,4 × 1,4 m → bis 120 Hz nur Längsmoden 1–4 (Breite/Höhe erst bei 343/2,8 = 122,5 Hz)', () => {
+    // Sub in der Ecke (Anregung 1). Platz x = 0: alle Moden 0 dB. Platz x = 3: cos(nπ/2) → n = 1, 3: Knoten (−30 dB), n = 2, 4: 0 dB.
+    // 6 × 10^0 + 2 × 10^(−3) = 6,002 → /8 = 0,75025 → 10·log10 = −1,2479 dB; Spanne: 30, 0, 30, 0 → Mittel 15 dB
+    const r = seatSpread({ length: 6, width: 1.4, height: 1.4 }, 343, [{ x: 0, y: 0, z: 0 }], [{ x: 0, y: 0.7, z: 0.7 }, { x: 3, y: 0.7, z: 0.7 }]);
+    expect(r.modes.map((x) => x.n.join())).toEqual(['1,0,0', '2,0,0', '3,0,0', '4,0,0']);
+    expect(r.level).toBeCloseTo(-1.2479, 3);
+    expect(r.mean).toBeCloseTo(15, 6);
+  });
   it('Import: v6 → v7 mit einzelnen Subs; ungültige Werte begrenzt', () => {
     expect(sanitizeRoom({ version: 6 }).bass).toEqual(DEFAULT_ROOM.bass);
     const r = sanitizeRoom({ ...DEFAULT_ROOM, bass: { mode: 'xyz', cols: 9, rows: 0, wallGap: 5 } });

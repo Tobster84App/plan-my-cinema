@@ -47,7 +47,8 @@ export const SPREAD_WARN_DB = 10;
 
 /**
  * Unterschiede zwischen den Plätzen je Mode (bis SPREAD_FMAX): Stärke der Mode am Platz (Anregung × Modenform)
- * in dB, Spanne = bester − schlechtester Platz. `mean` = mittlere Spanne über alle Moden im Bereich.
+ * in dB, Spanne = bester − schlechtester Platz. `mean` = mittlere Spanne über alle Moden im Bereich,
+ * `level` = mittlere Stärke der Moden an allen Plätzen.
  * Vereinfacht wie das Modenspektrum: ohne Dämpfung, Subs gleich laut und gleichphasig.
  */
 export function seatSpread(dims: RoomDims, c: number, subs: Source[], seats: Point[]) {
@@ -58,7 +59,13 @@ export function seatSpread(dims: RoomDims, c: number, subs: Source[], seats: Poi
     return { ...mode, db, spread: max - min, best: db.indexOf(max), worst: db.indexOf(min) };
   });
   const mean = modes.length ? modes.reduce((a, x) => a + x.spread, 0) / modes.length : 0;
-  return { modes, mean };
+  /**
+   * mittlere Stärke der Moden an den Plätzen als Energiemittel: 10·log10(Mittelwert von 10^(dB/10)) über alle Moden und Plätze
+   * (0 dB = jede Mode an jedem Platz voll angeregt). Starke Moden prägen den Wert, ausgelöschte kaum – kleiner = schwächere Resonanzen.
+   */
+  const n = modes.length * seats.length;
+  const level = n ? 10 * Math.log10(modes.reduce((a, x) => a + x.db.reduce((b, v) => b + 10 ** (v / 10), 0), 0) / n) : SPREAD_FLOOR_DB;
+  return { modes, mean, level };
 }
 
 /** `seatIndex`: Platz aus seatPositions(m), für den Spektrum und Hinweise gelten; ohne Angabe der Hauptsitzplatz. */
