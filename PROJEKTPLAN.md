@@ -77,6 +77,12 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - Reflexionen aller Lautsprecher an allen 6 Flächen (inkl. Stirn-/Rückwand); ausgelassen, wenn der Lautsprecher < 30 cm vor der Fläche hängt (eigene Festlegung)
 - Absorberbereich = Fläche, die die Reflexionspunkte aller Plätze abdeckt; Auswahl nach Fläche und Kanal, Bereiche in Drauf- und Seitenansicht
 
+**M3d – Bass je Sitzplatz (Rechner 2)** (fertig, 2026-11-09)
+- Sitzreihen auch im Raummoden-Rechner (gemeinsame Komponente), Spektrum/Hinweise/Druckverteilung für den gewählten Platz
+- Gleichmäßigkeit: je Mode bis 120 Hz Spanne zwischen stärkstem und schwächstem Platz (Untergrenze −30 dB), Hervorhebung ab 10 dB (eigene Festlegungen)
+- Sub-Schnellauswahl zeigt den mittleren Platzunterschied je Anordnung
+- Projektordaten: Sony XW5000ES/5100/6100/7000ES/8100 (106 Modelle); Lens Shift Sony auf ganze Bildhöhe umgerechnet
+
 **M4 – Veröffentlichung**
 - Deploy ALL-INKL, Domain, Search Console, Lighthouse/Barrierefreiheit-Prüfung
 - Inhalte überarbeiten, Affiliate-Partnerprogramme
@@ -97,5 +103,5 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 
 ## Offen
 - Speicherdauer/Anonymisierung der Server-Logfiles bei ALL-INKL prüfen und in Datenschutzerklärung eintragen
-- Weitere Projektor-Hersteller: Domains freischalten (JVC, Optoma, XGIMI, Valerion, Hisense, LG, Dangbei); Sony nur per PDF
+- Projektordaten: Hisense (502); Definition des Lens Shift bei Epson/JVC/BenQ/XGIMI/LG/Valerion ungeprüft (Handbuch-Server gesperrt)
 - Analytics: vorerst keine
