@@ -102,7 +102,8 @@ const jsonLd = [
     <p>
       Dolby bezieht alle Winkel auf den Hauptsitzplatz (MLP). Sitzen mehrere Personen, verschieben sich die Winkel für die äußeren Plätze. Der Planer
       prüft deshalb jeden Platz einzeln: Über „Winkel anzeigen für“ wählst du einen Platz, die Spalte „alle Plätze“ zeigt die schlechteste Bewertung je
-      Lautsprecher über alle Plätze.
+      Lautsprecher über alle Plätze. Steht ein Sofa nicht mittig oder ein Sessel weiter hinten, lässt sich jeder Platz außer dem Hauptsitzplatz einzeln
+      verschieben („Platz verschieben“). Die Höhe bleibt die der Reihe.
     </p>
     <h3>Sichtlinie</h3>
     <p>
@@ -112,9 +113,11 @@ const jsonLd = [
     </p>
     <h3>Erstreflexionen</h3>
     <p>
-      Der Schall der Frontlautsprecher erreicht den Hauptsitzplatz auch über Seitenwände, Decke und Boden. Diese frühen Reflexionen verwischen die
-      Ortung. Der Planer berechnet die Reflexionspunkte mit der Spiegelquellen-Methode – dort gehören Absorber hin. Die Punkte gelten für den
-      Hauptsitzplatz; für weitere Plätze verschieben sie sich, deshalb sollten Absorber etwas größer ausfallen.
+      Der Schall jedes Lautsprechers erreicht die Plätze nicht nur direkt, sondern auch über Wände, Decke und Boden. Diese frühen Reflexionen verwischen
+      die Ortung. Der Planer berechnet die Reflexionspunkte mit der Spiegelquellen-Methode für alle Lautsprecher und alle sechs Raumflächen. Für den
+      Hauptsitzplatz gibt er den genauen Punkt an, für mehrere Plätze zusätzlich den Bereich, der die Punkte aller Plätze abdeckt – so groß sollte ein
+      Absorber mindestens sein. In Draufsicht und Seitenansicht ist dieser Bereich als Fläche eingezeichnet. Flächen, an denen ein Lautsprecher selbst
+      hängt, lässt der Planer aus.
     </p>
 
     <h2>Häufige Fragen</h2>

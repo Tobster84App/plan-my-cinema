@@ -171,7 +171,7 @@ footer.site-foot a { color: var(--muted); }
 :root { --mode-axial: #c98500; --mode-tangential: #3987e5; --mode-oblique: #d55181; }
 .chart { border: 1px solid var(--line); border-radius: 10px; padding: 15px; display: flex; flex-direction: column; gap: 8px; margin: 0; min-width: 0; }
 .chart h2 { font: 500 11px var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--beam); margin: 0; }
-.chart .sub { font-size: 12px; color: var(--muted); margin: 0; }
+.chart .sub, .card .sub { font-size: 12px; color: var(--muted); margin: 0; }
 .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
 .chart svg text { font: 12px var(--mono); fill: var(--muted); }
 .chart .grid line { stroke: var(--line); stroke-width: 1; }

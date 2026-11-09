@@ -9,7 +9,8 @@ import { computeSpeakers } from '../lib/speakers-calc';
 import { initBrowserState, isSample, room, units, updateRoom } from '../state/room';
 import { NumberField } from './NumberField';
 import { RoomTools } from './RoomTools';
-import { STATUS_COLOR, STATUS_ICON, SpeakerSideView, SpeakerTopView } from './SpeakerViews';
+import { REFL_GROUPS, STATUS_COLOR, STATUS_ICON, SpeakerSideView, SpeakerTopView, inReflGroup, type ReflGroup } from './SpeakerViews';
+import { seatKey, surfaceAxes } from '../lib/seating';
 
 export default function SpeakerPlanner({ lang }: { lang: Lang }) {
   const t = SPEAKERS_UI[lang];
@@ -27,6 +28,17 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
   const seatName = seatRes.seat.isMlp ? t.mlpLabel : t.seatLabel(seatRes.seat.row, seatRes.seat.index);
   const resOf = (id: SpeakerId) => seatRes.results.find((x) => x.id === id)!;
   const f = (v: number) => fmtLength(v, u, lang);
+  const [reflGroup, setReflGroup] = useState<ReflGroup>('side');
+  const [reflId, setReflId] = useState<string | null>(null);
+  const refl = { group: reflGroup, id: reflId != null && r.speakers.some((s) => s.id === reflId) ? reflId : null };
+  const reflRows = r.reflections.filter((x) => inReflGroup(x.surface, refl.group) && (refl.id == null || x.id === refl.id));
+  const range = (a: { min: number; max: number }) => (a.max - a.min < 0.005 ? f(a.min) : `${f(a.min)} – ${f(a.max)}`);
+  const setSeatPos = (key: 'x' | 'y', v: number) =>
+    updateRoom((d) => {
+      const k = seatKey(seatRes.seat.row, seatRes.seat.index);
+      const cur = d.seating.overrides[k] ?? { x: seatRes.seat.pos.x, y: seatRes.seat.pos.y };
+      d.seating.overrides[k] = { ...cur, [key]: v };
+    });
   const deg = (v: number) => `${fmtNum(v, 0, lang)}°`;
   const n = r.speakers.length;
 
@@ -121,7 +133,7 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
 
         <figure class="chart">
           <h2>{t.topView}</h2>
-          <SpeakerTopView m={m} r={r} selected={sel} lang={lang} units={u} t={t} />
+          <SpeakerTopView m={m} r={r} selected={sel} refl={refl} lang={lang} units={u} t={t} />
           <div class="legend">
             <span><i class="swatch" style={{ background: 'var(--info)', borderRadius: '50%' }} />{t.legendMlp}</span>
             <span><i class="swatch" style={{ background: 'var(--fg)' }} />{t.legendScreen}</span>
@@ -130,12 +142,10 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
           </div>
         </figure>
 
-        {(r.speakers.some((s) => s.rule.measure === 'elevation') || m.seating.rows > 1) && (
-          <figure class="chart">
-            <h2>{t.sideView}</h2>
-            <SpeakerSideView m={m} r={r} selected={sel} lang={lang} units={u} t={t} />
-          </figure>
-        )}
+        <figure class="chart">
+          <h2>{t.sideView}</h2>
+          <SpeakerSideView m={m} r={r} selected={sel} refl={refl} lang={lang} units={u} t={t} />
+        </figure>
 
         <figure class="chart">
           <h2>{t.tableTitle}</h2>
@@ -153,6 +163,25 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
                   </button>
                 ))}
               </div>
+              {seatRes.seat.isMlp ? (
+                <p class="hint">{t.mlpMoveHint}</p>
+              ) : (
+                <details style={{ marginTop: '8px' }} open={seatRes.seat.moved}>
+                  <summary>
+                    {t.moveSeat} ({seatName}){seatRes.seat.moved ? ` · ${t.seatMoved}` : ''}
+                  </summary>
+                  <div class="row2" style={{ maxWidth: '420px', marginTop: '8px' }}>
+                    <NumberField id="seat-x" label={t.seatX} value={seatRes.seat.pos.x} onChange={(v) => setSeatPos('x', v!)} lang={lang} units={u} kind="cm" min={0} max={m.room.length} />
+                    <NumberField id="seat-y" label={t.seatY} value={seatRes.seat.pos.y} onChange={(v) => setSeatPos('y', v!)} lang={lang} units={u} kind="cm" min={0} max={m.room.width} />
+                  </div>
+                  <p class="hint">{t.moveHint}</p>
+                  {seatRes.seat.moved && (
+                    <button type="button" class="btn small ghost" onClick={() => updateRoom((d) => void delete d.seating.overrides[seatKey(seatRes.seat.row, seatRes.seat.index)])}>
+                      {t.seatReset}
+                    </button>
+                  )}
+                </details>
+              )}
             </div>
           )}
           <div class="tbl-wrap">
@@ -229,7 +258,8 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
             <ul class="hints">
               {r.sightlines.map((sl) => (
                 <li key={sl.row} style={{ color: STATUS_COLOR[sl.status] }}>
-                  {STATUS_ICON[sl.status]} {t.sightRow(sl.row)}: {t.sightC(fmtSmallLength(sl.c, u, lang))}
+                  {STATUS_ICON[sl.status]} {t.sightRow(sl.row)}
+                  {m.seating.seatsPerRow > 1 && ` (${t.sightWorst(t.seatLabel(sl.row, sl.index))})`}: {t.sightC(fmtSmallLength(sl.c, u, lang))}
                   {sl.status !== 'ok' && <span style={{ color: 'var(--muted)' }}> · {t.sightNeed(f(sl.requiredEyeZ))}</span>}
                 </li>
               ))}
@@ -240,28 +270,56 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
 
         <figure class="chart">
           <h2>{t.reflTitle}</h2>
-          <div class="tbl-wrap">
-            <table class="data">
-              <thead>
-                <tr>
-                  <th>{t.thSpk}</th>
-                  <th>{t.thSurface}</th>
-                  <th>{t.thPoint}</th>
-                  <th>{t.thExtra}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {r.reflections.map((x) => (
-                  <tr key={`${x.id}${x.surface}`}>
-                    <td><b>{x.id}</b></td>
-                    <td>{t.surfaces[x.surface]}</td>
-                    <td>{x.surface === 'left' || x.surface === 'right' ? t.pointWall(f(x.point.x), f(x.point.z)) : t.pointFlat(f(x.point.x), f(x.point.y))}</td>
-                    <td class="num">{f(x.extra)}</td>
-                  </tr>
+          <div class="row2" style={{ maxWidth: '520px' }}>
+            <div class="f">
+              <label for="refl-g">{t.reflFilter}</label>
+              <select id="refl-g" value={reflGroup} onChange={(e) => setReflGroup((e.target as HTMLSelectElement).value as ReflGroup)}>
+                {REFL_GROUPS.map((g) => (
+                  <option key={g} value={g}>{t.reflGroups[g]}</option>
                 ))}
-              </tbody>
-            </table>
+              </select>
+            </div>
+            <div class="f">
+              <label for="refl-id">{t.thSpk}</label>
+              <select id="refl-id" value={refl.id ?? ''} onChange={(e) => setReflId((e.target as HTMLSelectElement).value || null)}>
+                <option value="">{lang === 'de' ? 'alle' : 'all'}</option>
+                {r.speakers.map((sp) => (
+                  <option key={sp.id} value={sp.id}>{sp.id} · {t.names[sp.id]}</option>
+                ))}
+              </select>
+            </div>
           </div>
+          {reflRows.length === 0 ? (
+            <p class="hint">{t.reflNone}</p>
+          ) : (
+            <div class="tbl-wrap">
+              <table class="data">
+                <thead>
+                  <tr>
+                    <th>{t.thSpk}</th>
+                    {reflGroup === 'side' && <th>{t.thSurface}</th>}
+                    <th>{t.thPoint}</th>
+                    {r.seats.length > 1 && <th>{t.thArea}</th>}
+                    <th>{t.thExtra}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reflRows.map((x) => {
+                    const [a, b] = surfaceAxes(x.surface);
+                    return (
+                      <tr key={`${x.id}${x.surface}`}>
+                        <td><b>{x.id}</b></td>
+                        {reflGroup === 'side' && <td>{t.surfaces[x.surface]}</td>}
+                        <td>{`${f(x.point[a])} ${t.axisLabel[a]}, ${f(x.point[b])} ${t.axisLabel[b]}`}</td>
+                        {r.seats.length > 1 && <td>{`${range(x.area.a)} ${t.axisLabel[a]}, ${range(x.area.b)} ${t.axisLabel[b]}`}</td>}
+                        <td class="num">{f(x.extra)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
           <p class="sub">{t.reflNote}</p>
         </figure>
 

@@ -102,6 +102,7 @@ const jsonLd = [
     <p>
       Dolby refers every angle to the main listening position (MLP). With several people seated, the angles shift for the outer seats. The planner
       therefore checks each seat: pick one under “Show angles for”, and the “all seats” column shows the worst rating per speaker across every seat.
+      If a sofa sits off-centre or an armchair further back, move any seat except the main one on its own (“Move seat”); its height stays that of the row.
     </p>
     <h3>Sightline</h3>
     <p>
@@ -111,9 +112,10 @@ const jsonLd = [
     </p>
     <h3>First reflections</h3>
     <p>
-      Sound from the front speakers also reaches the main seat via the side walls, ceiling and floor. These early reflections blur imaging. The planner
-      finds the reflection points with the image-source method – that is where absorbers belong. The points apply to the main seat; they move for other
-      seats, so make absorbers a little larger.
+      Every speaker reaches the seats not only directly but also via the walls, ceiling and floor, and these early reflections blur imaging. The planner
+      traces them with the image-source method for every speaker and all six room surfaces. It gives the exact point for the main seat and, with several
+      seats, the patch that covers all of their points – the minimum size for an absorber. Both views draw that patch. Surfaces a speaker is mounted on
+      are left out.
     </p>
 
     <h2>FAQ</h2>
