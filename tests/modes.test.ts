@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { closeAxialPairs, coupling, modeDensity, modeFrequency, modeKind, modeShape, roomModes, speedOfSound, toDb } from '../src/lib/modes';
-import { seatSpread } from '../src/lib/modes-calc';
+import { bassSources, seatSpread } from '../src/lib/modes-calc';
+import { DEFAULT_ROOM, sanitizeRoom } from '../src/lib/room';
 
 const D = { length: 6, width: 4, height: 2.5 };
 const C = 343;
@@ -129,5 +130,52 @@ describe('Bass je Sitzplatz (seatSpread)', () => {
   it('nur Moden bis 120 Hz; ein einzelner Platz hat überall Spanne 0', () => {
     expect(r.modes.every((x) => x.f <= 120 + 1e-9)).toBe(true);
     expect(seatSpread(dims, 343, [{ x: 0, y: 0, z: 0 }], [seats[1]]).mean).toBe(0);
+  });
+});
+
+describe('Bass-Arrays (SBA/DBA)', () => {
+  // Raum 6 × 4 × 2,5 m, c = 343 m/s, Raster 2 × 2, Wandabstand 0,3 m
+  const room = (mode: 'sba' | 'dba', wallGap = 0.3) => {
+    const m = structuredClone(DEFAULT_ROOM);
+    m.bass = { mode, cols: 2, rows: 2, wallGap };
+    return m;
+  };
+  const seat = { x: 4.2, y: 2, z: 1.2 };
+  it('SBA-Raster: y = B/4, 3B/4 = 1 / 3 m; z = H/4, 3H/4 = 0,625 / 1,875 m; x = 0,3 m', () => {
+    const s = bassSources(room('sba'), 343);
+    expect(s).toHaveLength(4);
+    expect(s.map((p) => p.y)).toEqual([1, 3, 1, 3]);
+    expect(s.map((p) => p.z)).toEqual([0.625, 0.625, 1.875, 1.875]);
+    expect(s.every((p) => p.x === 0.3 && !p.delay)).toBe(true);
+  });
+  it('SBA löscht Breitenmoden 1–3 aus: cos(nπ/4) + cos(3nπ/4) = 0; Mode 4: cos π + cos 3π = −2 → Anregung |−1|', () => {
+    const s = bassSources(room('sba'), 343);
+    for (const n of [1, 2, 3]) expect(coupling([0, n, 0], D, seat, s).excitation).toBeCloseTo(0, 10);
+    expect(Math.abs(coupling([0, 4, 0], D, seat, s).excitation)).toBeCloseTo(1, 10);
+    expect(coupling([0, 0, 1], D, seat, s).excitation).toBeCloseTo(0, 10);
+  });
+  it('DBA: Rückwand-Array invertiert, Verzögerung (5,7 − 0,3)/343 = 15,74 ms', () => {
+    const s = bassSources(room('dba'), 343);
+    expect(s).toHaveLength(8);
+    const rear = s.filter((p) => p.gain === -1);
+    expect(rear).toHaveLength(4);
+    expect(rear[0].x).toBeCloseTo(5.7, 10);
+    expect(rear[0].delay!).toBeCloseTo(5.4 / 343, 12);
+  });
+  it('DBA direkt an den Wänden: 1. Längsmode vorn 1, hinten −1 · cos π · e^(−iπ) = −1 → Summe 0', () => {
+    const s = bassSources(room('dba', 0), 343);
+    expect(coupling([1, 0, 0], D, seat, s, 343 / 12).excitation).toBeCloseTo(0, 10);
+  });
+  it('DBA mit 0,3 m Wandabstand: 1. Längsmode je Paar ψ = cos(0,05π) = 0,98769, Phase 0,9π → |0,98769 · (1 − e^(−i0,9π))| = 0,3090', () => {
+    // Summe je Paar: 0,98769 · (1 + cos 0,9π) − i · 0,98769 · sin 0,9π → Betrag 0,98769 · 0,31287 = 0,30902
+    const s = bassSources(room('dba'), 343);
+    expect(Math.abs(coupling([1, 0, 0], D, seat, s, 343 / 12).excitation)).toBeCloseTo(0.30902, 4);
+    // SBA allein: 0,98769 → DBA dämpft die Mode um 20·log(0,30902/0,98769) ≈ −10,1 dB
+    expect(Math.abs(coupling([1, 0, 0], D, seat, bassSources(room('sba'), 343), 343 / 12).excitation)).toBeCloseTo(0.98769, 4);
+  });
+  it('Import: v6 → v7 mit einzelnen Subs; ungültige Werte begrenzt', () => {
+    expect(sanitizeRoom({ version: 6 }).bass).toEqual(DEFAULT_ROOM.bass);
+    const r = sanitizeRoom({ ...DEFAULT_ROOM, bass: { mode: 'xyz', cols: 9, rows: 0, wallGap: 5 } });
+    expect(r.bass).toEqual({ mode: 'free', cols: 4, rows: 1, wallGap: 1.5 });
   });
 });

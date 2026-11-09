@@ -5,8 +5,8 @@
  * Druckverteilung einer Mode: p ∝ cos(nx·π·x/L) · cos(ny·π·y/B) · cos(nz·π·z/H)
  * x, y, z ab einer Ecke (Stirnwand, linke Wand, Boden).
  *
- * Vereinfachungen: keine Dämpfung, keine Wandabsorption, keine Phasenlage zwischen
- * mehreren Subs außer dem Vorzeichen der Mode. Ergebnis = Tendenz, keine Messung.
+ * Vereinfachungen: keine Dämpfung, keine Wandabsorption. Mehrere Subs werden mit Pegel (Vorzeichen = Polarität)
+ * und Verzögerung bei der Modenfrequenz phasenrichtig addiert. Ergebnis = Tendenz, keine Messung.
  */
 
 export type ModeKind = 'axial' | 'tangential' | 'oblique';
@@ -24,6 +24,12 @@ export interface Point {
   y: number;
   /** ab Boden */
   z: number;
+}
+
+/** Subwoofer als Schallquelle: Position, Pegelfaktor (−1 = invertiert), Verzögerung in s. */
+export interface Source extends Point {
+  gain?: number;
+  delay?: number;
 }
 
 export interface Mode {
@@ -75,11 +81,24 @@ export function modeShape(n: [number, number, number], d: RoomDims, p: Point): n
 
 /**
  * Kopplung Sub(s) → Mode → Sitz.
- * Anregung = Mittelwert der Modenform an allen Sub-Positionen (gleich laut, gleiche Phase).
+ * Anregung = Summe der Modenform an allen Subs, gewichtet mit Pegel und Phase der Verzögerung bei der
+ * Modenfrequenz f: Σ g·ψ·e^(−i·2π·f·τ), geteilt durch die Zahl der unverzögerten Subs (so bleibt
+ * 1 Sub im Druckbauch = 1). Für Subs ohne Verzögerung ist das der Mittelwert wie bisher.
+ * `excitation` = Betrag mit Vorzeichen des Realteils (bei rein reellen Summen = Summe selbst).
  * Am Sitz = Modenform an der Sitzposition. Produkt = relative Stärke der Mode am Sitz.
  */
-export function coupling(n: [number, number, number], d: RoomDims, seat: Point, subs: Point[]) {
-  const excitation = subs.length ? subs.reduce((s, p) => s + modeShape(n, d, p), 0) / subs.length : 0;
+export function coupling(n: [number, number, number], d: RoomDims, seat: Point, subs: Source[], f = 0) {
+  let re = 0;
+  let im = 0;
+  for (const s of subs) {
+    const g = (s.gain ?? 1) * modeShape(n, d, s);
+    const ph = 2 * Math.PI * f * (s.delay ?? 0);
+    re += g * Math.cos(ph);
+    im -= g * Math.sin(ph);
+  }
+  const norm = subs.filter((s) => !s.delay).length || subs.length;
+  const mag = norm ? Math.hypot(re, im) / norm : 0;
+  const excitation = re < 0 ? -mag : mag;
   const atSeat = modeShape(n, d, seat);
   return { excitation, atSeat, product: excitation * atSeat };
 }

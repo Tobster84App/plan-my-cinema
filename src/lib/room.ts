@@ -13,7 +13,7 @@
 import { clamp, finiteOr } from './units';
 import type { ScopeMethod } from './screen';
 
-export const ROOM_MODEL_VERSION = 6;
+export const ROOM_MODEL_VERSION = 7;
 
 export interface Subwoofer {
   /** Abstand Stirnwand (Leinwandwand) */
@@ -92,6 +92,16 @@ export interface RoomModel {
     temperatureC: number;
   };
   subs: Subwoofer[];
+  /** Bass-System: einzelne Subs (Liste `subs`) oder Bass-Array an der Stirnwand (SBA) bzw. Stirn- + Rückwand (DBA) */
+  bass: {
+    mode: BassMode;
+    /** Subs je Array nebeneinander (Breite) */
+    cols: number;
+    /** Subs je Array übereinander (Höhe) */
+    rows: number;
+    /** Abstand Membran ↔ Wand */
+    wallGap: number;
+  };
   speakers: {
     layout: SpeakerLayout;
     /** Höhe der Ohrhöhen-Lautsprecher (Hochtöner); null = Ohrhöhe am Sitz */
@@ -114,6 +124,9 @@ export interface RoomModel {
   };
 }
 
+export type BassMode = 'free' | 'sba' | 'dba';
+export const BASS_MODES: readonly BassMode[] = ['free', 'sba', 'dba'];
+
 /** Beispielraum. Der Hinweis „Beispielwerte“ steht in der Oberfläche. */
 export const DEFAULT_ROOM: RoomModel = {
   version: ROOM_MODEL_VERSION,
@@ -134,6 +147,7 @@ export const DEFAULT_ROOM: RoomModel = {
   seat: { distance: 3.8, eyeHeight: 1.2, offsetY: 0 },
   acoustics: { temperatureC: 20 },
   subs: [{ x: 0.3, y: 0.3, z: 0.25 }],
+  bass: { mode: 'free', cols: 2, rows: 2, wallGap: 0.3 },
   speakers: { layout: '7.1.4', listenerHeight: null, overrides: {} },
   seating: { rows: 1, seatsPerRow: 3, seatSpacing: 0.7, rowSpacing: 1.6, riserStep: 0.3, overrides: {} },
 };
@@ -164,6 +178,9 @@ export const LIMITS = {
   seatSpacing: [0.5, 1.5],
   rowSpacing: [0.8, 3],
   riserStep: [0, 1],
+  arrayCols: [1, 4],
+  arrayRows: [1, 3],
+  arrayGap: [0.05, 1.5],
 } as const satisfies Record<string, readonly [number, number]>;
 
 type Lim = keyof typeof LIMITS;
@@ -233,6 +250,16 @@ export function sanitizeRoom(input: unknown): RoomModel {
       temperatureC: num(obj(i.acoustics).temperatureC, d.acoustics.temperatureC, 'temperature'),
     },
     subs: sanitizeSubs(i.subs),
+    bass: (() => {
+      const b = obj(i.bass);
+      const db = d.bass;
+      return {
+        mode: (BASS_MODES as readonly string[]).includes(b.mode as string) ? (b.mode as BassMode) : db.mode,
+        cols: Math.round(num(b.cols, db.cols, 'arrayCols')),
+        rows: Math.round(num(b.rows, db.rows, 'arrayRows')),
+        wallGap: num(b.wallGap, db.wallGap, 'arrayGap'),
+      };
+    })(),
     speakers: sanitizeSpeakers(i.speakers),
     seating: (() => {
       const g = obj(i.seating);
@@ -307,6 +334,7 @@ function migrate(i: Record<string, unknown>): Record<string, unknown> {
   }
   if (out.version === 4) out.version = 5; // v4 kannte keine Sitzreihen: Standard 1 Reihe à 3 Plätze
   if (out.version === 5) out.version = 6; // v5 kannte keine verschobenen Plätze: leere Liste
+  if (out.version === 6) out.version = 7; // v6 kannte keine Bass-Arrays: einzelne Subs wie bisher
   return out;
 }
 
