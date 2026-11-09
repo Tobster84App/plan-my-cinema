@@ -83,6 +83,13 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - Sub-Schnellauswahl zeigt den mittleren Platzunterschied je Anordnung
 - Projektordaten: Sony XW5000ES/5100/6100/7000ES/8100 (106 Modelle); Lens Shift Sony auf ganze Bildhöhe umgerechnet
 
+**M3e – SBA/DBA (Rechner 2)** (fertig, 2026-11-09)
+- Raummodell v7: Bass-System `free` (einzelne Subs) / `sba` / `dba`, Raster Spalten × Reihen (1–4 × 1–3), Wandabstand
+- Raster mit halbem Abstand zu den Wänden (verbreitete Regel, Primärquelle nicht gelesen); DBA-Rückwand invertiert, Verzögerung = Abstand der Arrays ÷ c (Nubert 2005 / Wikipedia nur als Suchauszug; CABS: Celestinos & Nielsen, JAES 56, 2008, nicht gelesen)
+- Kopplung komplex: Σ g·ψ·e^(−i2πfτ), normiert auf unverzögerte Subs
+- Neue Kennzahl „mittlere Modenstärke an den Plätzen“ (Energiemittel bis 120 Hz), weil DBA die Platzunterschiede kaum, die Modenstärke aber deutlich ändert
+- Modellbefund: DBA-Wirkung stark vom Wandabstand abhängig (5 cm: Längsmoden −14…−20 dB, 30 cm: −1…−10 dB) – an realen Anlagen nicht geprüft
+
 **M4 – Veröffentlichung**
 - Deploy ALL-INKL, Domain, Search Console, Lighthouse/Barrierefreiheit-Prüfung
 - Inhalte überarbeiten, Affiliate-Partnerprogramme
@@ -104,4 +111,5 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 ## Offen
 - Speicherdauer/Anonymisierung der Server-Logfiles bei ALL-INKL prüfen und in Datenschutzerklärung eintragen
 - Projektordaten: Hisense (502); Definition des Lens Shift bei Epson/JVC/BenQ/XGIMI/LG/Valerion ungeprüft (Handbuch-Server gesperrt)
+- SBA/DBA: Quellen (de/en.wikipedia.org, nubert.de) aus der Arbeitsumgebung gesperrt – Rasterregel und Wandabstand-Empfindlichkeit prüfen
 - Analytics: vorerst keine
