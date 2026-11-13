@@ -13,7 +13,7 @@
 import { clamp, finiteOr } from './units';
 import type { ScopeMethod } from './screen';
 
-export const ROOM_MODEL_VERSION = 7;
+export const ROOM_MODEL_VERSION = 8;
 
 export interface Subwoofer {
   /** Abstand Stirnwand (Leinwandwand) */
@@ -102,6 +102,12 @@ export interface RoomModel {
     /** Abstand Membran ↔ Wand */
     wallGap: number;
   };
+  /** Rechner 4: Kalibrierpegel und Lautsprecher-/Verstärkerdaten je Gruppe */
+  levels: {
+    /** Kalibrierpegel am MLP bei −20 dBFS rosa Rauschen, dB SPL(C) */
+    calSpl: number;
+    groups: Record<LevelGroup, LevelGroupSpec>;
+  };
   speakers: {
     layout: SpeakerLayout;
     /** Höhe der Ohrhöhen-Lautsprecher (Hochtöner); null = Ohrhöhe am Sitz */
@@ -125,6 +131,19 @@ export interface RoomModel {
 }
 
 export type BassMode = 'free' | 'sba' | 'dba';
+/** Bezug der Kennempfindlichkeit: 1 W/1 m oder 2,83 V/1 m */
+export type SensBasis = '1w' | '2v83';
+export type LevelGroup = 'front' | 'surround' | 'height';
+export const LEVEL_GROUPS: readonly LevelGroup[] = ['front', 'surround', 'height'];
+export interface LevelGroupSpec {
+  /** Kennempfindlichkeit in dB SPL */
+  sens: number;
+  basis: SensBasis;
+  /** Nennimpedanz in Ω */
+  impedance: number;
+  /** Verstärkerleistung je Kanal in W an dieser Impedanz */
+  amp: number;
+}
 export const BASS_MODES: readonly BassMode[] = ['free', 'sba', 'dba'];
 
 /** Beispielraum. Der Hinweis „Beispielwerte“ steht in der Oberfläche. */
@@ -148,6 +167,14 @@ export const DEFAULT_ROOM: RoomModel = {
   acoustics: { temperatureC: 20 },
   subs: [{ x: 0.3, y: 0.3, z: 0.25 }],
   bass: { mode: 'free', cols: 2, rows: 2, wallGap: 0.3 },
+  levels: {
+    calSpl: 82,
+    groups: {
+      front: { sens: 88, basis: '2v83', impedance: 8, amp: 100 },
+      surround: { sens: 88, basis: '2v83', impedance: 8, amp: 100 },
+      height: { sens: 86, basis: '2v83', impedance: 8, amp: 100 },
+    },
+  },
   speakers: { layout: '7.1.4', listenerHeight: null, overrides: {} },
   seating: { rows: 1, seatsPerRow: 3, seatSpacing: 0.7, rowSpacing: 1.6, riserStep: 0.3, overrides: {} },
 };
@@ -181,6 +208,10 @@ export const LIMITS = {
   arrayCols: [1, 4],
   arrayRows: [1, 3],
   arrayGap: [0.05, 1.5],
+  calSpl: [70, 90],
+  sens: [70, 115],
+  impedance: [2, 16],
+  amp: [1, 5000],
 } as const satisfies Record<string, readonly [number, number]>;
 
 type Lim = keyof typeof LIMITS;
@@ -260,6 +291,22 @@ export function sanitizeRoom(input: unknown): RoomModel {
         wallGap: num(b.wallGap, db.wallGap, 'arrayGap'),
       };
     })(),
+    levels: (() => {
+      const l = obj(i.levels);
+      const gs = obj(l.groups);
+      const groups = {} as Record<LevelGroup, LevelGroupSpec>;
+      for (const k of LEVEL_GROUPS) {
+        const g = obj(gs[k]);
+        const dg = d.levels.groups[k];
+        groups[k] = {
+          sens: num(g.sens, dg.sens, 'sens'),
+          basis: g.basis === '1w' || g.basis === '2v83' ? g.basis : dg.basis,
+          impedance: num(g.impedance, dg.impedance, 'impedance'),
+          amp: num(g.amp, dg.amp, 'amp'),
+        };
+      }
+      return { calSpl: num(l.calSpl, d.levels.calSpl, 'calSpl'), groups };
+    })(),
     speakers: sanitizeSpeakers(i.speakers),
     seating: (() => {
       const g = obj(i.seating);
@@ -335,6 +382,7 @@ function migrate(i: Record<string, unknown>): Record<string, unknown> {
   if (out.version === 4) out.version = 5; // v4 kannte keine Sitzreihen: Standard 1 Reihe à 3 Plätze
   if (out.version === 5) out.version = 6; // v5 kannte keine verschobenen Plätze: leere Liste
   if (out.version === 6) out.version = 7; // v6 kannte keine Bass-Arrays: einzelne Subs wie bisher
+  if (out.version === 7) out.version = 8; // v7 kannte keine Pegel-/Verstärkerdaten: Beispielwerte
   return out;
 }
 
