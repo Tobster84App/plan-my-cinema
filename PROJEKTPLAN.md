@@ -96,7 +96,8 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - Planer: je Platz Abstand, Laufzeit, Δ Laufzeit und Δ Pegel gegenüber der Einmessung auf den MLP (Abstandsgesetz, ohne Reflexionen)
 - Rechner 4 (`/de/pegel-verstaerker/`, `/en/spl-amplifier/`), Raummodell v8 `levels`: Kalibrierpegel (Dolby 79–82 dB SPL(C) bei −20 dBFS rosa Rauschen, Dolby Atmos Home Theater Installation Guidelines 12/2018 S. 15) + 20 dB = Ziel bei Vollaussteuerung
 - Je Gruppe (Front / Surround-Rear-Wides / Höhe): Empfindlichkeit (1 W oder 2,83 V), Impedanz, Verstärkerleistung → nötige Leistung, max. Pegel, Reserve je Lautsprecher am MLP; „knapp“ < 3 dB = eigene Festlegung
-- Nicht enthalten: Subwoofer/LFE (+10 dB LFE nicht in der Dolby-Richtlinie gefunden), Belastbarkeit, Leistungskompression
+- Subwoofer/LFE: Ziel = Kalibrierpegel + 20 dB + LFE-Anhebung (Standard +10 dB = Erfahrungswert des Inhabers, nicht in der Dolby-Richtlinie; im Raum fein abstimmen); Subs aus Rechner 2, phasengleich summiert, DBA nur vorderes Array; Freifeld ohne Raumverstärkung
+- Nicht enthalten: Belastbarkeit, Leistungskompression
 - Lens Shift JVC: Bezug ganze Bildhöhe laut Bedienungsanleitung B5A-3961-44 S. 30 bestätigt
 
 **M4 – Veröffentlichung**
