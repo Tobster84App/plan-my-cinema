@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import { path } from '../../i18n/routes';
+import { CONTACT_EMAIL } from '../../config/site';
+---
+<Base lang="de" page="about" title="Über das Projekt" description="Warum es Plan My Cinema gibt: Heimkino-Rechner auf einem gemeinsamen Raummodell, mit Quellen statt Faustregeln – entstanden beim Bau eines eigenen Heimkinos.">
+  <article class="prose">
+    <h1 class="page-head">Über das Projekt</h1>
+
+    <h2>Warum es diese Seite gibt</h2>
+    <p>
+      Ich habe selbst ein Heimkino gebaut. Die größte Hürde war dabei nicht das Bauen, sondern an verlässliche Daten zu kommen: Projektionsabstände
+      und Lens Shift stehen in Datenblättern, die Lautsprecherwinkel in Dolby-Richtlinien, die Raummoden in Akustik-Fachbüchern – und jeder
+      Online-Rechner wollte die Raummaße aufs Neue haben. Vieles war nur auf Englisch, in Zoll und Fuß oder als Faustregel ohne Quelle zu finden.
+    </p>
+    <p>
+      Plan My Cinema bündelt das, was ich mir damals gewünscht hätte: Du gibst deinen Raum einmal ein, und alle Rechner arbeiten mit denselben Maßen,
+      demselben Sitzplatz und denselben Geräten.
+    </p>
+
+    <h2>Was die Rechner können</h2>
+    <ul>
+      <li><a href={path('screen', 'de')}>Leinwand &amp; Projektion</a>: Projektionsabstand, Bildhelligkeit in nits und fL, Lens Shift, Sitzabstand – mit einer Liste von Projektoren aus Herstellerangaben.</li>
+      <li><a href={path('modes', 'de')}>Raummoden</a>: welche Bassfrequenzen dein Raum betont, was an jedem Sitzplatz ankommt und wie Subwoofer, SBA oder DBA das ändern.</li>
+      <li><a href={path('speakers', 'de')}>Lautsprecher</a>: Dolby-Atmos-Layouts mit Winkelprüfung für jeden Platz, Sichtlinie bei mehreren Reihen und Stellen für Absorber.</li>
+    </ul>
+
+    <h2>Wie wir arbeiten</h2>
+    <ul>
+      <li><strong>Quellen statt Faustregeln:</strong> Grenzwerte und Richtwerte stehen mit Quelle im Text. Wo es keine verbindliche Norm gibt oder eine Grenze unsere eigene Festlegung ist, steht das dabei.</li>
+      <li><strong>Herstellerdaten von Hand:</strong> Projektordaten übernehmen wir einzeln aus Hersteller-Datenblättern, nicht aus Sammeldatenbanken.</li>
+      <li><strong>Rechnen statt Raten:</strong> Die Formeln sind nachvollziehbar erklärt. Die Ergebnisse sind Näherungen und ersetzen keine Messung im eigenen Raum.</li>
+      <li><strong>Deine Daten bleiben bei dir:</strong> Der Raum wird nur in deinem Browser gespeichert. Keine Anmeldung, keine Cookies, kein Tracking.</li>
+      <li><strong>Deutsch und metrisch zuerst</strong>, auf Wunsch in Fuß und Zoll und auf Englisch.</li>
+    </ul>
+
+    <h2>Fragen und Themenwünsche</h2>
+    <p>
+      Fehlt dir eine Angabe, ein Projektor oder ein Thema, oder ist dir bei einer Berechnung etwas aufgefallen? Schreib mir gern an{' '}
+      <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Fragen, die viele betreffen, nehme ich in die Erklärungen auf der Seite auf.
+    </p>
+    <p>
+      Persönliche Planungsberatung kann ich dabei nicht leisten. Wie wir mit deiner Nachricht umgehen, steht in der{' '}
+      <a href={path('privacy', 'de')}>Datenschutzerklärung</a>.
+    </p>
+  </article>
+</Base>
