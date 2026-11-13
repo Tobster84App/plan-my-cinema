@@ -5,7 +5,9 @@ import { SPEAKERS_UI } from '../i18n/speakers-ui';
 import { UI } from '../i18n/ui';
 import { path } from '../i18n/routes';
 import { fmtLength, fmtNum, type Lang } from '../lib/format';
-import { computeLevels, DOLBY_CAL_RANGE } from '../lib/levels';
+import { computeLevels, DOLBY_CAL_RANGE, subLevels } from '../lib/levels';
+import { bassSources, seatPoint } from '../lib/modes-calc';
+import { speedOfSound } from '../lib/modes';
 import { LEVEL_GROUPS, LIMITS, type SensBasis, type SpeakerId } from '../lib/room';
 import { computeSpeakers } from '../lib/speakers-calc';
 import { initBrowserState, isSample, room, units, updateRoom } from '../state/room';
@@ -24,7 +26,9 @@ export default function LevelCalculator({ lang }: { lang: Lang }) {
   const r = useMemo(() => computeLevels(m, sp), [m, sp]);
   const db = (v: number, signed = false) => `${signed && v > 0.05 ? '+' : ''}${fmtNum(v, 1, lang)} dB`;
   const watts = (v: number) => `${fmtNum(v, v < 10 ? 1 : 0, lang)} W`;
-  const w = r.worst;
+  const sub = useMemo(() => subLevels(m, bassSources(m, speedOfSound(m.acoustics.temperatureC)), seatPoint(m)), [m]);
+  const subRow = sub.count ? { id: 'Sub', reserve: sub.reserve, status: sub.status } : null;
+  const w = [r.worst, subRow].filter((x): x is NonNullable<typeof x> => !!x).reduce<{ id: string; reserve: number; status: 'ok' | 'warn' | 'bad' } | null>((a, x) => (!a || x.reserve < a.reserve ? x : a), null);
 
   return (
     <div class="calc">
@@ -57,6 +61,25 @@ export default function LevelCalculator({ lang }: { lang: Lang }) {
           );
         })}
         <p class="hint">{t.groupHint} <a href={path('speakers', lang)}>{t.planner}</a></p>
+        <fieldset>
+          <legend>{t.gSub}</legend>
+          <NumberField id="lfe" label={t.lfeBoost} value={m.levels.lfeBoost} unit="dB" digits={1} onChange={(v) => updateRoom((d) => void (d.levels.lfeBoost = v!))} lang={lang} min={LIMITS.lfeBoost[0]} max={LIMITS.lfeBoost[1]} hint={t.lfeHint} />
+          <div class="row2">
+            <NumberField id="sub-sens" label={t.sens} value={m.levels.sub.sens} unit="dB" digits={1} onChange={(v) => updateRoom((d) => void (d.levels.sub.sens = v!))} lang={lang} min={LIMITS.sens[0]} max={LIMITS.sens[1]} />
+            <div class="f">
+              <label for="sub-basis">{t.basis}</label>
+              <select id="sub-basis" value={m.levels.sub.basis} onChange={(e) => updateRoom((d) => void (d.levels.sub.basis = (e.target as HTMLSelectElement).value as SensBasis))}>
+                <option value="2v83">{t.basis283}</option>
+                <option value="1w">{t.basis1w}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row2">
+            <NumberField id="sub-imp" label={t.impedance} value={m.levels.sub.impedance} unit="Ω" digits={1} onChange={(v) => updateRoom((d) => void (d.levels.sub.impedance = v!))} lang={lang} min={LIMITS.impedance[0]} max={LIMITS.impedance[1]} />
+            <NumberField id="sub-amp" label={t.ampSub} value={m.levels.sub.amp} unit="W" digits={0} onChange={(v) => updateRoom((d) => void (d.levels.sub.amp = v!))} lang={lang} min={LIMITS.amp[0]} max={LIMITS.amp[1]} />
+          </div>
+          <p class="hint">{t.subCount(sub.count, t.bassModes[m.bass.mode])} <a href={path('modes', lang)}>{t.subsLink}</a></p>
+        </fieldset>
         <RoomTools lang={lang} />
       </form>
 
@@ -109,6 +132,27 @@ export default function LevelCalculator({ lang }: { lang: Lang }) {
           </div>
           <p class="sub">{t.tableNote}</p>
         </figure>
+
+        <div class="card">
+          <h2>{t.subTitle}</h2>
+          {!sub.count ? (
+            <p class="hint">{t.subNone}</p>
+          ) : (
+            <dl>
+              <dt>{t.subTarget}</dt>
+              <dd>{db(sub.target)} ({fmtNum(m.levels.calSpl, 1, lang)} + 20 + {fmtNum(m.levels.lfeBoost, 1, lang)} dB)</dd>
+              <dt>{t.subMax}</dt>
+              <dd>{db(sub.maxSpl)}</dd>
+              <dt>{t.subNeed}</dt>
+              <dd>{watts(sub.required)}</dd>
+              <dt>{t.thReserve}</dt>
+              <dd style={{ color: STATUS_COLOR[sub.status] }}>
+                {STATUS_ICON[sub.status]} {db(sub.reserve, true)} · {t.status[sub.status]}
+              </dd>
+            </dl>
+          )}
+          <p class="sub">{t.subNote}</p>
+        </div>
       </section>
     </div>
   );

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { computeLevels, levelGroupOf, powerFor, refPower, splAt } from '../src/lib/levels';
+import { computeLevels, levelGroupOf, powerFor, refPower, splAt, subLevels } from '../src/lib/levels';
 import { DEFAULT_ROOM, sanitizeRoom } from '../src/lib/room';
 import { computeSpeakers } from '../src/lib/speakers-calc';
 
@@ -38,5 +38,27 @@ describe('Pegel & Verstärker', () => {
     const r = sanitizeRoom({ ...DEFAULT_ROOM, levels: { calSpl: 120, groups: { front: { sens: 50, basis: 'x', impedance: 1, amp: 99999 } } } });
     expect(r.levels.calSpl).toBe(90);
     expect(r.levels.groups.front).toEqual({ sens: 70, basis: '2v83', impedance: 2, amp: 5000 });
+  });
+  it('Subwoofer: 2 Subs je 4 m, 88 dB (2,83 V, 8 Ω), 500 W: je 102,944 dB, phasengleich +6,02 → 108,964 dB; Ziel 82 + 20 + 10 = 112 → Reserve −3,036 dB', () => {
+    const m = structuredClone(DEFAULT_ROOM);
+    m.levels.sub = { sens: 88, basis: '2v83', impedance: 8, amp: 500 };
+    const mlp = { x: 4, y: 0, z: 0 };
+    const r = subLevels(m, [{ x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }], mlp);
+    expect(r.target).toBe(112);
+    expect(r.count).toBe(2);
+    expect(r.maxSpl).toBeCloseTo(108.9643, 3);
+    expect(r.reserve).toBeCloseTo(-3.0357, 3);
+    // nötige Leistung je Sub: 10^((112 − 81,9746)/10) = 1005,9 W
+    expect(r.required).toBeCloseTo(1005.87, 1);
+  });
+  it('DBA: nur das vordere Array zählt (Rückwand verpolt und verzögert)', () => {
+    const m = structuredClone(DEFAULT_ROOM);
+    const front = { x: 0, y: 0, z: 0 };
+    const r = subLevels(m, [front, { x: 6, y: 0, z: 0, gain: -1, delay: 0.0175 }], { x: 4, y: 0, z: 0 });
+    expect(r.count).toBe(1);
+  });
+  it('LFE-Anhebung einstellbar, Import begrenzt auf 0–15 dB', () => {
+    expect(sanitizeRoom({ ...DEFAULT_ROOM, levels: { ...DEFAULT_ROOM.levels, lfeBoost: 30 } }).levels.lfeBoost).toBe(15);
+    expect(sanitizeRoom({ version: 7 }).levels.lfeBoost).toBe(10);
   });
 });

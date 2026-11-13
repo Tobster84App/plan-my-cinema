@@ -107,6 +107,10 @@ export interface RoomModel {
     /** Kalibrierpegel am MLP bei −20 dBFS rosa Rauschen, dB SPL(C) */
     calSpl: number;
     groups: Record<LevelGroup, LevelGroupSpec>;
+    /** Daten je Subwoofer (alle Subs gleich); Anzahl und Positionen aus Rechner 2 */
+    sub: LevelGroupSpec;
+    /** Anhebung des LFE-Kanals gegenüber den Hauptkanälen in dB (Erfahrungswert, im Raum fein abstimmen) */
+    lfeBoost: number;
   };
   speakers: {
     layout: SpeakerLayout;
@@ -174,6 +178,8 @@ export const DEFAULT_ROOM: RoomModel = {
       surround: { sens: 88, basis: '2v83', impedance: 8, amp: 100 },
       height: { sens: 86, basis: '2v83', impedance: 8, amp: 100 },
     },
+    sub: { sens: 88, basis: '2v83', impedance: 8, amp: 500 },
+    lfeBoost: 10,
   },
   speakers: { layout: '7.1.4', listenerHeight: null, overrides: {} },
   seating: { rows: 1, seatsPerRow: 3, seatSpacing: 0.7, rowSpacing: 1.6, riserStep: 0.3, overrides: {} },
@@ -212,6 +218,7 @@ export const LIMITS = {
   sens: [70, 115],
   impedance: [2, 16],
   amp: [1, 5000],
+  lfeBoost: [0, 15],
 } as const satisfies Record<string, readonly [number, number]>;
 
 type Lim = keyof typeof LIMITS;
@@ -295,17 +302,22 @@ export function sanitizeRoom(input: unknown): RoomModel {
       const l = obj(i.levels);
       const gs = obj(l.groups);
       const groups = {} as Record<LevelGroup, LevelGroupSpec>;
-      for (const k of LEVEL_GROUPS) {
-        const g = obj(gs[k]);
-        const dg = d.levels.groups[k];
-        groups[k] = {
+      const spec = (raw: unknown, dg: LevelGroupSpec): LevelGroupSpec => {
+        const g = obj(raw);
+        return {
           sens: num(g.sens, dg.sens, 'sens'),
           basis: g.basis === '1w' || g.basis === '2v83' ? g.basis : dg.basis,
           impedance: num(g.impedance, dg.impedance, 'impedance'),
           amp: num(g.amp, dg.amp, 'amp'),
         };
-      }
-      return { calSpl: num(l.calSpl, d.levels.calSpl, 'calSpl'), groups };
+      };
+      for (const k of LEVEL_GROUPS) groups[k] = spec(gs[k], d.levels.groups[k]);
+      return {
+        calSpl: num(l.calSpl, d.levels.calSpl, 'calSpl'),
+        groups,
+        sub: spec(l.sub, d.levels.sub),
+        lfeBoost: num(l.lfeBoost, d.levels.lfeBoost, 'lfeBoost'),
+      };
     })(),
     speakers: sanitizeSpeakers(i.speakers),
     seating: (() => {

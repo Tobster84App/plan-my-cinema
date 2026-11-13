@@ -64,11 +64,17 @@ const jsonLd = [
       From this the calculator derives the power needed for the target and the maximum level your amplifier delivers, using distances from the speaker
       planner.
     </p>
+    <h3>Subwoofers and LFE</h3>
+    <p>
+      The LFE channel is usually played louder than the main channels. The calculator assumes +10 dB – a rule of thumb, not a standard, to be
+      fine-tuned by measuring in the room. Number and positions of the subs come from the room modes calculator. Several subs are summed in phase
+      (twice as many ≈ +6 dB); with a DBA only the front array counts. No room gain is included: in a real room the bass is usually much louder, so the
+      result is conservative.
+    </p>
     <h3>Limits</h3>
     <p>
       The calculation assumes a free field without reflections from walls and ceiling – real rooms are usually a little louder, so the result errs on
-      the safe side. It ignores speaker power handling, power compression at high levels, several channels playing together, and subwoofers and the LFE
-      channel. Calling less than 3 dB of headroom “tight” is our own choice.
+      the safe side. It ignores speaker power handling, power compression at high levels, several channels playing together. Calling less than 3 dB of headroom “tight” is our own choice.
     </p>
 
     <h2>FAQ</h2>
