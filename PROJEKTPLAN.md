@@ -1,7 +1,7 @@
 # Plan My Cinema – Projektplan
 
 Domain: plan-my-cinema.com (gekauft). Schwesterprojekt: rate-my-throne.com.
-Stand: 2026-11-09.
+Stand: 2026-11-13.
 
 ## Ziel
 Zweisprachige Website (DE zuerst, EN zweitrangig) mit Heimkino-Rechnern auf einem **gemeinsamen Raummodell**. Statisch, PWA, später ggf. als App mit Capacitor. Einnahmen später über Affiliate (Amazon, Thomann), eventuell Werbung.
@@ -99,6 +99,7 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 **Später:** mehrere Raumvarianten, Capacitor-App, ggf. DTS:X.
 
 ## Entscheidungen
+- 2026-11-13: Seite „Über das Projekt“ (`/de/ueber-das-projekt/`, `/en/about/`) + Abschnitt auf der Startseite; Kontaktadresse für Fragen in `src/config/site.ts` (`CONTACT_EMAIL`), vorgeschlagen kontakt@plan-my-cinema.com
 - 2026-11-05: Projektordaten aus Hersteller-Websites (Epson, BenQ: 50 Modelle), Lens Shift getrennt oben/unten/links/rechts (Raummodell v4); Regeln in `docs/projektordaten.md`
 - 2026-11-05: Sicherung über Google Apps Script (`scripts/drive-upload.gs`), erster Deploy mit Sicherung erfolgreich; Seite läuft auf plan-my-cinema.com
 - 2026-11-05: Einheiten-Umschalter beschriftet (m · cm / ft · in)
@@ -111,6 +112,7 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - Normangaben: 14 fL = SMPTE ST 431-1 (48 cd/m²); 30° = SMPTE EG 18-1994 (2003 zurückgezogen); THX 36° vom entferntesten Sitz, THX-TV-Regel 0,835 ≈ 40°
 
 ## Offen
+- Kontaktadresse (kontakt@plan-my-cinema.com) bei ALL-INKL einrichten, bevor die Seite „Über das Projekt“ online geht
 - Speicherdauer/Anonymisierung der Server-Logfiles bei ALL-INKL prüfen und in Datenschutzerklärung eintragen
 - Projektordaten: Hisense (502); Definition des Lens Shift bei Epson/JVC/BenQ/XGIMI/LG/Valerion ungeprüft (manuals.jvckenwood.com gesperrt, files.support.epson.com 403, Handbuch-Links bei Epson/BenQ nicht gefunden)
 - Analytics: vorerst keine
