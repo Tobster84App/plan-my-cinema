@@ -9,6 +9,7 @@ export const ROUTES = {
   screen: { de: '/de/leinwand-projektion/', en: '/en/screen-projection/' },
   modes: { de: '/de/raummoden/', en: '/en/room-modes/' },
   speakers: { de: '/de/lautsprecher/', en: '/en/speaker-layout/' },
+  levels: { de: '/de/pegel-verstaerker/', en: '/en/spl-amplifier/' },
   about: { de: '/de/ueber-das-projekt/', en: '/en/about/' },
   imprint: { de: '/de/impressum/', en: '/en/legal-notice/' },
   privacy: { de: '/de/datenschutz/', en: '/en/privacy/' },

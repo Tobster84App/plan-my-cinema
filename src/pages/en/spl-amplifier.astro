@@ -1,0 +1,82 @@
+---
+import Base from '../../layouts/Base.astro';
+import LevelCalculator from '../../components/LevelCalculator.tsx';
+
+const title = 'SPL & amplifier';
+const description =
+  'Home cinema SPL and amplifier calculator: can your speakers and amplifier reach Dolby’s calibration level? Power needed, maximum level and headroom for every speaker at the main seat.';
+
+const faq = [
+  {
+    q: 'How much amplifier power does a home cinema need?',
+    a: 'It depends on speaker sensitivity and the distance to the seat. Every 3 dB more needs twice the power, and every doubling of distance costs 6 dB in the free field. The calculator shows the power each speaker needs for full scale at the main seat.',
+  },
+  {
+    q: 'What does 2.83 V / 1 m mean for sensitivity?',
+    a: 'Many manufacturers measure sensitivity with 2.83 volts rather than 1 watt. Into 8 ohms that is about 1 W, into 4 ohms about 2 W – so a 4-ohm speaker looks 3 dB more sensitive than it would at 1 W. The calculator accounts for that.',
+  },
+  {
+    q: 'What level should I aim for?',
+    a: 'Dolby’s home theater guidelines call for a calibration level of 79 to 82 dB SPL (C-weighted) at the main seat with pink noise at −20 dBFS, depending on room size. At full scale the level is 20 dB higher.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Plan My Cinema – SPL & amplifier',
+    url: 'https://plan-my-cinema.com/en/spl-amplifier/',
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Web',
+    inLanguage: 'en',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+];
+---
+<Base lang="en" page="levels" title={title} description={description} jsonLd={jsonLd}>
+  <div class="page-head">
+    <h1>SPL <span>&amp;</span> amplifier</h1>
+    <p>Can your speakers and amplifier reach the level your cinema is calibrated to? Layout, positions and seat come from the speaker planner.</p>
+  </div>
+
+  <LevelCalculator client:load lang="en" />
+
+  <article class="prose">
+    <h2>How it works</h2>
+    <h3>Target level</h3>
+    <p>
+      Dolby’s <a href="https://www.dolby.com/siteassets/technologies/dolby-atmos/atmos-installation-guidelines-121318_r3.1.pdf" rel="noopener">Dolby Atmos Home Theater Installation Guidelines</a>{' '}
+      (December 2018, p. 15) recommend calibrating every speaker to 79–82 dB SPL (C-weighted) at the main seat, depending on room size, using pink noise
+      at −20 dBFS RMS. At full scale (0 dBFS) the level is 20 dB higher – 102 dB for an 82 dB calibration. Each speaker should be able to reach that at
+      the main seat.
+    </p>
+    <h3>Level and power</h3>
+    <p><code>Level = sensitivity + 10 · log10(P / P_ref) − 20 · log10(distance / 1 m)</code></p>
+    <p>
+      P_ref is 1 W for a 1 W / 1 m rating and 2.83² / impedance for a 2.83 V / 1 m rating. Twice the power adds 3 dB; twice the distance costs 6 dB.
+      From this the calculator derives the power needed for the target and the maximum level your amplifier delivers, using distances from the speaker
+      planner.
+    </p>
+    <h3>Limits</h3>
+    <p>
+      The calculation assumes a free field without reflections from walls and ceiling – real rooms are usually a little louder, so the result errs on
+      the safe side. It ignores speaker power handling, power compression at high levels, several channels playing together, and subwoofers and the LFE
+      channel. Calling less than 3 dB of headroom “tight” is our own choice.
+    </p>
+
+    <h2>FAQ</h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </article>
+</Base>

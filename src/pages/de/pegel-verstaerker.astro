@@ -1,0 +1,82 @@
+---
+import Base from '../../layouts/Base.astro';
+import LevelCalculator from '../../components/LevelCalculator.tsx';
+
+const title = 'Pegel & Verstärker';
+const description =
+  'Pegel- und Verstärkerrechner fürs Heimkino: Reichen Lautsprecher und Verstärker für den Kalibrierpegel nach Dolby? Nötige Leistung, maximaler Pegel und Reserve je Lautsprecher am Hauptsitzplatz.';
+
+const faq = [
+  {
+    q: 'Wie viel Verstärkerleistung brauche ich fürs Heimkino?',
+    a: 'Das hängt von der Empfindlichkeit der Lautsprecher und vom Abstand zum Sitzplatz ab. Je 3 dB mehr Pegel braucht man doppelte Leistung, je Verdopplung des Abstands sinkt der Pegel im Freifeld um 6 dB. Der Rechner zeigt für jeden Lautsprecher die nötige Leistung für Vollaussteuerung am Hauptsitzplatz.',
+  },
+  {
+    q: 'Was bedeutet 2,83 V / 1 m bei der Empfindlichkeit?',
+    a: 'Viele Hersteller messen die Empfindlichkeit mit 2,83 Volt statt mit 1 Watt. An 8 Ohm entspricht das etwa 1 W, an 4 Ohm etwa 2 W. Ein 4-Ohm-Lautsprecher wirkt mit der 2,83-V-Angabe also 3 dB empfindlicher, als er bei 1 W wäre. Der Rechner berücksichtigt das.',
+  },
+  {
+    q: 'Welcher Pegel ist das Ziel?',
+    a: 'Die Dolby-Richtlinie für Heimkinos nennt einen Kalibrierpegel von 79 bis 82 dB SPL (C-bewertet) am Hauptsitzplatz bei rosa Rauschen mit −20 dBFS, je nach Raumgröße. Bei voller Aussteuerung liegt der Pegel 20 dB höher.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Plan My Cinema – Pegel & Verstärker',
+    url: 'https://plan-my-cinema.com/de/pegel-verstaerker/',
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Web',
+    inLanguage: 'de',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+];
+---
+<Base lang="de" page="levels" title={title} description={description} jsonLd={jsonLd}>
+  <div class="page-head">
+    <h1>Pegel <span>&amp;</span> Verstärker</h1>
+    <p>Schaffen deine Lautsprecher und dein Verstärker den Pegel, auf den das Heimkino eingemessen wird? Layout, Positionen und Sitzplatz kommen aus dem Lautsprecher-Planer.</p>
+  </div>
+
+  <LevelCalculator client:load lang="de" />
+
+  <article class="prose">
+    <h2>So rechnet der Rechner</h2>
+    <h3>Zielpegel</h3>
+    <p>
+      Die <a href="https://www.dolby.com/siteassets/technologies/dolby-atmos/atmos-installation-guidelines-121318_r3.1.pdf" rel="noopener">Dolby Atmos Home Theater Installation Guidelines</a>{' '}
+      (Stand Dezember 2018, S. 15) empfehlen, jeden Lautsprecher auf 79 bis 82 dB SPL (C-bewertet) am Hauptsitzplatz einzupegeln – je nach Raumgröße,
+      gemessen mit rosa Rauschen bei −20 dBFS RMS. Bei voller Aussteuerung (0 dBFS) liegt der Pegel 20 dB höher, bei 82 dB Kalibrierpegel also bei
+      102 dB. Diesen Pegel sollte jeder Lautsprecher am Hauptsitzplatz erreichen können.
+    </p>
+    <h3>Pegel und Leistung</h3>
+    <p><code>Pegel = Empfindlichkeit + 10 · log10(P / P_ref) − 20 · log10(Abstand / 1 m)</code></p>
+    <p>
+      P_ref ist 1 W, wenn die Empfindlichkeit für 1 W / 1 m angegeben ist, und 2,83² / Impedanz, wenn sie für 2,83 V / 1 m gilt. Doppelte
+      Leistung bringt 3 dB mehr, doppelter Abstand kostet 6 dB. Aus der Formel ergibt sich die nötige Leistung für den Zielpegel und der höchste
+      Pegel mit deinem Verstärker. Den Abstand nimmt der Rechner aus dem Lautsprecher-Planer.
+    </p>
+    <h3>Grenzen der Rechnung</h3>
+    <p>
+      Gerechnet wird im Freifeld, also ohne Reflexionen von Wänden und Decke – im Raum ist es meist etwas lauter, das Ergebnis liegt damit auf der
+      sicheren Seite. Nicht berücksichtigt sind die Belastbarkeit der Lautsprecher, Leistungskompression bei hohen Pegeln, das Zusammenspiel mehrerer
+      Kanäle sowie Subwoofer und LFE-Kanal. Die Grenze „knapp“ bei weniger als 3 dB Reserve ist eine eigene Festlegung.
+    </p>
+
+    <h2>Häufige Fragen</h2>
+    {faq.map((f) => (
+      <details>
+        <summary>{f.q}</summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </article>
+</Base>
