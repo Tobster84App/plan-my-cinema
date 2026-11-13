@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { DEFAULT_ROOM, roomIssues, sanitizeRoom } from '../src/lib/room';
 import { cValue, rateCValue, reflectionDelay, reflectionPoint, riserForC, seatPositions, sightlines } from '../src/lib/seating';
-import { computeSpeakers } from '../src/lib/speakers-calc';
+import { computeSpeakers, seatTiming } from '../src/lib/speakers-calc';
 
 describe('Sitzplätze', () => {
   it('3 Plätze in Reihe 1, zentriert um den MLP (x = 0,4 + 3,8 = 4,2; y = 2 ± 0,7)', () => {
@@ -133,5 +133,29 @@ describe('Verschobene Plätze (Raummodell v6)', () => {
     const [sl] = sightlines(m);
     expect(sl.index).toBe(3);
     expect(sl.c).toBeCloseTo(0.0162, 3);
+  });
+});
+
+describe('Laufzeit und Pegel je Platz (seatTiming)', () => {
+  // L von Hand bei (0,4 | 0,9 | 1,2); MLP (4,2 | 2 | 1,2), Platz R1·P1 (4,2 | 1,3 | 1,2); c(20 °C) = 331,3 · √(1 + 20/273,15) = 343,215 m/s
+  // d_MLP = √(3,8² + 1,1²) = 3,95601 m; d_Platz = √(3,8² + 0,4²) = 3,82099 m
+  // Δt = (3,82099 − 3,95601) / 343,215 = −0,3934 ms; ΔL = 20 · log10(3,95601 / 3,82099) = +0,3016 dB
+  const m = structuredClone(DEFAULT_ROOM);
+  m.speakers.overrides.L = { x: 0.4, y: 0.9, z: 1.2 };
+  const r = computeSpeakers(m);
+  it('Platz R1·P1, Lautsprecher L: Δt = −0,393 ms, ΔL = +0,302 dB', () => {
+    const t = seatTiming(m, r, 0);
+    const l = t.rows.find((x) => x.id === 'L')!;
+    expect(t.c).toBeCloseTo(343.2146, 3);
+    expect(l.distance).toBeCloseTo(3.82099, 4);
+    expect(l.dtMs).toBeCloseTo(-0.39338, 4);
+    expect(l.dDb).toBeCloseTo(0.30161, 4);
+    expect(l.delayMs).toBeCloseTo((3.82099 / 343.2146) * 1000, 3);
+  });
+  it('am MLP selbst: alle Abweichungen 0', () => {
+    const mlp = r.seats.findIndex((s) => s.seat.isMlp);
+    const t = seatTiming(m, r, mlp);
+    expect(t.dtSpan).toBeCloseTo(0, 10);
+    expect(t.dbSpan).toBeCloseTo(0, 10);
   });
 });

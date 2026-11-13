@@ -2,6 +2,7 @@
 import guidelines from '../../data/speaker-guidelines.json';
 import type { RoomModel, SpeakerId, SpeakerPos } from './room';
 import { seatPoint } from './modes-calc';
+import { speedOfSound } from './modes';
 import { LAYOUT_CHANNELS, autoPlace, azimuthDeg, channelRule, distance3d, elevationDeg, rate, type ChannelRule, type Status } from './speakers';
 import { SURFACES, reflectionDelay, reflectionPoint, seatPositions, sightlines, surfaceAxes, surfacePlane, type Seat } from './seating';
 
@@ -119,3 +120,22 @@ export function computeSpeakers(m: RoomModel) {
 }
 
 export type SpeakersResult = ReturnType<typeof computeSpeakers>;
+
+/**
+ * Laufzeit und Pegel am Platz `seatIndex`, wenn der AV-Receiver auf den Hauptsitzplatz eingemessen ist.
+ * Der AVR gleicht Laufzeit und Pegel aller Lautsprecher für den MLP an. An einem anderen Platz bleibt je Lautsprecher:
+ *   Δt = (d_Platz − d_MLP) / c   (positiv = kommt später an als am MLP abgeglichen)
+ *   ΔL = 20 · log10(d_MLP / d_Platz)   (Abstandsgesetz im Freifeld, positiv = lauter)
+ * Raumreflexionen sind nicht berücksichtigt – sie verringern die Pegelunterschiede in der Praxis.
+ */
+export function seatTiming(m: RoomModel, r: SpeakersResult, seatIndex: number) {
+  const c = speedOfSound(m.acoustics.temperatureC);
+  const seat = r.seats[seatIndex] ?? r.seats[0];
+  const rows = r.speakers.map((sp) => {
+    const d = seat.results.find((x) => x.id === sp.id)!.distance;
+    const dMlp = sp.distance;
+    return { id: sp.id, distance: d, delayMs: (d / c) * 1000, dtMs: ((d - dMlp) / c) * 1000, dDb: 20 * Math.log10(dMlp / d) };
+  });
+  const span = (k: 'dtMs' | 'dDb') => (rows.length ? Math.max(...rows.map((x) => x[k])) - Math.min(...rows.map((x) => x[k])) : 0);
+  return { c, rows, dtSpan: span('dtMs'), dbSpan: span('dDb') };
+}

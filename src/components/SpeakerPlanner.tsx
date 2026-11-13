@@ -5,7 +5,7 @@ import { SPEAKERS_UI } from '../i18n/speakers-ui';
 import { UI } from '../i18n/ui';
 import { fmtLength, fmtNum, fmtSmallLength, type Lang } from '../lib/format';
 import { LIMITS, SPEAKER_LAYOUTS, type SpeakerId, type SpeakerLayout } from '../lib/room';
-import { computeSpeakers } from '../lib/speakers-calc';
+import { computeSpeakers, seatTiming } from '../lib/speakers-calc';
 import { initBrowserState, isSample, room, units, updateRoom } from '../state/room';
 import { NumberField } from './NumberField';
 import { RoomTools } from './RoomTools';
@@ -27,6 +27,9 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
   const seatRes = r.seats[sel];
   const cnt = seatRes.counts;
   const seatName = seatRes.seat.isMlp ? t.mlpLabel : t.seatLabel(seatRes.seat.row, seatRes.seat.index);
+  const timing = useMemo(() => seatTiming(m, r, sel), [m, r, sel]);
+  const ms = (v: number, signed = false) => `${signed && v > 0.005 ? '+' : ''}${fmtNum(v, 2, lang)} ms`;
+  const dbs = (v: number) => `${v > 0.005 ? '+' : ''}${fmtNum(v, 1, lang)} dB`;
   const resOf = (id: SpeakerId) => seatRes.results.find((x) => x.id === id)!;
   const f = (v: number) => fmtLength(v, u, lang);
   const [reflGroup, setReflGroup] = useState<ReflGroup>('side');
@@ -235,6 +238,36 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
           </div>
           <p class="sub">{t.tolNote}</p>
           {r.speakers.some((s) => s.id === 'C' && s.status !== 'ok') && <p class="sub">{t.cNote}</p>}
+        </figure>
+
+        <figure class="chart">
+          <h2>{t.timeTitle(seatName)}</h2>
+          <p class="hint">{seatRes.seat.isMlp ? t.timeMlpNote : t.timeSeatSummary(ms(timing.dtSpan), `${fmtNum(timing.dbSpan, 1, lang)} dB`)}</p>
+          <div class="tbl-wrap">
+            <table class="data">
+              <thead>
+                <tr>
+                  <th>{t.thSpk}</th>
+                  <th>{t.thDist}</th>
+                  <th>{t.thDelay}</th>
+                  {!seatRes.seat.isMlp && <th>{t.thDt}</th>}
+                  {!seatRes.seat.isMlp && <th>{t.thDl}</th>}
+                </tr>
+              </thead>
+              <tbody>
+                {timing.rows.map((x) => (
+                  <tr key={x.id}>
+                    <td><b>{x.id}</b> <span style={{ color: 'var(--muted)' }}>{t.names[x.id as SpeakerId]}</span></td>
+                    <td class="num">{f(x.distance)}</td>
+                    <td class="num">{ms(x.delayMs)}</td>
+                    {!seatRes.seat.isMlp && <td class="num">{ms(x.dtMs, true)}</td>}
+                    {!seatRes.seat.isMlp && <td class="num">{dbs(x.dDb)}</td>}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p class="sub">{t.timeNote}</p>
         </figure>
 
         <div class="card">
