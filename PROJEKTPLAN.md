@@ -92,6 +92,13 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - Modell ideal (starre Wände, leerer Quader): DBA löscht alle Moden bis 120 Hz; reale Einschränkungen (Möbel, Türen, nachgiebige Wände) laut Wikipedia nur als Hinweis
 - Sub-Schnellauswahl zeigt zusätzlich die mittlere Modenstärke
 
+**M3f – Laufzeit/Pegel je Platz + Rechner 4 „Pegel & Verstärker“** (fertig, 2026-11-13)
+- Planer: je Platz Abstand, Laufzeit, Δ Laufzeit und Δ Pegel gegenüber der Einmessung auf den MLP (Abstandsgesetz, ohne Reflexionen)
+- Rechner 4 (`/de/pegel-verstaerker/`, `/en/spl-amplifier/`), Raummodell v8 `levels`: Kalibrierpegel (Dolby 79–82 dB SPL(C) bei −20 dBFS rosa Rauschen, Dolby Atmos Home Theater Installation Guidelines 12/2018 S. 15) + 20 dB = Ziel bei Vollaussteuerung
+- Je Gruppe (Front / Surround-Rear-Wides / Höhe): Empfindlichkeit (1 W oder 2,83 V), Impedanz, Verstärkerleistung → nötige Leistung, max. Pegel, Reserve je Lautsprecher am MLP; „knapp“ < 3 dB = eigene Festlegung
+- Nicht enthalten: Subwoofer/LFE (+10 dB LFE nicht in der Dolby-Richtlinie gefunden), Belastbarkeit, Leistungskompression
+- Lens Shift JVC: Bezug ganze Bildhöhe laut Bedienungsanleitung B5A-3961-44 S. 30 bestätigt
+
 **M4 – Veröffentlichung**
 - Deploy ALL-INKL, Domain, Search Console, Lighthouse/Barrierefreiheit-Prüfung
 - Inhalte überarbeiten, Affiliate-Partnerprogramme
@@ -113,5 +120,5 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 
 ## Offen
 - Speicherdauer/Anonymisierung der Server-Logfiles bei ALL-INKL prüfen und in Datenschutzerklärung eintragen
-- Projektordaten: Hisense (502); Definition des Lens Shift bei Epson/JVC/BenQ/XGIMI/LG/Valerion ungeprüft (manuals.jvckenwood.com gesperrt, files.support.epson.com 403, Handbuch-Links bei Epson/BenQ nicht gefunden)
+- Projektordaten: Hisense (502); Definition des Lens Shift bei Epson/BenQ/XGIMI/LG/Valerion ungeprüft (JVC geprüft) (manuals.jvckenwood.com gesperrt, files.support.epson.com 403, Handbuch-Links bei Epson/BenQ nicht gefunden)
 - Analytics: vorerst keine
