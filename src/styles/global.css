@@ -65,6 +65,9 @@ nav.main .soon small { font: 400 10px var(--mono); text-transform: uppercase; le
 .page-head h1 { font: 800 clamp(34px, 6vw, 56px)/0.95 var(--display); text-transform: uppercase; margin: 0; letter-spacing: 0.01em; text-wrap: balance; }
 .page-head h1 span { color: var(--beam); }
 .page-head p { margin: 8px 0 0; color: var(--muted); max-width: 62ch; }
+.home-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 28px; align-items: center; padding: 8px 0 6px; }
+.home-hero { display: block; width: 100%; height: auto; }
+@media (max-width: 760px) { .home-head { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
 
 /* Rechner-Layout */
 .calc { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 22px; align-items: start; }

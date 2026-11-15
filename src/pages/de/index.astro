@@ -4,9 +4,12 @@ import { path } from '../../i18n/routes';
 const jsonLd = [{ '@context': 'https://schema.org', '@type': 'WebSite', name: 'Plan My Cinema', url: 'https://plan-my-cinema.com/de/', inLanguage: 'de' }];
 ---
 <Base lang="de" page="home" title="Start" description="Heimkino-Rechner für Enthusiasten: Leinwand, Projektion, Helligkeit in nits und fL, Raummoden und Dolby-Atmos-Lautsprecher – alles auf Basis deines Raums." jsonLd={jsonLd}>
-  <div class="page-head">
-    <h1>Plan <span>My</span> Cinema</h1>
-    <p>Gib deinen Raum einmal ein – Maße, Leinwand, Projektor, Sitzplatz. Jeder Rechner hier greift auf dieselben Daten zu. Gespeichert wird nur in deinem Browser.</p>
+  <div class="home-head">
+    <div class="page-head">
+      <h1>Plan <span>My</span> Cinema</h1>
+      <p>Gib deinen Raum einmal ein – Maße, Leinwand, Projektor, Sitzplatz. Jeder Rechner hier greift auf dieselben Daten zu. Gespeichert wird nur in deinem Browser.</p>
+    </div>
+    <img class="home-hero" src="/img/titelbild.svg" width="776" height="464" alt="Grundriss eines Heimkinos: Leinwand, zwei Sitzreihen, Lautsprecher nach Dolby Atmos 7.1.4 und der Blickwinkel vom Hauptsitzplatz zur Leinwand" decoding="async" />
   </div>
   <div class="tiles">
     <a class="tile" href={path('screen', 'de')}>

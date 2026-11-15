@@ -1,7 +1,7 @@
 # Plan My Cinema – Projektplan
 
 Domain: plan-my-cinema.com (gekauft). Schwesterprojekt: rate-my-throne.com.
-Stand: 2026-11-13.
+Stand: 2026-11-15.
 
 ## Ziel
 Zweisprachige Website (DE zuerst, EN zweitrangig) mit Heimkino-Rechnern auf einem **gemeinsamen Raummodell**. Statisch, PWA, später ggf. als App mit Capacitor. Einnahmen später über Affiliate (Amazon, Thomann), eventuell Werbung.
@@ -107,6 +107,7 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 **Später:** mehrere Raumvarianten, Capacitor-App, ggf. DTS:X.
 
 ## Entscheidungen
+- 2026-11-15: Titelbild der Startseite = SVG aus dem Raummodell (`scripts/make-hero.ts` → `public/img/titelbild.svg`, 7,0 × 4,0 m, 7.1.4, 2 Reihen, Blickwinkel), nur auf der Startseite; Gemini-Entwurf verworfen (fachlich falsche Geometrie)
 - 2026-11-13: Seite „Über das Projekt“ (`/de/ueber-das-projekt/`, `/en/about/`) + Abschnitt auf der Startseite; Kontaktadresse für Fragen in `src/config/site.ts` (`CONTACT_EMAIL`) = info@plan-my-cinema.com (bestehendes Postfach); Text vom Inhaber freigegeben, persönliche Angaben (Name, Kino-Eckdaten, Foto) vorerst nicht
 - 2026-11-05: Projektordaten aus Hersteller-Websites (Epson, BenQ: 50 Modelle), Lens Shift getrennt oben/unten/links/rechts (Raummodell v4); Regeln in `docs/projektordaten.md`
 - 2026-11-05: Sicherung über Google Apps Script (`scripts/drive-upload.gs`), erster Deploy mit Sicherung erfolgreich; Seite läuft auf plan-my-cinema.com
