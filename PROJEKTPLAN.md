@@ -116,6 +116,7 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 **Später:** mehrere Raumvarianten, Capacitor-App, ggf. DTS:X.
 
 ## Entscheidungen
+- 2026-11-18: Server-Logfiles im KAS (Einstellungen → Logs & Statistiken) auf „Es werden keine Logs erzeugt“ – so in der Datenschutzerklärung eingetragen; Search Console als Domain-Property per DNS-TXT bestätigt, Sitemap eingereicht
 - 2026-11-15: Titelbild der Startseite = SVG aus dem Raummodell (`scripts/make-hero.ts` → `public/img/titelbild.svg`, 7,0 × 4,0 m, 7.1.4, 2 Reihen, Blickwinkel), nur auf der Startseite; Gemini-Entwurf verworfen (fachlich falsche Geometrie)
 - 2026-11-13: Seite „Über das Projekt“ (`/de/ueber-das-projekt/`, `/en/about/`) + Abschnitt auf der Startseite; Kontaktadresse für Fragen in `src/config/site.ts` (`CONTACT_EMAIL`) = info@plan-my-cinema.com (bestehendes Postfach); Text vom Inhaber freigegeben, persönliche Angaben (Name, Kino-Eckdaten, Foto) vorerst nicht
 - 2026-11-05: Projektordaten aus Hersteller-Websites (Epson, BenQ: 50 Modelle), Lens Shift getrennt oben/unten/links/rechts (Raummodell v4); Regeln in `docs/projektordaten.md`
@@ -130,6 +131,5 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - Normangaben: 14 fL = SMPTE ST 431-1 (48 cd/m²); 30° = SMPTE EG 18-1994 (2003 zurückgezogen); THX 36° vom entferntesten Sitz, THX-TV-Regel 0,835 ≈ 40°
 
 ## Offen
-- Speicherdauer/Anonymisierung der Server-Logfiles bei ALL-INKL prüfen und in Datenschutzerklärung eintragen
 - Projektordaten: Hisense (502); Definition des Lens Shift bei Epson/BenQ/XGIMI/LG/Valerion ungeprüft (JVC geprüft) (manuals.jvckenwood.com gesperrt, files.support.epson.com 403, Handbuch-Links bei Epson/BenQ nicht gefunden)
 - Analytics: vorerst keine
