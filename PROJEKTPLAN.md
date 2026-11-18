@@ -108,6 +108,8 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - Abstrahlkegel eines gewählten Lautsprechers in der Draufsicht (Keil bzw. Kreis auf Ohrhöhe)
 
 **M4 – Veröffentlichung**
+- 2026-11-18 Lighthouse 13.6.0 (mobil, lokaler Build, 10 Seiten DE/EN): Barrierefreiheit, Best Practices, SEO je 100; Leistung 96–100 (Raummoden: Blockierzeit ~230 ms durch die Modenrechnung, unkritisch). Tastatur: Sprunglink, sichtbarer Fokus. Sitemap 12 Seiten mit hreflang, canonical gesetzt.
+- Offen: Search Console (Inhaber), Affiliate-Anmeldung (Inhaber), Inhalte überarbeiten
 - Deploy ALL-INKL, Domain, Search Console, Lighthouse/Barrierefreiheit-Prüfung
 - Inhalte überarbeiten, Affiliate-Partnerprogramme
 
