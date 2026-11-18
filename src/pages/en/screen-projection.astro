@@ -9,7 +9,7 @@ const description =
 const faq = [
   {
     q: 'How do I convert lumens to nits or foot-lamberts?',
-    a: 'Luminance (nits, cd/m²) = lumens × gain × (1 − fabric loss) ÷ (π × lit area in m²). One foot-lambert is 3.426 nits. Use a calibrated, measured lumen figure rather than the spec sheet.',
+    a: 'Luminance (nits, cd/m²) = lumens × gain × (1 − fabric loss) × (1 − lens loss) ÷ (π × lit area in m²). One foot-lambert is 3.426 nits. Use a calibrated, measured lumen figure rather than the spec sheet.',
   },
   {
     q: 'How bright should a home cinema image be?',
@@ -111,7 +111,7 @@ const jsonLd = [
 
     <h3>Seating distance</h3>
     <p>
-      Horizontal viewing angle = 2 × arctan(image width ÷ 2 × distance). Two figures come up again and again: the 30° minimum goes back to
+      Horizontal viewing angle = 2 × arctan(image width ÷ (2 × distance)). Two figures come up again and again: the 30° minimum goes back to
       SMPTE EG 18-1994, which SMPTE withdrew in 2003. THX advises cinema designers to plan for 36° from the farthest seat, and THX’s rule of
       thumb for TVs (diagonal = 0.835 × seating distance) works out at about 40° for 16:9. Many enthusiasts sit closer for scope. There is no
       single right answer – resolution, seating rows and taste all play a part.

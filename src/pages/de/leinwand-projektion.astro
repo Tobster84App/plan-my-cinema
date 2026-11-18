@@ -9,7 +9,7 @@ const description =
 const faq = [
   {
     q: 'Wie rechne ich Lumen in nits oder Foot-Lambert um?',
-    a: 'Leuchtdichte (nits, cd/m²) = Lumen × Gain × (1 − Tuchverlust) ÷ (π × beleuchtete Fläche in m²). Ein Foot-Lambert entspricht 3,426 nits. Für Lumen sollte ein kalibrierter, gemessener Wert eingesetzt werden, nicht die Datenblattangabe.',
+    a: 'Leuchtdichte (nits, cd/m²) = Lumen × Gain × (1 − Tuchverlust) × (1 − Linsenverlust) ÷ (π × beleuchtete Fläche in m²). Ein Foot-Lambert entspricht 3,426 nits. Für Lumen sollte ein kalibrierter, gemessener Wert eingesetzt werden, nicht die Datenblattangabe.',
   },
   {
     q: 'Wie hell sollte das Bild im Heimkino sein?',
@@ -116,7 +116,7 @@ const jsonLd = [
 
     <h3>Sitzabstand</h3>
     <p>
-      Der horizontale Blickwinkel ist 2 × arctan(Bildbreite ÷ 2 × Abstand). Zwei Werte werden besonders oft genannt: mindestens 30° geht auf die
+      Der horizontale Blickwinkel ist 2 × arctan(Bildbreite ÷ (2 × Abstand)). Zwei Werte werden besonders oft genannt: mindestens 30° geht auf die
       SMPTE-Richtlinie EG 18-1994 zurück, die SMPTE 2003 zurückgezogen hat. THX empfiehlt Kinoplanern 36° vom entferntesten Sitz; die
       THX-Faustregel für Fernseher (Bilddiagonale = 0,835 × Sitzabstand) entspricht bei 16:9 rund 40°. Viele Enthusiasten sitzen bei Scope
       bewusst näher. Ein Richtig oder Falsch gibt es nicht – Bildschärfe, Sitzreihen und Geschmack spielen mit.
