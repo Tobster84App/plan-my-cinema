@@ -13,7 +13,7 @@
 import { clamp, finiteOr } from './units';
 import type { ScopeMethod } from './screen';
 
-export const ROOM_MODEL_VERSION = 8;
+export const ROOM_MODEL_VERSION = 9;
 
 export interface Subwoofer {
   /** Abstand Stirnwand (Leinwandwand) */
@@ -118,6 +118,12 @@ export interface RoomModel {
     listenerHeight: number | null;
     /** von Hand verschobene Lautsprecher; alle anderen werden automatisch platziert */
     overrides: Partial<Record<SpeakerId, SpeakerPos>>;
+    /** Ausrichtung: Hauptsitzplatz oder Mitte aller Plätze */
+    aim: AimTarget;
+    /** halber Abstrahlwinkel (±) je Gruppe in Grad, aus dem Datenblatt */
+    dispersion: Record<LevelGroup, number>;
+    /** eigener Abstrahlwinkel je Lautsprecher (überschreibt die Gruppe) */
+    dispersionOverrides: Partial<Record<SpeakerId, number>>;
   };
   /** Sitzreihen; Reihe 1 liegt am Hauptsitzplatz (seat), weitere Reihen dahinter */
   seating: {
@@ -138,6 +144,7 @@ export type BassMode = 'free' | 'sba' | 'dba';
 /** Bezug der Kennempfindlichkeit: 1 W/1 m oder 2,83 V/1 m */
 export type SensBasis = '1w' | '2v83';
 export type LevelGroup = 'front' | 'surround' | 'height';
+export type AimTarget = 'mlp' | 'center';
 export const LEVEL_GROUPS: readonly LevelGroup[] = ['front', 'surround', 'height'];
 export interface LevelGroupSpec {
   /** Kennempfindlichkeit in dB SPL */
@@ -181,7 +188,7 @@ export const DEFAULT_ROOM: RoomModel = {
     sub: { sens: 88, basis: '2v83', impedance: 8, amp: 500 },
     lfeBoost: 10,
   },
-  speakers: { layout: '7.1.4', listenerHeight: null, overrides: {} },
+  speakers: { layout: '7.1.4', listenerHeight: null, overrides: {}, aim: 'mlp', dispersion: { front: 45, surround: 45, height: 45 }, dispersionOverrides: {} },
   seating: { rows: 1, seatsPerRow: 3, seatSpacing: 0.7, rowSpacing: 1.6, riserStep: 0.3, overrides: {} },
 };
 
@@ -219,6 +226,7 @@ export const LIMITS = {
   impedance: [2, 16],
   amp: [1, 5000],
   lfeBoost: [0, 15],
+  dispersion: [5, 90],
 } as const satisfies Record<string, readonly [number, number]>;
 
 type Lim = keyof typeof LIMITS;
@@ -349,7 +357,15 @@ function sanitizeSpeakers(v: unknown): RoomModel['speakers'] {
       overrides[id] = { x: clamp(finiteOr(q.x, 0), 0, 30), y: clamp(finiteOr(q.y, 0), 0, 30), z: clamp(finiteOr(q.z, 1.2), 0, 10) };
     }
   }
-  return { layout, listenerHeight, overrides };
+  const dd = DEFAULT_ROOM.speakers.dispersion;
+  const dv = obj(s.dispersion);
+  const disp = (v: unknown, def: number) => (typeof v === 'number' && Number.isFinite(v) ? clamp(v, LIMITS.dispersion[0], LIMITS.dispersion[1]) : def);
+  const dispersion = { front: disp(dv.front, dd.front), surround: disp(dv.surround, dd.surround), height: disp(dv.height, dd.height) };
+  const dispersionOverrides: Partial<Record<SpeakerId, number>> = {};
+  const dov = obj(s.dispersionOverrides);
+  for (const id of SPEAKER_IDS) if (typeof dov[id] === 'number' && Number.isFinite(dov[id])) dispersionOverrides[id] = disp(dov[id], 45);
+  const aim: AimTarget = s.aim === 'center' ? 'center' : 'mlp';
+  return { layout, listenerHeight, overrides, aim, dispersion, dispersionOverrides };
 }
 
 function sanitizeSeatOverrides(v: unknown): Record<string, { x: number; y: number }> {
@@ -395,6 +411,7 @@ function migrate(i: Record<string, unknown>): Record<string, unknown> {
   if (out.version === 5) out.version = 6; // v5 kannte keine verschobenen Plätze: leere Liste
   if (out.version === 6) out.version = 7; // v6 kannte keine Bass-Arrays: einzelne Subs wie bisher
   if (out.version === 7) out.version = 8; // v7 kannte keine Pegel-/Verstärkerdaten: Beispielwerte
+  if (out.version === 8) out.version = 9; // v8 kannte keine Ausrichtung: Ziel MLP, ±45° je Gruppe
   return out;
 }
 
