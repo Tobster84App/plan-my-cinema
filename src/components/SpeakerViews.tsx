@@ -4,6 +4,7 @@ import type { RoomModel } from '../lib/room';
 import type { SpeakerResult, SpeakersResult } from '../lib/speakers-calc';
 import type { Status } from '../lib/speakers';
 import { surfaceAxes, surfacePlane, type Surface } from '../lib/seating';
+import type { AimingResult } from '../lib/aiming';
 import type { UnitSystem } from '../lib/units';
 import type { SpeakersDict } from '../i18n/speakers-ui';
 import { useWidth } from './useWidth';
@@ -58,6 +59,8 @@ interface Props {
   selected: number;
   /** angezeigte Reflexionen (Fläche und Kanal); ohne Angabe keine */
   refl?: { group: ReflGroup; id: string | null };
+  /** Abstrahlkegel eines Lautsprechers (Draufsicht) */
+  cone?: AimingResult['rows'][number] | null;
   lang: Lang;
   units: UnitSystem;
   t: SpeakersDict;
@@ -82,7 +85,7 @@ function Marker({ s, cx, cy, t, lang, side = false }: { s: SpeakerResult; cx: nu
   );
 }
 
-export function SpeakerTopView({ m, r, selected, refl, lang, units, t }: Props) {
+export function SpeakerTopView({ m, r, selected, refl, cone, lang, units, t }: Props) {
   const [ref, W] = useWidth();
   const P = { l: 14, r: 14, t: 18, b: 44 }; // unten Platz für Kürzel der Overheads + Achse
   const L = m.room.length;
@@ -122,6 +125,38 @@ export function SpeakerTopView({ m, r, selected, refl, lang, units, t }: Props) 
                 </g>
               );
             })}
+        {/* Abstrahlkegel: nach unten zeigende Deckenlautsprecher als Kreis auf Ohrhöhe, sonst Keil in der Draufsicht */}
+        {cone &&
+          (() => {
+            const sp = r.speakers.find((q) => q.id === cone.id);
+            if (!sp) return null;
+            const cx = x(sp.pos.x), cy = y(sp.pos.y);
+            if (cone.facesDown) {
+              const rad = Math.max(0, sp.pos.z - r.mlp.z) * Math.tan((cone.half * Math.PI) / 180) * s;
+              return (
+                <g>
+                  <clipPath id="roomclip"><rect x={x(0)} y={y(Wr)} width={L * s} height={Wr * s} /></clipPath>
+                  <circle clip-path="url(#roomclip)" cx={cx} cy={cy} r={rad} fill="var(--info)" fill-opacity="0.08" stroke="var(--info)" stroke-width="1.5" stroke-dasharray="5 4" />
+                </g>
+              );
+            }
+            const a = Math.atan2(cone.axis.y, cone.axis.x);
+            const reach = Math.hypot(L, Wr) * s;
+            const h = (cone.half * Math.PI) / 180;
+            // y-Achse im Bild ist gespiegelt (linke Wand unten) → Winkel im Bild = −a
+            const p1 = { x: cx + reach * Math.cos(-(a + h)), y: cy + reach * Math.sin(-(a + h)) };
+            const p2 = { x: cx + reach * Math.cos(-(a - h)), y: cy + reach * Math.sin(-(a - h)) };
+            const ax = { x: cx + reach * Math.cos(-a), y: cy + reach * Math.sin(-a) };
+            return (
+              <g>
+                <clipPath id="roomclip"><rect x={x(0)} y={y(Wr)} width={L * s} height={Wr * s} /></clipPath>
+                <g clip-path="url(#roomclip)">
+                  <polygon points={`${cx},${cy} ${p1.x},${p1.y} ${p2.x},${p2.y}`} fill="var(--info)" fill-opacity="0.08" stroke="var(--info)" stroke-width="1" stroke-dasharray="5 4" />
+                  <line x1={cx} y1={cy} x2={ax.x} y2={ax.y} stroke="var(--info)" stroke-width="1.5" />
+                </g>
+              </g>
+            );
+          })()}
         {r.speakers
           .filter((sp) => sp.rule.measure === 'azimuth')
           .map((sp) => {

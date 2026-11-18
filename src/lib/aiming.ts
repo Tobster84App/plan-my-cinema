@@ -1,16 +1,19 @@
 /**
  * Ausrichtung der Lautsprecher (Toe-in, Neigung) und Abdeckung der Sitzplätze – reine Funktionen.
  *
- * - Ohrhöhen-Lautsprecher: Grundrichtung = Normale der nächstgelegenen Wand (in den Raum hinein).
+ * - Ohrhöhen-Lautsprecher: Grundrichtung = Normale der Montagewand (in den Raum hinein): Front → Stirnwand,
+ *   Rear → Rückwand, Surround/Wides → nächstgelegene Seitenwand.
  *   Eindrehen (Toe-in) = Winkel in der Draufsicht zwischen dieser Normalen und der Richtung zum Ziel.
  *   Neigung = Höhenwinkel der Richtung zum Ziel (negativ = nach unten).
  * - Deckenlautsprecher: Dolby (Installation Guidelines 12/2018, S. 7): Bei breiter Abstrahlung (≈ ±45° von 100 Hz bis
  *   10 kHz oder mehr) dürfen sie senkrecht nach unten zeigen; schwenkbare Modelle mit engerer Abstrahlung sollen zum
  *   Hauptsitzplatz geneigt werden. Der Planer nimmt deshalb ab ±45° die Achse senkrecht nach unten, darunter die Richtung zum Ziel.
  * - Abdeckung: Winkel zwischen Lautsprecherachse und Richtung zum Platz (3D). Bewertung: ≤ Abstrahlwinkel gut,
- *   bis 10° darüber knapp (eigene Festlegung, wie bei der Winkel-Ampel), darüber außerhalb.
+ *   bis 10° darüber knapp (eigene Festlegung, wie bei der Winkel-Ampel), darüber außerhalb. Nach unten zeigende
+ *   Deckenlautsprecher werden höchstens als „knapp“ bewertet, weil Dolby diese Montage ab ±45° ausdrücklich zulässt.
  */
 import type { RoomModel, SpeakerId, SpeakerPos } from './room';
+import type { SpeakerGroup } from './speakers';
 import { levelGroupOf } from './levels';
 import type { SpeakersResult } from './speakers-calc';
 
@@ -33,6 +36,13 @@ export function wallNormal(p: SpeakerPos, room: { length: number; width: number 
     { d: room.width - p.y, n: { x: 0, y: -1, z: 0 } },
   ];
   return c.reduce((a, b) => (b.d < a.d ? b : a)).n;
+}
+
+/** Normale der Montagewand je Gruppe. */
+export function mountNormal(group: SpeakerGroup, p: SpeakerPos, room: { length: number; width: number }): V {
+  if (group === 'front') return { x: 1, y: 0, z: 0 };
+  if (group === 'rear') return { x: -1, y: 0, z: 0 };
+  return p.y <= room.width - p.y ? { x: 0, y: 1, z: 0 } : { x: 0, y: -1, z: 0 };
 }
 
 /** Zielpunkt: Hauptsitzplatz oder Mittelpunkt aller Plätze. */
@@ -62,17 +72,18 @@ export function computeAiming(m: RoomModel, r: SpeakersResult) {
       // Neigung aus der Senkrechten
       tilt = facesDown ? 0 : angleBetween({ x: 0, y: 0, z: -1 }, toTarget);
     } else {
-      const n = wallNormal(sp.pos, m.room);
+      const n = mountNormal(sp.rule.group, sp.pos, m.room);
       toeIn = angleBetween(n, { x: toTarget.x, y: toTarget.y, z: 0 });
       tilt = deg(Math.atan2(toTarget.z, Math.hypot(toTarget.x, toTarget.y)));
     }
     const seats = r.seats.map((st) => {
       const off = angleBetween(axis, sub(st.seat.pos, sp.pos));
-      return { off, status: rate(off, half) };
+      const st0 = rate(off, half);
+      return { off, status: facesDown && st0 === 'bad' ? ('warn' as AimStatus) : st0 };
     });
     const worstIdx = seats.reduce((w, x, i) => (x.off > seats[w].off ? i : w), 0);
     const status = seats.reduce<AimStatus>((w, x) => (WORST[x.status] > WORST[w] ? x.status : w), 'ok');
-    return { id: sp.id, overhead, half, own: own != null, facesDown, toeIn, tilt, axis, seats, worstIdx, status, outside: seats.filter((x) => x.status === 'bad').length };
+    return { id: sp.id, overhead, half, own: own != null, facesDown, toeIn, tilt, axis, seats, worstIdx, status, outside: seats.filter((x) => x.off > half + 1e-9).length };
   });
   return { target, rows };
 }

@@ -6,6 +6,8 @@ import { UI } from '../i18n/ui';
 import { fmtLength, fmtNum, fmtSmallLength, type Lang } from '../lib/format';
 import { LIMITS, SPEAKER_LAYOUTS, type SpeakerId, type SpeakerLayout } from '../lib/room';
 import { computeSpeakers, seatTiming } from '../lib/speakers-calc';
+import { computeAiming } from '../lib/aiming';
+import { LEVEL_GROUPS } from '../lib/room';
 import { initBrowserState, isSample, room, units, updateRoom } from '../state/room';
 import { NumberField } from './NumberField';
 import { RoomTools } from './RoomTools';
@@ -28,6 +30,13 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
   const cnt = seatRes.counts;
   const seatName = seatRes.seat.isMlp ? t.mlpLabel : t.seatLabel(seatRes.seat.row, seatRes.seat.index);
   const timing = useMemo(() => seatTiming(m, r, sel), [m, r, sel]);
+  const aiming = useMemo(() => computeAiming(m, r), [m, r]);
+  const [coneId, setConeId] = useState<string | null>(null);
+  const coneRow = aiming.rows.find((x) => x.id === coneId) ?? null;
+  const seatLabelOf = (i: number) => {
+    const st = r.seats[i]?.seat;
+    return !st ? '' : st.isMlp ? t.mlpLabel : t.seatLabel(st.row, st.index);
+  };
   const ms = (v: number, signed = false) => `${signed && v > 0.005 ? '+' : ''}${fmtNum(v, 2, lang)} ms`;
   const dbs = (v: number) => `${v > 0.005 ? '+' : ''}${fmtNum(v, 1, lang)} dB`;
   const resOf = (id: SpeakerId) => seatRes.results.find((x) => x.id === id)!;
@@ -92,6 +101,24 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
 
         <SeatingFields lang={lang} />
 
+        <fieldset>
+          <legend>{t.gAim}</legend>
+          <div class="f">
+            <span class="lbl">{t.aimTarget}</span>
+            <div class="presets" role="group" aria-label={t.aimTarget}>
+              {(['mlp', 'center'] as const).map((a) => (
+                <button type="button" key={a} class="btn small" aria-pressed={m.speakers.aim === a} style={m.speakers.aim === a ? { borderColor: 'var(--info)', color: 'var(--fg)' } : undefined} onClick={() => updateRoom((d) => void (d.speakers.aim = a))}>
+                  {a === 'mlp' ? t.aimMlp : t.aimCenter}
+                </button>
+              ))}
+            </div>
+          </div>
+          {LEVEL_GROUPS.map((g) => (
+            <NumberField key={g} id={`disp-${g}`} label={t.dispersion[g]} value={m.speakers.dispersion[g]} unit="°" digits={0} onChange={(v) => updateRoom((d) => void (d.speakers.dispersion[g] = v!))} lang={lang} min={LIMITS.dispersion[0]} max={LIMITS.dispersion[1]} />
+          ))}
+          <p class="hint">{t.dispersionHint}</p>
+        </fieldset>
+
         <RoomTools lang={lang} />
       </form>
 
@@ -123,7 +150,7 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
 
         <figure class="chart">
           <h2>{t.topView}</h2>
-          <SpeakerTopView m={m} r={r} selected={sel} refl={refl} lang={lang} units={u} t={t} />
+          <SpeakerTopView m={m} r={r} selected={sel} refl={refl} cone={coneRow} lang={lang} units={u} t={t} />
           <div class="legend">
             <span><i class="swatch" style={{ background: 'var(--info)', borderRadius: '50%' }} />{t.legendMlp}</span>
             <span><i class="swatch" style={{ background: 'var(--fg)' }} />{t.legendScreen}</span>
@@ -223,6 +250,9 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
                             <NumberField id={`${s.id}-y`} label={t.y} value={s.pos.y} onChange={(v) => setPos(s.id, 'y', v!)} lang={lang} units={u} kind="cm" min={0} max={m.room.width} />
                             <NumberField id={`${s.id}-z`} label={t.z} value={s.pos.z} onChange={(v) => setPos(s.id, 'z', v!)} lang={lang} units={u} kind="cm" min={0} max={m.room.height} />
                           </div>
+                          <div style={{ maxWidth: '260px', marginTop: '8px' }}>
+                            <NumberField id={`${s.id}-disp`} label={t.ownDispersion} value={m.speakers.dispersionOverrides[s.id] ?? null} nullable unit="°" digits={0} onChange={(v) => updateRoom((d) => void (v == null ? delete d.speakers.dispersionOverrides[s.id] : (d.speakers.dispersionOverrides[s.id] = v)))} lang={lang} min={LIMITS.dispersion[0]} max={LIMITS.dispersion[1]} hint={t.ownDispersionHint} />
+                          </div>
                           {s.manual && (
                             <button type="button" class="btn small ghost" style={{ marginTop: '8px' }} onClick={() => updateRoom((d) => void delete d.speakers.overrides[s.id])}>
                               {t.reset}
@@ -238,6 +268,47 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
           </div>
           <p class="sub">{t.tolNote}</p>
           {r.speakers.some((s) => s.id === 'C' && s.status !== 'ok') && <p class="sub">{t.cNote}</p>}
+        </figure>
+
+        <figure class="chart">
+          <h2>{t.aimTitle}</h2>
+          <div class="tbl-wrap">
+            <table class="data">
+              <thead>
+                <tr>
+                  <th>{t.thSpk}</th>
+                  <th>{t.thToe}</th>
+                  <th>{t.thTilt}</th>
+                  <th>{t.thDisp}</th>
+                  <th>{t.thCover}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {aiming.rows.map((a) => (
+                  <tr key={a.id}>
+                    <td><b>{a.id}</b> <span style={{ color: 'var(--muted)' }}>{t.names[a.id as SpeakerId]}</span></td>
+                    <td class="num">{a.toeIn == null ? '–' : deg(a.toeIn)}</td>
+                    <td class="num">{a.overhead ? (a.facesDown ? t.down : t.fromVertical(deg(a.tilt))) : Math.abs(a.tilt) < 0.5 ? '0°' : t.tiltUpDown(deg(Math.abs(a.tilt)), a.tilt < 0)}</td>
+                    <td class="num">±{fmtNum(a.half, 0, lang)}°{a.own && <span style={{ color: 'var(--muted)' }}> ({t.own})</span>}</td>
+                    <td style={{ color: STATUS_COLOR[a.status] }}>
+                      {STATUS_ICON[a.status]} {a.status === 'ok' ? t.coverAll : a.outside ? t.coverOutside(a.outside) : t.coverWorst(seatLabelOf(a.worstIdx), deg(a.seats[a.worstIdx].off))}
+                      {a.status !== 'ok' && a.outside > 0 && <span style={{ color: 'var(--muted)' }}> · {t.coverWorst(seatLabelOf(a.worstIdx), deg(a.seats[a.worstIdx].off))}</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div class="f" style={{ maxWidth: '320px' }}>
+            <label for="cone-sel">{t.coneFor}</label>
+            <select id="cone-sel" value={coneId ?? ''} onChange={(e) => setConeId((e.target as HTMLSelectElement).value || null)}>
+              <option value="">{t.coneNone}</option>
+              {aiming.rows.map((a) => (
+                <option key={a.id} value={a.id}>{a.id} · {t.names[a.id as SpeakerId]}</option>
+              ))}
+            </select>
+          </div>
+          <p class="sub">{t.aimNote}</p>
         </figure>
 
         <figure class="chart">

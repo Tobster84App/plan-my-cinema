@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { angleBetween, computeAiming, wallNormal } from '../src/lib/aiming';
+import { angleBetween, computeAiming, mountNormal, wallNormal } from '../src/lib/aiming';
 import { DEFAULT_ROOM, sanitizeRoom } from '../src/lib/room';
 import { computeSpeakers } from '../src/lib/speakers-calc';
 
@@ -39,12 +39,19 @@ describe('Ausrichtung (Toe-in, Neigung, Abdeckung)', () => {
     expect(a.toeIn!).toBeCloseTo(13.4486, 3);
     expect(a.tilt).toBeCloseTo(1.8165, 3);
   });
-  it('Decke Ltf (2,9 | 0,15 | 2,5) mit ±45°: zeigt nach unten (Dolby), MLP liegt acos(1,3/2,6082) = 60,1° neben der Achse → außerhalb (> 45 + 10)', () => {
+  it('Decke Ltf (2,9 | 0,15 | 2,5) mit ±45°: zeigt nach unten (Dolby), MLP liegt acos(1,3/2,6082) = 60,1° neben der Achse → nur „knapp“, weil Dolby das zulässt', () => {
     const m = structuredClone(DEFAULT_ROOM);
     const a = computeAiming(m, computeSpeakers(m)).rows.find((x) => x.id === 'Ltf')!;
     expect(a.facesDown).toBe(true);
     expect(a.seats[1].off).toBeCloseTo(60.1034, 3);
-    expect(a.seats[1].status).toBe('bad');
+    expect(a.seats[1].status).toBe('warn');
+    expect(a.outside).toBe(3);
+  });
+  it('Montagewand je Gruppe: Front → Stirnwand, Rear → Rückwand, Surround → nächste Seitenwand', () => {
+    const room = DEFAULT_ROOM.room;
+    expect(mountNormal('front', { x: 0.41, y: 0.15, z: 1.2 }, room)).toEqual({ x: 1, y: 0, z: 0 });
+    expect(mountNormal('rear', { x: 5.85, y: 0.7, z: 1.2 }, room)).toEqual({ x: -1, y: 0, z: 0 });
+    expect(mountNormal('surround', { x: 4.5, y: 3.85, z: 1.2 }, room)).toEqual({ x: 0, y: -1, z: 0 });
   });
   it('Decke Ltf mit eigenem Abstrahlwinkel ±30°: zum MLP geneigt (60,1° aus der Senkrechten), MLP auf der Achse', () => {
     const m = structuredClone(DEFAULT_ROOM);
