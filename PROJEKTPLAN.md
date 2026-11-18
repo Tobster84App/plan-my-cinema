@@ -1,7 +1,7 @@
 # Plan My Cinema – Projektplan
 
 Domain: plan-my-cinema.com (gekauft). Schwesterprojekt: rate-my-throne.com.
-Stand: 2026-11-15.
+Stand: 2026-11-18.
 
 ## Ziel
 Zweisprachige Website (DE zuerst, EN zweitrangig) mit Heimkino-Rechnern auf einem **gemeinsamen Raummodell**. Statisch, PWA, später ggf. als App mit Capacitor. Einnahmen später über Affiliate (Amazon, Thomann), eventuell Werbung.
@@ -99,6 +99,13 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - Subwoofer/LFE: Ziel = Kalibrierpegel + 20 dB + LFE-Anhebung (Standard +10 dB = Erfahrungswert des Inhabers, nicht in der Dolby-Richtlinie; im Raum fein abstimmen); Subs aus Rechner 2, phasengleich summiert, DBA nur vorderes Array; Freifeld ohne Raumverstärkung
 - Nicht enthalten: Belastbarkeit, Leistungskompression
 - Lens Shift JVC: Bezug ganze Bildhöhe laut Bedienungsanleitung B5A-3961-44 S. 30 bestätigt
+
+**M3g – Ausrichtung (Toe-in) und Abdeckung** (fertig, 2026-11-18)
+- Raummodell v9: `speakers.aim` (MLP / Mitte aller Plätze), Abstrahlwinkel ± je Gruppe (Front, Surround/Rear/Wides, Höhe) und je Lautsprecher
+- Eindrehen gegenüber der Montagewand (Front → Stirnwand, Rear → Rückwand, Surround/Wides → Seitenwand), Neigung zum Ziel
+- Abdeckung je Platz: Winkel Achse ↔ Platz; grün ≤ Abstrahlwinkel, gelb bis +10° (eigene Festlegung), rot darüber
+- Decke: ab ±45° senkrecht nach unten (Dolby-Leitfaden S. 7), dann höchstens gelb; schmaler → zum Ziel geneigt
+- Abstrahlkegel eines gewählten Lautsprechers in der Draufsicht (Keil bzw. Kreis auf Ohrhöhe)
 
 **M4 – Veröffentlichung**
 - Deploy ALL-INKL, Domain, Search Console, Lighthouse/Barrierefreiheit-Prüfung
