@@ -1364,7 +1364,7 @@
       "source": "https://www.lg.com/de/beamer/heimkinoprojektoren/hu810pw/",
       "asOf": "2026-11-05",
       "statedLensShift": "Lens Shift; H: ±24%, V: ±60% (Produkttext)",
-      "notes": "Lens Shift aus dem Produkttext der LG-Seite, nicht aus der Datentabelle. Lumen „Helligkeit 2D/3D“ ohne Normangabe."
+      "notes": "Lens Shift aus dem Produkttext der LG-Seite, nicht aus der Datentabelle. Lumen „Helligkeit 2D/3D“ ohne Normangabe. Lens-Shift-Bezug im Benutzerhandbuch nicht angegeben (nur Diagramm ohne Zahlen, S. 33) – Werte von lg.com, Bezug nicht geprüft."
     },
     {
       "id": "lg-hu915qe",
@@ -1793,17 +1793,17 @@
       },
       "zoom": "optical",
       "lensShift": {
-        "up": 105,
-        "down": 105,
+        "up": 52.5,
+        "down": 52.5,
         "left": null,
         "right": null
       },
       "lumensSpec": 3500,
       "lumensStandard": "ISO",
-      "statedLensShift": "Vertical Lens Shift: +/-105% offset",
+      "statedLensShift": "Valerion: vertikal ±105 % „Offset“, definiert als OFFSET = (H1 + H2) ÷ H2 × 100 % mit H1 = Objektivachse bis Bildkante, H2 = halbe Bildhöhe (User Manual VisionMaster Max, S. EN-19) → Bezug halbe Bildhöhe; umgerechnet auf % der ganzen Bildhöhe: ±52,5 %.",
       "source": "https://www.valerion.com/product/valerion-visionmaster-4k-rgb-triple-laser-projector",
       "asOf": "2026-11-05",
-      "notes": "Horizontaler Lens Shift nicht angegeben. Mit optionaler Vorsatzlinse laut Valerion 0,9–2,0:1."
+      "notes": "Horizontaler Lens Shift nicht angegeben. Mit optionaler Vorsatzlinse laut Valerion 0,9–2,0:1. Lens-Shift-Bezug aus dem User Manual geprüft (2026-11-19)."
     },
     {
       "id": "valerion-visionmaster-pro",

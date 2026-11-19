@@ -30,8 +30,8 @@ describe('data/projectors.json', () => {
     const p = valid.find((x) => x.id === 'benq-w5800')!;
     expect(p.lensShift).toEqual({ up: 25, down: 25, left: 10.5, right: 10.5 });
   });
-  it('Valerion: Lens Shift nur beim Max (±105 % vertikal), Pro 2 ohne', () => {
-    expect(valid.find((x) => x.id === 'valerion-visionmaster-max')!.lensShift).toEqual({ up: 105, down: 105, left: null, right: null });
+  it('Valerion: Lens Shift nur beim Max – ±105 % Offset = (H1 + H2)/H2, Bezug halbe Bildhöhe (Manual S. EN-19) → ±52,5 %; Pro 2 ohne', () => {
+    expect(valid.find((x) => x.id === 'valerion-visionmaster-max')!.lensShift).toEqual({ up: 52.5, down: 52.5, left: null, right: null });
     expect(valid.find((x) => x.id === 'valerion-visionmaster-pro2')!.lensShift).toEqual({ up: 0, down: 0, left: 0, right: 0 });
   });
   it('Stichprobe EH-LS12000B wie auf epson.de: 1,35–2,84, ±96,3 % / ±47,1 %, 2.700 lm', () => {

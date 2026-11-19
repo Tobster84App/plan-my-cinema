@@ -39,5 +39,7 @@ Gesamt: **106 Modelle** (Stand 2026-11-09).
   - Ausgelassen: ältere VW-Modelle (keine Hilfe-Seite gefunden).
   - **JVC geprüft (2026-11-13):** Bedienungsanleitung DLA-NZ9/NZ8/NZ7/NP5 (B5A-3961-44, S. 30, manuals.jvckenwood.com): „Bis etwa 100 % [NZ9] und 80 % [NZ8/NZ7/NP5] des projizierten Bilds“ (Bild 16:9) vertikal, 43 % / 34 % horizontal → Bezug ganze Bildhöhe/-breite, wie im Rechner; gespeicherte JVC-Werte unverändert richtig. Gleiches Diagramm in B5A-4578-14 (NZ900) und B5A-4685-04 (NZ700).
   - **BenQ geprüft (2026-11-19):** Benutzerhandbuch W5800 (S. 18, vom Inhaber als PDF geliefert): „Der Bereich der Linsenverschiebung wird als Prozentsatz der halben Höhe oder Breite des projizierten Bildes angegeben“ (Toleranz ±5 %) → wie Sony halbiert: W5800 ±25 % / ±10,5 %. W2720i (Datenblatt ±5 % vertikal) im Handbuch nicht geprüft → `null`, Originalangabe in `statedLensShift`.
-  - Offen: Bezug bei Epson (geliefertes PDF war nur die Startseite eines mehrteiligen Handbuchs), XGIMI, LG, Valerion nicht geprüft.
+  - **Valerion geprüft (2026-11-19):** User Manual VisionMaster Max S. EN-19: OFFSET = (H1 + H2) ÷ H2 × 100 % (H1 = Objektivachse bis Bildkante, H2 = halbe Bildhöhe) → Bezug halbe Bildhöhe, ±105 % → ±52,5 %.
+  - **LG HU810PW:** Benutzerhandbuch nennt keinen Zahlenbereich (nur Rautendiagramm S. 33; „Verhältnis der nach oben gerichteten Projektion 110 %“ S. 27 beschreibt die Bildlage, nicht den Verschiebebereich) → Werte von lg.com bleiben, Bezug nicht geprüft.
+  - Offen: Epson (geliefertes PDF war nur die Startseite eines mehrteiligen Handbuchs), XGIMI.
 - Nicht erreichbar: Hisense (www.hisense.de antwortet mit Serverfehler 502).
