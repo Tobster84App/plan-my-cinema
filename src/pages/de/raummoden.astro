@@ -17,7 +17,7 @@ const faq = [
   },
   {
     q: 'Helfen mehrere Subwoofer gegen Raummoden?',
-    a: 'Ja, wenn sie an passenden Stellen stehen. Zwei Subs an gegenüberliegenden Wänden regen ungerade Moden in dieser Richtung gegenphasig an, sodass sie sich weitgehend aufheben. Todd Welti hat 2002 auf der AES Convention untersucht, wie viele Subs nötig sind; nach verbreiteten Zusammenfassungen gleichen bis zu vier symmetrisch aufgestellte Subs den Bass über mehrere Plätze am besten aus (Volltext nicht gelesen).',
+    a: 'Ja, wenn sie an passenden Stellen stehen. Zwei Subs an gegenüberliegenden Wänden regen ungerade Moden in dieser Richtung gegenphasig an, sodass sie sich weitgehend aufheben. Nach Todd Welti (Harman) gleichen vier Subs an den Wandmitten die Plätze im rechteckigen Raum am besten aus; zwei Subs an gegenüberliegenden Wandmitten sind fast genauso gut und haben mehr Tiefbass. Mehr als vier lohnen sich laut Welti nicht.',
   },
   {
     q: 'Ersetzt der Rechner eine Messung?',
@@ -87,8 +87,12 @@ const jsonLd = [
     <p>
       Zwei Subs an gegenüberliegenden Wänden schwingen für die erste Mode dieser Richtung gegenphasig – die Mode wird kaum noch angeregt. Für die
       zweite Mode addieren sie sich dagegen. Mit vier Subs an den Wandmitten oder in den Ecken lassen sich mehrere Richtungen gleichzeitig
-      beruhigen. Todd Welti hat das 2002 auf der AES Convention untersucht („How Many Subwoofers are Enough?“). Die Schnellauswahl im Rechner
-      bietet diese Anordnungen an.
+      beruhigen. Todd Welti (Harman) hat das mit Simulationen und Messungen untersucht („Subwoofers: Optimum Number and Locations“; zugehöriges
+      AES-Paper „How Many Subwoofers are Enough?“, 2002). Für einen rechteckigen Raum mit Sitzbereich in der Mitte oder Mitte-hinten kommt er zum
+      Ergebnis: Je ein Sub an allen vier Wandmitten gleicht die Plätze am besten aus, liefert aber weniger Tiefbass. Zwei Subs an gegenüberliegenden
+      Wandmitten sind fast genauso gut und haben deutlich mehr Tiefbass. Vier Subs in den Ecken haben guten Tiefbass, gleichen die Plätze aber etwas
+      schlechter aus als die Wandmitten. Mehr als vier Subs hält er wegen der Kosten für nicht gerechtfertigt. Die Schnellauswahl im Rechner bietet
+      diese Anordnungen an.
     </p>
     <p>
       Der Rechner nimmt an, dass alle Subs gleich laut und gleichphasig spielen. Mit DSP (z. B. miniDSP) und einer Messung lassen sich Pegel, Delay

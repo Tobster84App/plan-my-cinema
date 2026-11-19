@@ -17,7 +17,7 @@ const faq = [
   },
   {
     q: 'Do multiple subwoofers help?',
-    a: 'Yes, if they are placed well. Two subs on opposite walls drive the odd modes along that axis in opposite phase, so those modes largely cancel. Todd Welti studied how many subs are needed at the 2002 AES Convention; widely quoted summaries say up to four symmetrically placed subs even out the bass best across several seats (full text not read).',
+    a: 'Yes, if they are placed well. Two subs on opposite walls drive the odd modes along that axis in opposite phase, so those modes largely cancel. According to Todd Welti (Harman), four subs at the wall midpoints even out the seats best in a rectangular room; two subs at opposite wall midpoints are very nearly as good with more deep bass. He sees no justification for more than four.',
   },
   {
     q: 'Does this replace a measurement?',
@@ -84,8 +84,12 @@ const jsonLd = [
     <h3>Multiple subwoofers</h3>
     <p>
       Two subs on opposite walls are in opposite phase for the first mode along that axis, so it is barely driven – while the second mode adds up.
-      Four subs at the wall midpoints or in the corners can calm several axes at once. Todd Welti studied this at the 2002 AES Convention (“How Many
-      Subwoofers are Enough?”). The presets in the calculator offer these layouts.
+      Four subs at the wall midpoints or in the corners can calm several axes at once. Todd Welti (Harman) investigated this with
+      simulations and measurements (“Subwoofers: Optimum Number and Locations”; companion AES paper “How Many Subwoofers are Enough?”, 2002). For a
+      rectangular room with the seats in the centre or centre-rear, he found: one sub at each of the four wall midpoints evens out the seats best but
+      gives less deep bass; two subs at opposite wall midpoints are very nearly as good with much better low-frequency output; four subs in the
+      corners have good deep bass but even out the seats slightly less than the midpoints. He sees no justification for more than four. The presets in
+      the calculator offer these layouts.
     </p>
     <p>
       The calculator assumes all subs play at the same level and in phase. With DSP (such as miniDSP) and a measurement you can set level, delay and

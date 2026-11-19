@@ -54,7 +54,7 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - Modenspektrum am Sitz: Anregung durch Subs × Modenform am Sitz (vereinfacht, ohne Dämpfung)
 - Schnellauswahl Sub-Anordnungen (1 Ecke, 1 Mitte, 2 vorn/hinten, 4 Wandmitten, 4 Ecken), Hinweise (Knoten/Bauch, Modenhäufungen, Auslöschung)
 - Diagrammfarben mit Validator geprüft (dunkler Hintergrund, Farbsehschwäche)
-- Quelle Multi-Sub: Welti, „How Many Subwoofers are Enough?“, AES 112th Convention 2002 (Volltext nicht gelesen)
+- Quelle Multi-Sub: Todd Welti (Harman), „Subwoofers: Optimum Number and Locations“ (Präsentation, vom Inhaber als PDF geliefert, gelesen 2026-11-19; Ergebnis: 4 Wandmitten beste Gleichmäßigkeit, 2 gegenüberliegende Wandmitten fast gleich gut mit mehr Tiefbass, 4 Ecken etwas schlechter, > 4 nicht gerechtfertigt; Annahme Rechteckraum, Sitzbereich Mitte/Mitte-hinten); AES-Paper „How Many Subwoofers are Enough?“ 2002
 
 **M3 – Rechner 3 „Lautsprecher-Planer“ (Dolby Atmos 5.1–9.1.6)** (fertig, 2026-11-05)
 - Werte aus freigegebener Dolby-Tabelle (`data/speaker-guidelines.json`)
