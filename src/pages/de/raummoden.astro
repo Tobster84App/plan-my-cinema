@@ -9,7 +9,7 @@ const description =
 const faq = [
   {
     q: 'Was sind Raummoden?',
-    a: 'Stehende Wellen zwischen den Wänden eines Raums. Bei bestimmten Frequenzen addiert sich der Schall zu deutlichen Überhöhungen oder löscht sich zu Löchern aus – je nachdem, wo man sitzt. Im tiefen Bass prägen sie den Klang in fast jedem Heimkino.',
+    a: 'Tiefe Töne prallen zwischen den Wänden hin und her und bilden dabei „stehende Wellen“. Bei manchen Tönen wird es dadurch an einer Stelle sehr laut, an einer anderen fast still – je nachdem, wo man sitzt. Fast jedes Heimkino hat dieses Problem im Bass.',
   },
   {
     q: 'Wie berechnet man Raummoden?',
@@ -17,11 +17,11 @@ const faq = [
   },
   {
     q: 'Helfen mehrere Subwoofer gegen Raummoden?',
-    a: 'Ja, wenn sie an passenden Stellen stehen. Zwei Subs an gegenüberliegenden Wänden regen ungerade Moden in dieser Richtung gegenphasig an, sodass sie sich weitgehend aufheben. Nach Todd Welti (Harman) gleichen vier Subs an den Wandmitten die Plätze im rechteckigen Raum am besten aus; zwei Subs an gegenüberliegenden Wandmitten sind fast genauso gut und haben mehr Tiefbass. Mehr als vier lohnen sich laut Welti nicht.',
+    a: 'Ja, wenn sie an den richtigen Stellen stehen. Zwei Subwoofer an gegenüberliegenden Wänden gleichen manche Töne gegenseitig aus. Nach Todd Welti (Harman) klingt der Bass mit je einem Subwoofer in der Mitte jeder Wand auf allen Plätzen am gleichmäßigsten. Zwei Subwoofer in der Mitte von zwei gegenüberliegenden Wänden sind fast genauso gut. Mehr als vier lohnen sich nicht.',
   },
   {
     q: 'Ersetzt der Rechner eine Messung?',
-    a: 'Nein. Er nimmt schallharte Wände und keine Dämpfung an. Er zeigt, welche Frequenzen und Positionen kritisch sind. Wie stark die Effekte wirklich sind, zeigt nur eine Messung, etwa mit REW und einem Messmikrofon.',
+    a: 'Nein. Der Rechner zeigt, bei welchen Tönen und an welchen Plätzen es wahrscheinlich Probleme gibt. Wie stark sie in deinem Raum wirklich sind, zeigt nur eine Messung – zum Beispiel mit dem kostenlosen Programm REW und einem Messmikrofon.',
   },
 ];
 
@@ -47,13 +47,63 @@ const jsonLd = [
 <Base lang="de" page="modes" title={title} description={description} jsonLd={jsonLd}>
   <div class="page-head">
     <h1>Raum<span>moden</span></h1>
-    <p>Welche Bassfrequenzen dein Raum betont oder verschluckt – und was davon an deinem Platz ankommt. Raummaße und Sitzplatz kommen aus deinem gespeicherten Raum.</p>
+    <p>Welche Basstöne in deinem Raum dröhnen und welche fast verschwinden – und was davon an deinem Platz ankommt. Raummaße und Sitzplätze kommen aus deinem gespeicherten Raum.</p>
   </div>
 
   <ModesCalculator client:load lang="de" />
 
   <article class="prose">
-    <h2>So rechnet der Rechner</h2>
+    <h2>Worum geht es?</h2>
+    <p>
+      Tiefe Töne – der Bass – prallen zwischen den Wänden deines Raums hin und her. Dabei treffen sich die Schallwellen immer wieder. Mal
+      verstärken sie sich, mal löschen sie sich aus. Das ist wie bei Wellen in der Badewanne: An manchen Stellen schwappt das Wasser hoch, an
+      anderen bleibt es fast ruhig. Diese „stehenden Wellen“ heißen <strong>Raummoden</strong>.
+    </p>
+    <p>
+      Die Folge: Manche Basstöne dröhnen viel zu laut, andere sind kaum zu hören. Welche Töne das sind, hängt von der Größe deines Raums ab. Der
+      Rechner zeigt dir, bei welchen Tönen das passiert.
+    </p>
+
+    <h3>Warum der Bass nicht überall gleich klingt</h3>
+    <p>
+      Jede Raummode hat laute und leise Stellen im Raum. An den Wänden und in den Ecken ist jede Mode laut. Darum klingt ein Subwoofer in der Ecke
+      besonders kräftig – er bringt alle Moden zum Schwingen. Wo du sitzt, entscheidet, welche Töne du laut und welche du leise hörst. In der Mitte
+      des Raums fehlt dir zum Beispiel oft der allertiefste Ton, weil er dort fast verschwindet.
+    </p>
+
+    <h3>Was hilft: mehrere Subwoofer</h3>
+    <p>
+      Stehen zwei Subwoofer an gegenüberliegenden Wänden, können sie sich bei manchen Tönen gegenseitig ausgleichen. Dann dröhnt es weniger. Ein
+      Forscher der Firma Harman, Todd Welti, hat ausprobiert, wie viele Subwoofer man braucht und wo sie hingehören. Sein Ergebnis für einen
+      rechteckigen Raum: Je ein Subwoofer in der Mitte jeder Wand klingt auf allen Plätzen am gleichmäßigsten. Zwei Subwoofer in der Mitte von
+      zwei gegenüberliegenden Wänden sind fast genauso gut. Mehr als vier lohnen sich nicht. Diese Aufstellungen findest du im Rechner unter
+      „Schnellauswahl“.
+    </p>
+
+    <h3>SBA und DBA: ganze Subwoofer-Wände</h3>
+    <p>
+      Noch einen Schritt weiter gehen <strong>Bass-Arrays</strong>. Beim <strong>SBA</strong> (Single Bass Array) stehen mehrere Subwoofer
+      gleichmäßig verteilt an der Wand vorne. So schieben sie den Bass wie eine glatte Welle nach hinten, und die Moden zwischen den Seitenwänden,
+      Boden und Decke werden kaum noch angeregt. Beim <strong>DBA</strong> (Double Bass Array) steht dieselbe Anordnung zusätzlich an der Rückwand.
+      Diese hinteren Subwoofer spielen den Ton noch einmal – genau dann, wenn die Welle von vorne hinten ankommt, und umgedreht. So wird die Welle
+      „geschluckt“, statt zurückzuprallen. Im Rechner wählst du dafür oben „SBA“ oder „DBA“.
+    </p>
+
+    <h3>Mehrere Sitzplätze</h3>
+    <p>
+      Wenn mehrere Leute zuschauen, hört jeder einen etwas anderen Bass. Unter „Sitzreihen“ gibst du alle Plätze ein. Der Rechner zeigt dann für
+      jeden Platz, welche Töne dort laut oder leise sind, und wie groß die Unterschiede zwischen den Plätzen sind. Bei jeder Subwoofer-Aufstellung
+      in der Schnellauswahl siehst du eine Zahl: Je kleiner sie ist, desto ähnlicher klingt der Bass auf allen Plätzen.
+    </p>
+
+    <h3>Wie genau ist das?</h3>
+    <p>
+      Der Rechner geht von einem leeren, rechteckigen Raum mit festen Wänden aus. Möbel, Teppiche, Türen und dünne Wände verändern den Klang. Er
+      zeigt dir also, wo Probleme wahrscheinlich sind – wie stark sie wirklich sind, verrät nur eine Messung mit einem Messmikrofon.
+    </p>
+
+    <details class="tech">
+      <summary>Für Technik-Fans: so rechnen wir genau</summary>
 
     <h3>Moden im Quader</h3>
     <p>Für einen rechteckigen Raum mit festen Wänden liegen die Moden bei</p>
@@ -133,6 +183,8 @@ const jsonLd = [
       Unterhalb einer bestimmten Frequenz liegen die Moden einzeln und weit auseinander – dort entstehen die typischen Dröhnfrequenzen und Löcher.
       Darüber werden sie so dicht, dass der Raum sich gleichmäßiger verhält. Das Diagramm „Modendichte“ zeigt, ab wo das in deinem Raum der Fall ist.
     </p>
+
+    </details>
 
     <h2>Häufige Fragen</h2>
     {faq.map((f) => (
