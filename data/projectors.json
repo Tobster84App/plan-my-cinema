@@ -327,8 +327,8 @@
       },
       "zoom": "optical",
       "lensShift": {
-        "up": null,
-        "down": null,
+        "up": 2.5,
+        "down": 2.5,
         "left": null,
         "right": null
       },
@@ -337,7 +337,7 @@
       "source": "https://www.benq.eu/de-de/projector/cinema/w2720i/spec.html",
       "asOf": "2026-11-05",
       "notes": "BenQ nennt keinen horizontalen Lens Shift.",
-      "statedLensShift": "BenQ: vertikal ±5 % (Datenblatt). BenQ bezieht Lens Shift laut Handbuch W5800 auf die halbe Bildhöhe; für dieses Modell nicht im Handbuch geprüft – deshalb nicht übernommen."
+      "statedLensShift": "BenQ: vertikal ±5 % (Datenblatt). Umgerechnet auf % der ganzen Bildhöhe: ±2,5 % – Annahme: gleiche Zählweise wie im Handbuch des W5800 (halbe Bildhöhe), für dieses Modell nicht im Handbuch geprüft."
     },
     {
       "id": "benq-w4100i",
