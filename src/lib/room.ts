@@ -13,7 +13,7 @@
 import { clamp, finiteOr } from './units';
 import type { ScopeMethod } from './screen';
 
-export const ROOM_MODEL_VERSION = 9;
+export const ROOM_MODEL_VERSION = 10;
 
 export interface Subwoofer {
   /** Abstand Stirnwand (Leinwandwand) */
@@ -118,6 +118,8 @@ export interface RoomModel {
     listenerHeight: number | null;
     /** von Hand verschobene Lautsprecher; alle anderen werden automatisch platziert */
     overrides: Partial<Record<SpeakerId, SpeakerPos>>;
+    /** Leinwand akustisch transparent: L/C/R automatisch dahinter; sonst neben bzw. unter/über die Leinwand */
+    atScreen: boolean;
     /** Ausrichtung: Hauptsitzplatz oder Mitte aller Plätze */
     aim: AimTarget;
     /** halber Abstrahlwinkel (±) je Gruppe in Grad, aus dem Datenblatt */
@@ -188,7 +190,7 @@ export const DEFAULT_ROOM: RoomModel = {
     sub: { sens: 88, basis: '2v83', impedance: 8, amp: 500 },
     lfeBoost: 10,
   },
-  speakers: { layout: '7.1.4', listenerHeight: null, overrides: {}, aim: 'mlp', dispersion: { front: 45, surround: 45, height: 45 }, dispersionOverrides: {} },
+  speakers: { layout: '7.1.4', listenerHeight: null, overrides: {}, atScreen: true, aim: 'mlp', dispersion: { front: 45, surround: 45, height: 45 }, dispersionOverrides: {} },
   seating: { rows: 1, seatsPerRow: 3, seatSpacing: 0.7, rowSpacing: 1.6, riserStep: 0.3, overrides: {} },
 };
 
@@ -365,7 +367,8 @@ function sanitizeSpeakers(v: unknown): RoomModel['speakers'] {
   const dov = obj(s.dispersionOverrides);
   for (const id of SPEAKER_IDS) if (typeof dov[id] === 'number' && Number.isFinite(dov[id])) dispersionOverrides[id] = disp(dov[id], 45);
   const aim: AimTarget = s.aim === 'center' ? 'center' : 'mlp';
-  return { layout, listenerHeight, overrides, aim, dispersion, dispersionOverrides };
+  const atScreen = s.atScreen === false ? false : true;
+  return { layout, listenerHeight, overrides, atScreen, aim, dispersion, dispersionOverrides };
 }
 
 function sanitizeSeatOverrides(v: unknown): Record<string, { x: number; y: number }> {
@@ -412,6 +415,7 @@ function migrate(i: Record<string, unknown>): Record<string, unknown> {
   if (out.version === 6) out.version = 7; // v6 kannte keine Bass-Arrays: einzelne Subs wie bisher
   if (out.version === 7) out.version = 8; // v7 kannte keine Pegel-/Verstärkerdaten: Beispielwerte
   if (out.version === 8) out.version = 9; // v8 kannte keine Ausrichtung: Ziel MLP, ±45° je Gruppe
+  if (out.version === 9) out.version = 10; // v9: L/C/R wie bisher hinter der Leinwand (AT-Tuch)
   return out;
 }
 

@@ -77,6 +77,17 @@ export default function SpeakerPlanner({ lang }: { lang: Lang }) {
             </select>
             <p class="hint">{t.layoutHint}</p>
           </div>
+          <div class="f">
+            <span class="lbl">{t.atScreen}</span>
+            <div class="presets" role="group" aria-label={t.atScreen}>
+              {([true, false] as const).map((v) => (
+                <button type="button" key={String(v)} class="btn small" aria-pressed={m.speakers.atScreen === v} style={m.speakers.atScreen === v ? { borderColor: 'var(--info)', color: 'var(--fg)' } : undefined} onClick={() => updateRoom((d) => void (d.speakers.atScreen = v))}>
+                  {v ? t.atYes : t.atNo}
+                </button>
+              ))}
+            </div>
+            <p class="hint">{t.atHint}</p>
+          </div>
           <NumberField id="lh" label={t.listenerHeight} value={m.speakers.listenerHeight} nullable onChange={(v) => updateRoom((d) => void (d.speakers.listenerHeight = v))} lang={lang} units={u} kind="cm" min={0.2} max={3} hint={t.listenerHeightHint} />
         </fieldset>
 

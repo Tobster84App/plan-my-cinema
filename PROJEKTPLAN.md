@@ -1,7 +1,7 @@
 # Plan My Cinema – Projektplan
 
 Domain: plan-my-cinema.com (gekauft). Schwesterprojekt: rate-my-throne.com.
-Stand: 2026-11-18.
+Stand: 2026-11-19.
 
 ## Ziel
 Zweisprachige Website (DE zuerst, EN zweitrangig) mit Heimkino-Rechnern auf einem **gemeinsamen Raummodell**. Statisch, PWA, später ggf. als App mit Capacitor. Einnahmen später über Affiliate (Amazon, Thomann), eventuell Werbung.
@@ -106,6 +106,8 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - Abdeckung je Platz: Winkel Achse ↔ Platz; grün ≤ Abstrahlwinkel, gelb bis +10° (eigene Festlegung), rot darüber
 - Decke: ab ±45° senkrecht nach unten (Dolby-Leitfaden S. 7), dann höchstens gelb; schmaler → zum Ziel geneigt
 - Abstrahlkegel eines gewählten Lautsprechers in der Draufsicht (Keil bzw. Kreis auf Ohrhöhe)
+- Raummodell v10: Schalter „Leinwand akustisch transparent“; ohne AT-Tuch L/R ≥ 15 cm neben dem Bildrand, C unter (sonst über) der Leinwand (15 cm eigene Festlegung)
+- 2026-11-19 Texte gegengelesen: Formel-/Quellenfehler korrigiert, eigene Einordnungen gekennzeichnet, Welti-Volltext gelesen
 
 **M4 – Veröffentlichung**
 - 2026-11-18 Lighthouse 13.6.0 (mobil, lokaler Build, 10 Seiten DE/EN): Barrierefreiheit, Best Practices, SEO je 100; Leistung 96–100 (Raummoden: Blockierzeit ~230 ms durch die Modenrechnung, unkritisch). Tastatur: Sprunglink, sichtbarer Fokus. Sitemap 12 Seiten mit hreflang, canonical gesetzt.

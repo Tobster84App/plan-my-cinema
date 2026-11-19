@@ -17,6 +17,31 @@ export function evaluateFrom(rule: ChannelRule, listener: SpeakerPos, pos: Speak
 const WORST: Record<Status, number> = { ok: 0, warn: 1, bad: 2 };
 
 export const SPEAKER_INSET = 0.15;
+/** Abstand der Lautsprecher zum Bildrand ohne AT-Tuch (eigene Festlegung). */
+export const SCREEN_EDGE_GAP = 0.15;
+
+/**
+ * Ohne akustisch transparentes Tuch: L/R in der Leinwandebene so weit außen, dass sie mindestens SCREEN_EDGE_GAP neben dem
+ * Bildrand stehen (Dolby-Richtung bleibt, wenn sie schon außerhalb liegt); C mittig unter der Leinwand, bei zu wenig Platz darüber.
+ */
+export function placeFrontWithoutAt(id: SpeakerId, auto: SpeakerPos, m: RoomModel): SpeakerPos {
+  const W = m.room.width;
+  const yc = W / 2;
+  const half = m.screen.width / 2;
+  const x = Math.max(SPEAKER_INSET, m.screen.wallGap);
+  if (id === 'C') {
+    const bottom = m.screen.bottomEdge;
+    const top = bottom + m.screen.width / m.screen.aspect;
+    const below = bottom - SCREEN_EDGE_GAP;
+    const z = below >= 0.3 ? below : Math.min(m.room.height - SPEAKER_INSET, top + SCREEN_EDGE_GAP);
+    return { x, y: yc, z };
+  }
+  const side = auto.y < yc ? -1 : 1;
+  const need = half + SCREEN_EDGE_GAP;
+  const off = Math.max(Math.abs(auto.y - yc), need);
+  const y = Math.min(W - SPEAKER_INSET, Math.max(SPEAKER_INSET, yc + side * off));
+  return { x, y, z: auto.z };
+}
 /** Lautsprecher näher als das an einer Fläche gelten als dort montiert (eigene Festlegung, ≈ 2 × Wandabstand der Automatik). */
 export const REFLECTION_MIN_GAP = 0.3;
 
@@ -51,7 +76,8 @@ export function computeSpeakers(m: RoomModel) {
   const speakers: SpeakerResult[] = LAYOUT_CHANNELS[layout].map((id) => {
     const rule = channelRule(id, layout);
     const manualPos = m.speakers.overrides[id];
-    const pos = manualPos ?? autoPlace(rule, input);
+    const auto = autoPlace(rule, input);
+    const pos = manualPos ?? (!m.speakers.atScreen && (id === 'L' || id === 'C' || id === 'R') ? placeFrontWithoutAt(id, auto, m) : auto);
     const e = evaluateFrom(rule, mlp, pos);
     return { id, rule, pos, manual: !!manualPos, ...e };
   });

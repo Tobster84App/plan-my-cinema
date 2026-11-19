@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_ROOM, SPEAKER_LAYOUTS } from '../src/lib/room';
+import { DEFAULT_ROOM, SPEAKER_LAYOUTS, sanitizeRoom } from '../src/lib/room';
 import { LAYOUT_CHANNELS, azimuthDeg, channelRule, elevationDeg, placeOnWalls, placeOverhead, rate } from '../src/lib/speakers';
 import { computeSpeakers } from '../src/lib/speakers-calc';
 
@@ -102,5 +102,38 @@ describe('computeSpeakers (Beispielraum 6 × 4 × 2,5 m, 7.1.4)', () => {
     const s = computeSpeakers(m).speakers.find((x) => x.id === 'Ls')!;
     expect(s.manual).toBe(true);
     expect(s.status).not.toBe('ok');
+  });
+});
+
+describe('Leinwand ohne AT-Tuch (L/C/R automatisch neben bzw. unter die Leinwand)', () => {
+  const noAt = () => {
+    const m = structuredClone(DEFAULT_ROOM);
+    m.speakers.atScreen = false;
+    return m;
+  };
+  const pos = (m: typeof DEFAULT_ROOM, id: string) => computeSpeakers(m).speakers.find((s) => s.id === id)!.pos;
+  it('C mittig unter der Leinwand: Unterkante 0,6 m − 15 cm = 0,45 m, x = Leinwandebene 0,4 m', () => {
+    const c = pos(noAt(), 'C');
+    expect(c.x).toBeCloseTo(0.4, 10);
+    expect(c.y).toBeCloseTo(2, 10);
+    expect(c.z).toBeCloseTo(0.45, 10);
+  });
+  it('C über der Leinwand, wenn darunter kein Platz ist: Unterkante 0,3 → Oberkante 0,3 + 3/2,35 = 1,5766 → + 15 cm = 1,7266 m', () => {
+    const m = noAt();
+    m.screen.bottomEdge = 0.3;
+    expect(pos(m, 'C').z).toBeCloseTo(1.72660, 4);
+  });
+  it('L/R mindestens 15 cm neben dem Bildrand: Leinwand 3,0 m → |y − 2| ≥ 1,65 m; bei 3,6 m Breite würde das 0,05 m ergeben → an der Wand begrenzt (0,15 m)', () => {
+    const l = pos(noAt(), 'L');
+    expect(Math.abs(l.y - 2)).toBeGreaterThanOrEqual(1.65 - 1e-9);
+    expect(l.x).toBeCloseTo(0.4, 10);
+    const m = noAt();
+    m.screen.width = 3.6;
+    expect(pos(m, 'L').y).toBeCloseTo(0.15, 10);
+    expect(pos(m, 'R').y).toBeCloseTo(3.85, 10);
+  });
+  it('mit AT-Tuch unverändert hinter der Leinwand (C bei x = 0,2); v9-Daten bleiben AT', () => {
+    expect(pos(structuredClone(DEFAULT_ROOM), 'C').x).toBeCloseTo(0.2, 10);
+    expect(sanitizeRoom({ version: 9 }).speakers.atScreen).toBe(true);
   });
 });
