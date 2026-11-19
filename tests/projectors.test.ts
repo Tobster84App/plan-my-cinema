@@ -34,6 +34,7 @@ describe('data/projectors.json', () => {
     expect(valid.find((x) => x.id === 'valerion-visionmaster-max')!.lensShift).toEqual({ up: 52.5, down: 52.5, left: null, right: null });
     expect(valid.find((x) => x.id === 'valerion-visionmaster-pro2')!.lensShift).toEqual({ up: 0, down: 0, left: 0, right: 0 });
   });
+  // Epson zählt Lens Shift auf die ganze Bildhöhe: Handbuch EH-QB1000B S. 139, 100″ 16:9 (H = 125 cm), Unterkante −182…+58 cm → Mitte ±120 cm = ±96 % von H
   it('Stichprobe EH-LS12000B wie auf epson.de: 1,35–2,84, ±96,3 % / ±47,1 %, 2.700 lm', () => {
     const p = valid.find((x) => x.id === 'epson-eh-ls12000')!;
     expect(p.throwRatio).toEqual({ min: 1.35, max: 2.84 });

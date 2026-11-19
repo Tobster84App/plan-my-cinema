@@ -41,5 +41,6 @@ Gesamt: **106 Modelle** (Stand 2026-11-09).
   - **BenQ geprüft (2026-11-19):** Benutzerhandbuch W5800 (S. 18, vom Inhaber als PDF geliefert): „Der Bereich der Linsenverschiebung wird als Prozentsatz der halben Höhe oder Breite des projizierten Bildes angegeben“ (Toleranz ±5 %) → wie Sony halbiert: W5800 ±25 % / ±10,5 %. W2720i (Datenblatt ±5 % vertikal) im Handbuch nicht geprüft → `null`, Originalangabe in `statedLensShift`.
   - **Valerion geprüft (2026-11-19):** User Manual VisionMaster Max S. EN-19: OFFSET = (H1 + H2) ÷ H2 × 100 % (H1 = Objektivachse bis Bildkante, H2 = halbe Bildhöhe) → Bezug halbe Bildhöhe, ±105 % → ±52,5 %.
   - **LG HU810PW:** Benutzerhandbuch nennt keinen Zahlenbereich (nur Rautendiagramm S. 33; „Verhältnis der nach oben gerichteten Projektion 110 %“ S. 27 beschreibt die Bildlage, nicht den Verschiebebereich) → Werte von lg.com bleiben, Bezug nicht geprüft.
-  - Offen: Epson (geliefertes PDF war nur die Startseite eines mehrteiligen Handbuchs), XGIMI.
+  - **Epson geprüft (2026-11-19):** Benutzerhandbuch EH-QB1000B (S. 39 und Tabelle S. 139): 100″ 16:9 (221 × 125 cm), Unterkante −182 bis +58 cm zur Objektivmitte → Bildmitte −119,5 bis +120,5 cm = ±96 % der ganzen Bildhöhe (Angabe ±96,3 %) → Bezug ganze Bildhöhe wie im Rechner; Epson-Werte unverändert.
+  - Offen: XGIMI (vertikal ohnehin `null`).
 - Nicht erreichbar: Hisense (www.hisense.de antwortet mit Serverfehler 502).
