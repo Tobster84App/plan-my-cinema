@@ -9,15 +9,15 @@ const description =
 const faq = [
   {
     q: 'How much amplifier power does a home cinema need?',
-    a: 'It depends on speaker sensitivity and the distance to the seat. Every 3 dB more needs twice the power, and every doubling of distance costs 6 dB in the free field. The calculator shows the power each speaker needs for full scale at the main seat.',
+    a: 'It depends on how sensitive your speakers are and how far away you sit. For 3 dB more you need twice the watts, and twice the distance costs 6 dB. The calculator shows for every speaker how many watts it needs for the loudest moments of a film at your seat.',
   },
   {
     q: 'What does 2.83 V / 1 m mean for sensitivity?',
-    a: 'Many manufacturers measure sensitivity with 2.83 volts rather than 1 watt. Into 8 ohms that is about 1 W, into 4 ohms about 2 W – so a 4-ohm speaker looks 3 dB more sensitive than it would at 1 W. The calculator accounts for that.',
+    a: 'Many manufacturers measure sensitivity with 2.83 volts instead of 1 watt. For an 8-ohm speaker that’s about the same. For a 4-ohm speaker, though, 2.83 volts is already 2 watts – so on paper it looks 3 dB louder than it would with 1 watt. The calculator converts this correctly.',
   },
   {
     q: 'What level should I aim for?',
-    a: 'Dolby’s home theater guidelines call for a calibration level of 79 to 82 dB SPL (C-weighted) at the main seat with pink noise at −20 dBFS, depending on room size. At full scale the level is 20 dB higher.',
+    a: 'For home cinemas, Dolby recommends setting each speaker at the main seat to 79 to 82 dB with a test noise, depending on room size. The loudest moments in a film are then 20 dB louder.',
   },
 ];
 
@@ -43,13 +43,48 @@ const jsonLd = [
 <Base lang="en" page="levels" title={title} description={description} jsonLd={jsonLd}>
   <div class="page-head">
     <h1>SPL <span>&amp;</span> amplifier</h1>
-    <p>Can your speakers and amplifier reach the level your cinema is calibrated to? Layout, positions and seat come from the speaker planner.</p>
+    <p>Will your speakers and amplifier get loud enough for a real cinema feeling? Speaker positions and your seat come from the speaker planner.</p>
   </div>
 
   <LevelCalculator client:load lang="en" />
 
   <article class="prose">
-    <h2>How it works</h2>
+    <h2>What is this about?</h2>
+    <p>
+      In a cinema, explosions can get really loud. For that to work at home too, your speakers and amplifier need enough power. This calculator
+      checks for every speaker whether it can play loud enough at your seat – or whether it hits its limit.
+    </p>
+
+    <h3>How loud is “cinema loud”?</h3>
+    <p>
+      Loudness is measured in <strong>decibels (dB)</strong>. Dolby recommends setting each speaker to 79 to 82 dB with a test noise – depending on how
+      big the room is. The loudest moments in a film are another 20 dB louder, so around 100 dB. Every speaker should be able to play that loud at
+      your seat.
+    </p>
+
+    <h3>What makes a speaker loud?</h3>
+    <p>
+      Three things count. First, the speaker’s <strong>sensitivity</strong>: it’s on the data sheet and tells you how loud it already is with little
+      power. Second, the amplifier’s <strong>power</strong> in watts. Third, the <strong>distance</strong> to your seat. The rule is: for 3 dB more you
+      need twice the watts, and sitting twice as far away costs 6 dB. That’s why a high sensitivity often matters more than a huge amplifier.
+    </p>
+
+    <h3>And the subwoofer?</h3>
+    <p>
+      Films have their own channel for the deep bass. It is usually set 10 dB louder than the other speakers – a rule of thumb that you fine-tune
+      later with a measurement. How many subwoofers you have and where they stand comes from the room modes calculator. Two subwoofers together are
+      clearly louder than one.
+    </p>
+
+    <h3>How exact is this?</h3>
+    <p>
+      The calculator pretends there are no walls. A real room is usually a bit louder, especially in the bass, so the result is on the cautious side.
+      It doesn’t take into account how much power your speakers can handle – that’s on the data sheet.
+    </p>
+
+    <details class="tech">
+      <summary>For the technically minded: how we calculate</summary>
+
     <h3>Target level</h3>
     <p>
       Dolby’s <a href="https://www.dolby.com/siteassets/technologies/dolby-atmos/atmos-installation-guidelines-121318_r3.1.pdf" rel="noopener">Dolby Atmos Home Theater Installation Guidelines</a>{' '}
@@ -76,6 +111,7 @@ const jsonLd = [
       The calculation assumes a free field without reflections from walls and ceiling – real rooms are usually a little louder, so the result errs on
       the safe side. It ignores speaker power handling, power compression at high levels, several channels playing together. Calling less than 3 dB of headroom “tight” is our own choice.
     </p>
+    </details>
 
     <h2>FAQ</h2>
     {faq.map((f) => (

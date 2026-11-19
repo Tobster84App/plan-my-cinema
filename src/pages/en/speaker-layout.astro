@@ -9,19 +9,19 @@ const description =
 const faq = [
   {
     q: 'At what angle should Atmos ceiling speakers be mounted?',
-    a: 'Dolby’s installation guidelines put top front and top rear speakers at about 45° above horizontal in side view – 30–55° in front, 125–150° measured from the front behind you. With only two ceiling speakers (.2) they sit at about 80°, allowed 65–100°.',
+    a: 'Seen from your seat, the front ceiling speakers should hang about 45° up in front of you (Dolby allows 30 to 55°), the rear ones just as far up behind you (125 to 150°, counted from the front). With only two ceiling speakers they hang almost above you, at about 80° (allowed: 65 to 100°).',
   },
   {
     q: 'Where do the surround speakers go?',
-    a: 'For 7.1 and 9.1, at the sides at 90–110°, with the rear surrounds at 135–150°. For 5.1 Dolby gives 110–120°, but 90–110° for 5.1.2/5.1.4, so the planner accepts 90–120° for 5.1.x.',
+    a: 'With 7.1 and 9.1, beside you and slightly behind (90 to 110°, counted from the front). The rear speakers go diagonally behind you (135 to 150°). For 5.1 Dolby gives 110 to 120° for the sides, but 90 to 110° for 5.1.2 and 5.1.4 – so the planner accepts 90 to 120°.',
   },
   {
     q: 'How high should the speakers be?',
-    a: 'All ear-level speakers at the same height if possible, typically about 1.2 m. Rear speakers may be higher, but no more than 1.25 times the front height. Ceiling speakers at 2 to 3 times the height of the ear-level speakers.',
+    a: 'The speakers around you should all be at the same height, roughly at seated ear height (usually about 1.2 m). The rear ones may hang a bit higher, but no more than 1.25 times as high as the front ones. Ceiling speakers should be 2 to 3 times as high as the ear-level speakers.',
   },
   {
     q: 'Does this cover DTS:X?',
-    a: 'The planner checks against Dolby’s guidelines only. We have not evaluated DTS specifications.',
+    a: 'The planner only checks Dolby’s rules. We haven’t looked at the DTS rules.',
   },
 ];
 
@@ -47,13 +47,77 @@ const jsonLd = [
 <Base lang="en" page="speakers" title={title} description={description} jsonLd={jsonLd}>
   <div class="page-head">
     <h1>Speaker <span>layout</span></h1>
-    <p>Dolby Atmos layouts from 5.1 to 9.1.6 in your room: where each speaker belongs and whether your positions meet Dolby’s angles.</p>
+    <p>Where your speakers belong for Dolby Atmos – from 5.1 to 9.1.6 – and whether they sound right from every seat.</p>
   </div>
 
   <SpeakerPlanner client:load lang="en" />
 
   <article class="prose">
-    <h2>How the planner works</h2>
+    <h2>What is this about?</h2>
+    <p>
+      In a home cinema the sound doesn’t just come from the front, but from everywhere: from the sides, from behind and – with
+      <strong>Dolby Atmos</strong> – even from above. For that to feel real, the speakers have to be in the right places. Dolby, the company behind
+      Atmos, has written down rules for this. This planner shows where your speakers belong and whether your positions follow those rules.
+    </p>
+
+    <h3>What do numbers like 7.1.4 mean?</h3>
+    <p>
+      The first number is how many speakers stand around you at ear height. The second is the subwoofer for the deep bass. The third is how many
+      speakers hang on the ceiling. So 7.1.4 means: 7 speakers around you, 1 subwoofer and 4 on the ceiling.
+    </p>
+
+    <h3>Green, yellow, red</h3>
+    <p>
+      For every speaker Dolby gives an angle it should sit at – measured from your seat. <strong>Green</strong> means the speaker is in exactly the
+      right place, <strong>yellow</strong> means just off, <strong>red</strong> means clearly off. To start with, the planner puts every speaker in a
+      good spot itself. Use “Move” to enter where they really are in your room. The front speakers start out behind the screen – that only works with
+      a screen that lets sound through. If yours doesn’t, set “Acoustically transparent screen” to “no”.
+    </p>
+
+    <h3>When several people are watching</h3>
+    <p>
+      Dolby’s rules are for the best seat, the <strong>main seat</strong>. From the other seats the angles look different. Enter how many seats there
+      are under “Seating rows”. Then you can see for each seat how well the speakers fit there. If a sofa sits off to one side or an armchair is
+      further back, you can move individual seats too.
+    </p>
+
+    <h3>Aiming the speakers</h3>
+    <p>
+      A speaker sounds best when it points straight at you. Sit far off to the side and you hear less of the high notes. The planner tells you how
+      many degrees to turn and tilt each speaker away from the wall. It also checks whether every seat lies within the speaker’s
+      “coverage”. You’ll find the dispersion angle in your speaker’s data sheet.
+    </p>
+
+    <h3>Does the sound arrive everywhere at the same time?</h3>
+    <p>
+      An AV receiver tunes the system for one seat: it holds back the closer speakers a tiny bit so that everything arrives at that seat at the same
+      time and loudness. At the other seats that’s no longer quite right. The planner shows how many milliseconds and how much loudness it is off
+      at each seat.
+    </p>
+
+    <h3>Can I see over the heads in front?</h3>
+    <p>
+      With several rows, the back row has to see the bottom of the picture over the heads of the row in front. The planner works out how much room is
+      left between your line of sight and the head in front. About 12 centimetres is good. If it’s less, a higher platform for the back row, more space
+      between the rows or a higher screen helps.
+    </p>
+
+    <h3>Where do absorbers go?</h3>
+    <p>
+      A speaker’s sound doesn’t just travel straight to you – it also bounces off the walls, ceiling and floor. These echoes arrive just after the
+      sound itself and make it harder to tell where a noise is coming from. The planner shows you the spots where the sound bounces. That’s where
+      <strong>absorbers</strong> help – panels that soak up sound.
+    </p>
+
+    <h3>How exact is this?</h3>
+    <p>
+      The angles come from Dolby’s official documents. The other calculations assume an empty room. How it sounds in the end also depends on your
+      speakers and your room – so trust your ears too.
+    </p>
+
+    <details class="tech">
+      <summary>For the technically minded: how we calculate</summary>
+
     <h3>Based on Dolby’s guidelines</h3>
     <p>
       All angles come from the <a href="https://www.dolby.com/siteassets/technologies/dolby-atmos/atmos-installation-guidelines-121318_r3.1.pdf" rel="noopener">Dolby Atmos Home Theater Installation Guidelines</a>{' '}
@@ -132,6 +196,7 @@ const jsonLd = [
       seats, the patch that covers all of their points – the minimum size for an absorber. Both views draw that patch. Surfaces a speaker is mounted on
       are left out.
     </p>
+    </details>
 
     <h2>FAQ</h2>
     {faq.map((f) => (

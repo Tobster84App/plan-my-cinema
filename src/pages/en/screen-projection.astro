@@ -13,15 +13,15 @@ const faq = [
   },
   {
     q: 'How bright should a home cinema image be?',
-    a: 'SMPTE ST 431-1 sets 14 fL (48 nits) for digital cinema projection, and many home cinemas use that for SDR in a dark room. Extra brightness helps HDR tone mapping. Below 12 fL the picture looks flat.',
+    a: 'Cinemas use 14 foot-lamberts, about 48 nits (set out in the SMPTE ST 431-1 standard). Many home cinemas aim for that in a dark room. For HDR films it can be brighter. Below 12 foot-lamberts the picture looks dull.',
   },
   {
     q: 'Zoom or anamorphic lens for a scope screen?',
-    a: 'Zooming leaves the 16:9 panel as it is and throws the letterbox bars onto the masking – about a quarter of the light at 2.35:1. An anamorphic lens uses the whole panel but costs a few percent of light itself, and money.',
+    a: 'With zoom the picture is simply made bigger. The black bars at the top and bottom land off the screen, losing about a quarter of the light. An add-on lens stretches the picture sideways and uses all the light, but costs some light and money itself.',
   },
   {
     q: 'What is the right seating distance?',
-    a: 'Commonly quoted guidelines are a horizontal viewing angle of at least 30° (from SMPTE EG 18, withdrawn in 2003) and 36 to 40° (THX). The calculator shows the matching distances for your screen width.',
+    a: 'A common tip is that the picture should fill 30 to 40 degrees of your view (30° from an older SMPTE guideline, 36 to 40° from THX). Many people deliberately sit closer. The calculator shows you the matching distances for your picture width.',
   },
 ];
 
@@ -47,13 +47,71 @@ const jsonLd = [
 <Base lang="en" page="screen" title={title} description={description} jsonLd={jsonLd}>
   <div class="page-head">
     <h1>Screen <span>&amp;</span> projection</h1>
-    <p>Throw distance, brightness and seating distance for your room – including lens shift, AT fabric and scope via zoom or lens.</p>
+    <p>How far away the projector has to be, how bright the picture gets and where you should sit – matched to your room.</p>
   </div>
 
   <ScreenCalculator client:load lang="en" />
 
   <article class="prose">
-    <h2>How it works</h2>
+    <h2>What is this about?</h2>
+    <p>
+      A projector throws a picture onto the screen. This calculator tells you how far away the projector has to be, how bright the picture will be
+      and how far from the screen you should sit. You enter your room, your screen and your projector – the page works out the rest.
+    </p>
+
+    <h3>How bright will the picture be?</h3>
+    <p>
+      A projector makes a certain amount of light, measured in <strong>lumens</strong>. That light is spread over the whole screen. The bigger the
+      screen, the thinner it gets spread – and the darker the picture. How bright the picture really is, is given in <strong>nits</strong> or
+      <strong>foot-lamberts (fL)</strong>. Cinemas use 14 fL (about 48 nits). Below that the picture soon looks dull; for HDR films it can be brighter.
+    </p>
+    <p>
+      Careful: manufacturers usually measure the lumens on the data sheet in the brightest picture mode. With natural colours there is often a lot
+      less. If you pick a projector from our list, we therefore only use 70 % of the manufacturer’s figure. If you have measured your own, enter it.
+    </p>
+
+    <h3>A screen with holes (AT fabric)</h3>
+    <p>
+      Some screens have tiny holes or are woven. That lets the speakers stand behind the screen, so the sound comes right out of the picture. In
+      return, some light goes through the holes and is lost. How much is in your fabric’s data sheet.
+    </p>
+
+    <h3>Widescreen: zoom or add-on lens</h3>
+    <p>
+      Many films are wider than a TV. For an extra-wide screen (called “scope”) there are two ways. With <strong>zoom</strong> the projector simply
+      makes the picture bigger until the film fills the whole width. The black bars at the top and bottom then land off the screen – about a quarter
+      of the light is lost. An <strong>add-on lens</strong> (anamorphic lens) stretches the picture sideways instead. That uses all the light, but the
+      lens itself costs some light and money.
+    </p>
+
+    <h3>How far away does the projector have to be?</h3>
+    <p>
+      That depends on your projector’s <strong>throw ratio</strong>: distance divided by picture width. With a throw ratio of 1.5, the projector sits
+      4.5 metres away for a 3-metre-wide picture. If it has a zoom, there is a range from – to.
+    </p>
+
+    <h3>Lens shift: moving the picture without bending it</h3>
+    <p>
+      If the projector isn’t exactly centred in front of the screen – say it hangs from the ceiling – <strong>lens shift</strong> can move the
+      picture up, down or sideways without making it crooked. The calculator checks whether your projector has enough room to do that.
+    </p>
+
+    <h3>How far away should I sit?</h3>
+    <p>
+      Sit close and the picture fills more of what you see – like in a cinema. Sit far away and it looks smaller. A common tip is that the picture
+      should fill about 30 to 40 degrees of your view. There is no right or wrong, though: many home cinema fans deliberately sit closer. The
+      calculator shows you the angle at your seat.
+    </p>
+
+    <h3>How exact is this?</h3>
+    <p>
+      The maths is right for an ordinary, evenly bright screen and for the figures on the data sheet. Every projector and every screen is a little
+      different – in the end what counts is how the picture looks in your room.
+    </p>
+
+    <details class="tech">
+      <summary>For the technically minded: how we calculate</summary>
+
 
     <h3>Lumens are not brightness</h3>
     <p>What you see is luminance on the screen. It depends on the projector’s light output, the lit area and the screen gain:</p>
@@ -116,6 +174,7 @@ const jsonLd = [
       thumb for TVs (diagonal = 0.835 × seating distance) works out at about 40° for 16:9. Many enthusiasts sit closer for scope. There is no
       single right answer – resolution, seating rows and taste all play a part.
     </p>
+    </details>
 
     <h2>FAQ</h2>
     {faq.map((f) => (

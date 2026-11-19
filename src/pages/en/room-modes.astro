@@ -9,7 +9,7 @@ const description =
 const faq = [
   {
     q: 'What are room modes?',
-    a: 'Standing waves between the walls of a room. At certain frequencies sound piles up into strong peaks or cancels into deep dips, depending on where you sit. In the low bass they shape the sound of almost every home cinema.',
+    a: 'Low notes bounce back and forth between the walls and form “standing waves”. For some notes this makes one spot very loud and another almost silent – depending on where you sit. Almost every home cinema has this problem in the bass.',
   },
   {
     q: 'How are room modes calculated?',
@@ -17,11 +17,11 @@ const faq = [
   },
   {
     q: 'Do multiple subwoofers help?',
-    a: 'Yes, if they are placed well. Two subs on opposite walls drive the odd modes along that axis in opposite phase, so those modes largely cancel. According to Todd Welti (Harman), four subs at the wall midpoints even out the seats best in a rectangular room; two subs at opposite wall midpoints are very nearly as good with more deep bass. He sees no justification for more than four.',
+    a: 'Yes, if they are in the right places. Two subwoofers on opposite walls even each other out for some notes. According to Todd Welti (Harman), one subwoofer in the middle of each wall gives the most even bass across all seats; two in the middle of opposite walls are almost as good. More than four isn’t worth it.',
   },
   {
     q: 'Does this replace a measurement?',
-    a: 'No. It assumes rigid walls and no damping. It tells you which frequencies and positions are critical; only a measurement – for example with REW and a measurement microphone – shows how strong the effects really are.',
+    a: 'No. It shows which notes and which seats are likely to have problems. How strong they really are in your room, only a measurement can tell – for example with the free program REW and a measuring microphone.',
   },
 ];
 
@@ -47,13 +47,63 @@ const jsonLd = [
 <Base lang="en" page="modes" title={title} description={description} jsonLd={jsonLd}>
   <div class="page-head">
     <h1>Room <span>modes</span></h1>
-    <p>Which bass frequencies your room boosts or swallows – and how much of that reaches your seat. Room size and seat come from your saved room.</p>
+    <p>Which bass notes boom in your room and which almost vanish – and what reaches your seat. Room size and seats come from your saved room.</p>
   </div>
 
   <ModesCalculator client:load lang="en" />
 
   <article class="prose">
-    <h2>How it works</h2>
+    <h2>What is this about?</h2>
+    <p>
+      Low notes – the bass – bounce back and forth between the walls of your room. As they do, the sound waves keep meeting each other. Sometimes
+      they add up, sometimes they cancel out. Think of waves in a bathtub: in some spots the water sloshes up high, in others it barely moves. These
+      “standing waves” are called <strong>room modes</strong>.
+    </p>
+    <p>
+      The result: some bass notes boom far too loudly while others almost disappear. Which notes those are depends on the size of your room. The
+      calculator shows you where it happens.
+    </p>
+
+    <h3>Why the bass sounds different in different places</h3>
+    <p>
+      Every room mode has loud spots and quiet spots. Along the walls and in the corners every mode is loud – that is why a subwoofer in a corner
+      sounds so powerful: it sets all the modes going. Where you sit decides which notes you hear loudly and which quietly. In the middle of the room,
+      for example, the very lowest note often goes missing.
+    </p>
+
+    <h3>What helps: more than one subwoofer</h3>
+    <p>
+      Two subwoofers on opposite walls can even each other out for some notes, so the room booms less. Todd Welti, a researcher at Harman, tested
+      how many subwoofers you need and where they should go. His answer for a rectangular room: one subwoofer in the middle of each wall gives the
+      most even bass across all seats. Two in the middle of opposite walls are almost as good. More than four isn’t worth it. You’ll find these
+      layouts in the calculator under “Presets”.
+    </p>
+
+    <h3>SBA and DBA: whole walls of subwoofers</h3>
+    <p>
+      <strong>Bass arrays</strong> go one step further. In an <strong>SBA</strong> (single bass array) several subwoofers are spread evenly across the
+      front wall. Together they push the bass towards the back like one smooth wave, so the modes between the side walls, floor and ceiling hardly
+      get going. A <strong>DBA</strong> (double bass array) adds the same layout on the back wall. Those rear subwoofers play the sound again – flipped
+      upside down, at exactly the moment the wave from the front arrives. That way the wave is “swallowed” instead of bouncing back. Pick “SBA” or
+      “DBA” at the top of the calculator.
+    </p>
+
+    <h3>Several seats</h3>
+    <p>
+      When several people are watching, each of them hears slightly different bass. Enter all seats under “Seating rows”. The calculator then shows,
+      for every seat, which notes are loud or quiet there and how big the differences between the seats are. Each subwoofer preset shows a number:
+      the smaller it is, the more alike the bass sounds on every seat.
+    </p>
+
+    <h3>How exact is this?</h3>
+    <p>
+      The calculator assumes an empty, rectangular room with solid walls. Furniture, rugs, doors and thin walls change the sound. So it shows you
+      where problems are likely – how strong they really are, only a measurement with a measuring microphone can tell.
+    </p>
+
+    <details class="tech">
+      <summary>For the technically minded: how we calculate</summary>
+
 
     <h3>Modes in a box</h3>
     <p>In a rectangular room with rigid walls, the modes sit at</p>
@@ -127,6 +177,7 @@ const jsonLd = [
       At low frequencies the modes stand alone and far apart – that is where the familiar boomy notes and holes come from. Higher up they crowd
       together and the room behaves more evenly. The “Mode density” chart shows where that happens in your room.
     </p>
+    </details>
 
     <h2>FAQ</h2>
     {faq.map((f) => (
