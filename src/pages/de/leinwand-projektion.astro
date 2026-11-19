@@ -13,15 +13,15 @@ const faq = [
   },
   {
     q: 'Wie hell sollte das Bild im Heimkino sein?',
-    a: 'Für die digitale Kinoprojektion legt SMPTE ST 431-1 14 fL (48 nits) fest; daran orientieren sich viele Heimkinos bei SDR im dunklen Raum. Mehr Helligkeit ist für HDR-Tonemapping nützlich. Unter 12 fL wirkt das Bild matt.',
+    a: 'Im Kino sind 14 Foot-Lambert üblich, das sind etwa 48 nits (festgelegt in der Norm SMPTE ST 431-1). Daran orientieren sich viele Heimkinos im dunklen Raum. Für HDR-Filme darf es heller sein. Unter 12 Foot-Lambert wirkt das Bild matt.',
   },
   {
     q: 'Zoom oder anamorphotische Linse für eine Scope-Leinwand?',
-    a: 'Beim Zoomen bleibt das 16:9-Panel unverändert, die Balken oben und unten fallen auf die Maskierung – rund ein Viertel des Lichts geht bei 2,35:1 verloren. Eine anamorphotische Linse nutzt das ganze Panel, kostet aber selbst einige Prozent Licht und Geld.',
+    a: 'Beim Zoomen wird das Bild einfach größer gemacht. Die schwarzen Balken oben und unten landen neben der Leinwand, dabei geht etwa ein Viertel des Lichts verloren. Eine Vorsatzlinse zieht das Bild in die Breite und nutzt so das ganze Licht, kostet aber selbst etwas Licht und Geld.',
   },
   {
     q: 'Welcher Sitzabstand ist richtig?',
-    a: 'Häufig genannt werden ein horizontaler Blickwinkel von mindestens 30° (aus der 2003 zurückgezogenen SMPTE-Richtlinie EG 18) und 36 bis 40° (THX). Der Rechner zeigt die passenden Abstände für deine Bildbreite.',
+    a: 'Oft wird empfohlen, dass das Bild 30 bis 40 Grad deines Blickfelds füllt (30° aus einer älteren SMPTE-Richtlinie, 36 bis 40° von THX). Viele sitzen aber bewusst näher. Der Rechner zeigt dir die passenden Abstände für deine Bildbreite.',
   },
 ];
 
@@ -47,13 +47,72 @@ const jsonLd = [
 <Base lang="de" page="screen" title={title} description={description} jsonLd={jsonLd}>
   <div class="page-head">
     <h1>Leinwand <span>&amp;</span> Projektion</h1>
-    <p>Projektionsabstand, Bildhelligkeit und Sitzabstand für deinen Raum – mit Lens Shift, AT-Tuch und Scope per Zoom oder Linse.</p>
+    <p>Wie weit weg der Beamer stehen muss, wie hell das Bild wird und wo du am besten sitzt – passend zu deinem Raum.</p>
   </div>
 
   <ScreenCalculator client:load lang="de" />
 
   <article class="prose">
-    <h2>So rechnet der Rechner</h2>
+    <h2>Worum geht es?</h2>
+    <p>
+      Ein Beamer wirft ein Bild an die Leinwand. Dieser Rechner sagt dir, wie weit weg der Beamer stehen muss, wie hell das Bild wird und wie weit
+      du am besten davor sitzt. Du gibst deinen Raum, deine Leinwand und deinen Beamer ein – den Rest rechnet die Seite aus.
+    </p>
+
+    <h3>Wie hell wird das Bild?</h3>
+    <p>
+      Ein Beamer macht eine bestimmte Menge Licht, gemessen in <strong>Lumen</strong>. Dieses Licht verteilt sich auf die ganze Leinwand. Je größer
+      die Leinwand, desto dünner wird das Licht verteilt – das Bild wird dunkler. Wie hell das Bild dann wirklich ist, gibt man in
+      <strong>nits</strong> oder <strong>Foot-Lambert (fL)</strong> an. Im Kino sind 14 fL üblich (etwa 48 nits). Darunter wirkt das Bild schnell
+      matt, für HDR-Filme darf es gerne heller sein.
+    </p>
+    <p>
+      Achtung: Die Lumen im Datenblatt misst der Hersteller meist im hellsten Bildmodus. Mit natürlichen Farben bleibt oft deutlich weniger übrig.
+      Wählst du einen Beamer aus unserer Liste, rechnen wir deshalb nur mit 70 % der Herstellerangabe. Hast du selbst gemessen, trag deinen Wert ein.
+    </p>
+
+    <h3>Leinwand mit Löchern (AT-Tuch)</h3>
+    <p>
+      Manche Leinwände haben winzige Löcher oder sind gewebt. Dann können die Lautsprecher hinter der Leinwand stehen und der Ton kommt direkt aus
+      dem Bild. Dafür geht etwas Licht durch die Löcher verloren. Wie viel, steht im Datenblatt deines Tuchs.
+    </p>
+
+    <h3>Breitbild: Zoom oder Vorsatzlinse</h3>
+    <p>
+      Viele Filme sind breiter als ein Fernseher. Für eine extra breite Leinwand (Fachwort „Scope“) gibt es zwei Wege. Beim <strong>Zoom</strong>
+      macht der Beamer das Bild einfach größer, bis der Film die ganze Breite füllt. Die schwarzen Balken oben und unten landen dann neben der
+      Leinwand – damit geht etwa ein Viertel des Lichts verloren. Eine <strong>Vorsatzlinse</strong> (anamorphotische Linse) zieht das Bild
+      stattdessen in die Breite. So wird das ganze Licht genutzt, die Linse kostet aber selbst etwas Licht und Geld.
+    </p>
+
+    <h3>Wie weit weg muss der Beamer stehen?</h3>
+    <p>
+      Das bestimmt die <strong>Throw Ratio</strong> deines Beamers. Sie sagt: Abstand geteilt durch Bildbreite. Bei einer Throw Ratio von 1,5 steht
+      der Beamer für ein 3 Meter breites Bild also 4,5 Meter weit weg. Hat der Beamer einen Zoom, gibt es einen Bereich von – bis.
+    </p>
+
+    <h3>Lens Shift: Bild verschieben, ohne es zu verzerren</h3>
+    <p>
+      Steht der Beamer nicht genau mittig vor der Leinwand, zum Beispiel weil er an der Decke hängt, kann er das Bild mit <strong>Lens Shift</strong>
+      nach oben, unten oder zur Seite schieben – ohne dass es schief wird. Der Rechner prüft, ob dein Beamer dafür genug Spielraum hat.
+    </p>
+
+    <h3>Wie weit sollte ich davor sitzen?</h3>
+    <p>
+      Sitzt du nah, füllt das Bild mehr von dem, was du siehst – wie im Kino. Sitzt du weit weg, wirkt es kleiner. Oft genannt wird, dass das Bild
+      etwa 30 bis 40 Grad deines Blickfelds füllen sollte. Ein Richtig oder Falsch gibt es aber nicht: Viele Heimkino-Fans sitzen bewusst näher.
+      Der Rechner zeigt dir, wie groß der Winkel an deinem Platz ist.
+    </p>
+
+    <h3>Wie genau ist das?</h3>
+    <p>
+      Die Rechnung stimmt für eine normale, gleichmäßig helle Leinwand und für die Angaben aus dem Datenblatt. Jeder Beamer und jede Leinwand ist
+      etwas anders – am Ende entscheidet, wie das Bild in deinem Raum aussieht.
+    </p>
+
+    <details class="tech">
+      <summary>Für Technik-Fans: so rechnen wir genau</summary>
+
 
     <h3>Helligkeit: Lumen sind nicht gleich Helligkeit</h3>
     <p>
@@ -121,6 +180,7 @@ const jsonLd = [
       THX-Faustregel für Fernseher (Bilddiagonale = 0,835 × Sitzabstand) entspricht bei 16:9 rund 40°. Viele Enthusiasten sitzen bei Scope
       bewusst näher. Ein Richtig oder Falsch gibt es nicht – Bildschärfe, Sitzreihen und Geschmack spielen mit.
     </p>
+    </details>
 
     <h2>Häufige Fragen</h2>
     {faq.map((f) => (

@@ -9,15 +9,15 @@ const description =
 const faq = [
   {
     q: 'Wie viel Verstärkerleistung brauche ich fürs Heimkino?',
-    a: 'Das hängt von der Empfindlichkeit der Lautsprecher und vom Abstand zum Sitzplatz ab. Je 3 dB mehr Pegel braucht man doppelte Leistung, je Verdopplung des Abstands sinkt der Pegel im Freifeld um 6 dB. Der Rechner zeigt für jeden Lautsprecher die nötige Leistung für Vollaussteuerung am Hauptsitzplatz.',
+    a: 'Das hängt davon ab, wie empfindlich deine Lautsprecher sind und wie weit weg du sitzt. Für 3 dB mehr braucht man doppelt so viele Watt, und doppelter Abstand kostet 6 dB. Der Rechner zeigt dir für jeden Lautsprecher, wie viele Watt er für die lautesten Filmstellen an deinem Platz braucht.',
   },
   {
     q: 'Was bedeutet 2,83 V / 1 m bei der Empfindlichkeit?',
-    a: 'Viele Hersteller messen die Empfindlichkeit mit 2,83 Volt statt mit 1 Watt. An 8 Ohm entspricht das etwa 1 W, an 4 Ohm etwa 2 W. Ein 4-Ohm-Lautsprecher wirkt mit der 2,83-V-Angabe also 3 dB empfindlicher, als er bei 1 W wäre. Der Rechner berücksichtigt das.',
+    a: 'Viele Hersteller messen die Empfindlichkeit mit 2,83 Volt statt mit 1 Watt. Bei einem 8-Ohm-Lautsprecher ist das ungefähr dasselbe. Bei einem 4-Ohm-Lautsprecher sind 2,83 Volt aber schon 2 Watt – er wirkt auf dem Papier dadurch 3 dB lauter, als er mit 1 Watt wäre. Der Rechner rechnet das richtig um.',
   },
   {
     q: 'Welcher Pegel ist das Ziel?',
-    a: 'Die Dolby-Richtlinie für Heimkinos nennt einen Kalibrierpegel von 79 bis 82 dB SPL (C-bewertet) am Hauptsitzplatz bei rosa Rauschen mit −20 dBFS, je nach Raumgröße. Bei voller Aussteuerung liegt der Pegel 20 dB höher.',
+    a: 'Dolby empfiehlt fürs Heimkino, jeden Lautsprecher am Hauptsitzplatz mit einem Testrauschen auf 79 bis 82 dB einzustellen, je nach Raumgröße. Die lautesten Stellen im Film sind dann 20 dB lauter.',
   },
 ];
 
@@ -43,13 +43,49 @@ const jsonLd = [
 <Base lang="de" page="levels" title={title} description={description} jsonLd={jsonLd}>
   <div class="page-head">
     <h1>Pegel <span>&amp;</span> Verstärker</h1>
-    <p>Schaffen deine Lautsprecher und dein Verstärker den Pegel, auf den das Heimkino eingemessen wird? Layout, Positionen und Sitzplatz kommen aus dem Lautsprecher-Planer.</p>
+    <p>Werden deine Lautsprecher und dein Verstärker laut genug für echtes Kino-Gefühl? Wo die Lautsprecher stehen und wo du sitzt, kommt aus dem Lautsprecher-Planer.</p>
   </div>
 
   <LevelCalculator client:load lang="de" />
 
   <article class="prose">
-    <h2>So rechnet der Rechner</h2>
+    <h2>Worum geht es?</h2>
+    <p>
+      Im Kino kann es bei Explosionen richtig laut werden. Damit das auch zu Hause klappt, müssen Lautsprecher und Verstärker genug Kraft haben.
+      Dieser Rechner prüft für jeden Lautsprecher, ob er an deinem Platz laut genug spielen kann – oder ob er an seine Grenze kommt.
+    </p>
+
+    <h3>Wie laut ist „Kino-laut“?</h3>
+    <p>
+      Lautstärke misst man in <strong>Dezibel (dB)</strong>. Dolby empfiehlt, jeden Lautsprecher mit einem Testrauschen auf 79 bis 82 dB einzustellen –
+      je nachdem, wie groß der Raum ist. Die lautesten Stellen im Film sind dann noch 20 dB lauter, also etwa 100 dB. So laut sollte jeder
+      Lautsprecher an deinem Platz spielen können.
+    </p>
+
+    <h3>Was macht einen Lautsprecher laut?</h3>
+    <p>
+      Drei Dinge zählen. Erstens die <strong>Empfindlichkeit</strong> des Lautsprechers: Sie steht im Datenblatt und sagt, wie laut er mit wenig Strom
+      schon ist. Zweitens die <strong>Leistung</strong> des Verstärkers in Watt. Drittens der <strong>Abstand</strong> zu deinem Platz. Dabei gilt: Für
+      3 dB mehr braucht man doppelt so viele Watt. Und wer doppelt so weit weg sitzt, hört 6 dB weniger. Deshalb ist eine hohe Empfindlichkeit oft
+      wichtiger als ein riesiger Verstärker.
+    </p>
+
+    <h3>Und der Subwoofer?</h3>
+    <p>
+      Für den tiefen Bass gibt es im Film einen eigenen Kanal. Er wird meist 10 dB lauter eingestellt als die anderen Lautsprecher – das ist ein
+      Erfahrungswert, den du später mit einer Messung genau anpasst. Wie viele Subwoofer du hast und wo sie stehen, nimmt der Rechner aus dem
+      Raummoden-Rechner. Zwei Subwoofer sind zusammen deutlich lauter als einer.
+    </p>
+
+    <h3>Wie genau ist das?</h3>
+    <p>
+      Der Rechner tut so, als gäbe es keine Wände. Im echten Raum ist es meist etwas lauter, besonders im Bass. Das Ergebnis ist also eher vorsichtig gerechnet.
+      Nicht berücksichtigt ist, wie viel Leistung deine Lautsprecher aushalten – das steht im Datenblatt.
+    </p>
+
+    <details class="tech">
+      <summary>Für Technik-Fans: so rechnen wir genau</summary>
+
     <h3>Zielpegel</h3>
     <p>
       Die <a href="https://www.dolby.com/siteassets/technologies/dolby-atmos/atmos-installation-guidelines-121318_r3.1.pdf" rel="noopener">Dolby Atmos Home Theater Installation Guidelines</a>{' '}
@@ -77,6 +113,7 @@ const jsonLd = [
       sicheren Seite. Nicht berücksichtigt sind die Belastbarkeit der Lautsprecher, Leistungskompression bei hohen Pegeln sowie das Zusammenspiel mehrerer
       Kanäle. Die Grenze „knapp“ bei weniger als 3 dB Reserve ist eine eigene Festlegung.
     </p>
+    </details>
 
     <h2>Häufige Fragen</h2>
     {faq.map((f) => (

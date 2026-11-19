@@ -9,19 +9,19 @@ const description =
 const faq = [
   {
     q: 'In welchem Winkel gehören Atmos-Deckenlautsprecher?',
-    a: 'Laut Dolby-Installationsleitfaden sollen Top-Front- und Top-Rear-Lautsprecher in der Seitenansicht etwa 45° über der Waagerechten stehen, erlaubt sind 30–55° (vorn) bzw. 125–150° von vorn gemessen (hinten). Bei nur zwei Deckenlautsprechern (.2) liegen sie bei etwa 80°, erlaubt 65–100°.',
+    a: 'Von deinem Platz aus gesehen sollen die vorderen Deckenlautsprecher etwa 45° schräg vor dir nach oben hängen (Dolby erlaubt 30 bis 55°), die hinteren genauso schräg hinter dir (125 bis 150°, von vorne gezählt). Bei nur zwei Deckenlautsprechern hängen sie fast über dir, bei etwa 80° (erlaubt 65 bis 100°).',
   },
   {
     q: 'Wo gehören die Surround-Lautsprecher hin?',
-    a: 'Bei 7.1 und 9.1 seitlich bei 90–110°, die Rear-Surrounds bei 135–150°. Bei 5.1 nennt Dolby 110–120°, bei 5.1.2/5.1.4 dagegen 90–110°. Der Planer akzeptiert für 5.1.x deshalb 90–120°.',
+    a: 'Bei 7.1 und 9.1 neben dir, etwas hinter der Seite (90 bis 110°, von vorne gezählt). Die hinteren Lautsprecher stehen schräg hinter dir (135 bis 150°). Bei 5.1 nennt Dolby für die Seiten 110 bis 120°, bei 5.1.2 und 5.1.4 dagegen 90 bis 110° – der Planer lässt deshalb 90 bis 120° gelten.',
   },
   {
     q: 'Wie hoch sollen die Lautsprecher hängen?',
-    a: 'Alle Lautsprecher in Ohrhöhe möglichst gleich hoch, typisch etwa 1,2 m. Hintere Lautsprecher dürfen höher hängen, aber höchstens 1,25-mal so hoch wie die Front. Deckenlautsprecher 2- bis 3-mal so hoch wie die Ohrhöhen-Lautsprecher.',
+    a: 'Die Lautsprecher um dich herum möglichst alle gleich hoch, ungefähr auf Ohrhöhe im Sitzen (meist etwa 1,2 m). Die hinteren dürfen etwas höher hängen, aber höchstens 1,25-mal so hoch wie die vorderen. Die Deckenlautsprecher sollten 2- bis 3-mal so hoch hängen wie die Lautsprecher auf Ohrhöhe.',
   },
   {
     q: 'Gilt das auch für DTS:X?',
-    a: 'Der Planer prüft nur gegen die Dolby-Richtlinien. DTS-Vorgaben haben wir nicht ausgewertet.',
+    a: 'Der Planer prüft nur nach den Regeln von Dolby. Die Regeln von DTS haben wir uns nicht angesehen.',
   },
 ];
 
@@ -47,13 +47,78 @@ const jsonLd = [
 <Base lang="de" page="speakers" title={title} description={description} jsonLd={jsonLd}>
   <div class="page-head">
     <h1>Laut<span>sprecher</span></h1>
-    <p>Dolby-Atmos-Layouts von 5.1 bis 9.1.6 in deinem Raum: Wo die Lautsprecher hingehören und ob deine Positionen zu den Dolby-Winkeln passen.</p>
+    <p>Wo deine Lautsprecher für Dolby Atmos hingehören – von 5.1 bis 9.1.6 – und ob sie von jedem Platz aus gut klingen.</p>
   </div>
 
   <SpeakerPlanner client:load lang="de" />
 
   <article class="prose">
-    <h2>So arbeitet der Planer</h2>
+    <h2>Worum geht es?</h2>
+    <p>
+      Im Heimkino kommt der Ton nicht nur von vorne, sondern von überall: von den Seiten, von hinten und bei <strong>Dolby Atmos</strong> sogar von
+      oben. Damit sich das echt anfühlt, müssen die Lautsprecher an den richtigen Stellen stehen. Dolby, die Firma hinter Atmos, hat dafür
+      Regeln aufgeschrieben. Dieser Planer zeigt dir, wo deine Lautsprecher hingehören und ob deine Plätze zu diesen Regeln passen.
+    </p>
+
+    <h3>Was bedeuten die Zahlen wie 7.1.4?</h3>
+    <p>
+      Die erste Zahl sagt, wie viele Lautsprecher auf Ohrhöhe um dich herum stehen. Die zweite Zahl ist der Subwoofer für den tiefen Bass. Die dritte
+      Zahl sagt, wie viele Lautsprecher an der Decke hängen. 7.1.4 heißt also: 7 Lautsprecher um dich herum, 1 Subwoofer und 4 an der Decke.
+    </p>
+
+    <h3>Grün, Gelb, Rot</h3>
+    <p>
+      Für jeden Lautsprecher gibt Dolby einen Winkel an, in dem er stehen soll – gemessen von deinem Platz aus. <strong>Grün</strong> heißt: Der
+      Lautsprecher steht genau richtig. <strong>Gelb</strong> heißt: knapp daneben. <strong>Rot</strong> heißt: deutlich daneben. Zu Beginn stellt der
+      Planer alle Lautsprecher selbst an gute Stellen. Mit „Verschieben“ trägst du ein, wo sie bei dir wirklich stehen. Die Lautsprecher vorne
+      stellt der Planer hinter die Leinwand – das geht nur mit einer Leinwand, die Ton durchlässt. Hast du keine, stell den Schalter
+      „Leinwand akustisch transparent“ auf „nein“.
+    </p>
+
+    <h3>Wenn mehrere Leute zuschauen</h3>
+    <p>
+      Dolbys Regeln gelten für den besten Platz, den <strong>Hauptsitzplatz</strong>. Von den anderen Plätzen aus sehen die Winkel anders aus. Gib
+      unter „Sitzreihen“ ein, wie viele Plätze es gibt. Dann kannst du dir für jeden Platz anzeigen lassen, wie gut die Lautsprecher dort passen.
+      Steht ein Sofa schief oder ein Sessel weiter hinten, kannst du einzelne Plätze auch verschieben.
+    </p>
+
+    <h3>Lautsprecher richtig ausrichten</h3>
+    <p>
+      Ein Lautsprecher klingt am besten, wenn er direkt auf dich zeigt. Sitzt du weit daneben, hörst du weniger von den hellen Tönen. Der Planer
+      sagt dir, um wie viel Grad du jeden Lautsprecher zur Wand drehen und neigen sollst. Außerdem prüft er, ob jeder Platz im
+      „Abstrahlbereich“ des Lautsprechers liegt. Den Abstrahlwinkel findest du im Datenblatt deines Lautsprechers.
+    </p>
+
+    <h3>Kommt der Ton überall gleichzeitig an?</h3>
+    <p>
+      Der AV-Receiver stellt die Anlage auf einen Platz ein: Er wartet bei den näheren Lautsprechern ein klein wenig, damit an diesem Platz alles
+      gleichzeitig und gleich laut ankommt. Auf den anderen Plätzen passt das nicht mehr ganz genau. Der Planer zeigt, um wie viele
+      Millisekunden und wie viel Lautstärke es an jedem Platz abweicht.
+    </p>
+
+    <h3>Kann ich über die Köpfe vorne gucken?</h3>
+    <p>
+      Bei mehreren Reihen muss die hintere Reihe über die Köpfe der vorderen hinweg die Unterkante des Bildes sehen. Der Planer rechnet aus, wie
+      viel Platz zwischen deinem Blick und dem Kopf davor bleibt. Gut sind etwa 12 Zentimeter. Ist es zu wenig, hilft ein höheres Podest für die
+      hintere Reihe, mehr Abstand zwischen den Reihen oder eine höher hängende Leinwand.
+    </p>
+
+    <h3>Wo kommen Absorber hin?</h3>
+    <p>
+      Der Ton eines Lautsprechers kommt nicht nur direkt zu dir, sondern prallt auch von Wänden, Decke und Boden ab. Diese Echos kommen kurz nach dem
+      eigentlichen Ton an und machen es schwerer zu hören, woher ein Geräusch kommt. Der Planer zeigt dir die Stellen, an denen der Ton abprallt. Dort
+      helfen <strong>Absorber</strong> – das sind Platten, die den Schall schlucken.
+    </p>
+
+    <h3>Wie genau ist das?</h3>
+    <p>
+      Die Winkel stammen aus den offiziellen Unterlagen von Dolby. Die übrigen Rechnungen gehen von einem leeren Raum aus. Wie es am Ende klingt,
+      hängt auch von deinen Lautsprechern und deinem Raum ab – vertrau am Ende auch deinen Ohren.
+    </p>
+
+    <details class="tech">
+      <summary>Für Technik-Fans: so rechnen wir genau</summary>
+
     <h3>Grundlage: Dolby-Richtlinien</h3>
     <p>
       Alle Winkel stammen aus den <a href="https://www.dolby.com/siteassets/technologies/dolby-atmos/atmos-installation-guidelines-121318_r3.1.pdf" rel="noopener">Dolby Atmos Home Theater Installation Guidelines</a>{' '}
@@ -135,6 +200,7 @@ const jsonLd = [
       Absorber mindestens sein. In Draufsicht und Seitenansicht ist dieser Bereich als Fläche eingezeichnet. Flächen, an denen ein Lautsprecher selbst
       hängt, lässt der Planer aus.
     </p>
+    </details>
 
     <h2>Häufige Fragen</h2>
     {faq.map((f) => (
