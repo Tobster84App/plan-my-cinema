@@ -133,5 +133,5 @@ Hosting: ALL-INKL (Tarif PrivatPlus, Server in Deutschland, AVV vorhanden). Depl
 - Normangaben: 14 fL = SMPTE ST 431-1 (48 cd/m²); 30° = SMPTE EG 18-1994 (2003 zurückgezogen); THX 36° vom entferntesten Sitz, THX-TV-Regel 0,835 ≈ 40°
 
 ## Offen
-- Projektordaten: Hisense (502); Definition des Lens Shift bei Epson/BenQ/XGIMI/LG/Valerion ungeprüft (JVC geprüft) (manuals.jvckenwood.com gesperrt, files.support.epson.com 403, Handbuch-Links bei Epson/BenQ nicht gefunden)
+- Projektordaten: Hisense (502); Definition des Lens Shift bei Epson/XGIMI/LG/Valerion ungeprüft (JVC: ganze Bildhöhe; Sony und BenQ: halbe Bildhöhe → halbiert) (manuals.jvckenwood.com gesperrt, files.support.epson.com 403, Handbuch-Links bei Epson/BenQ nicht gefunden)
 - Analytics: vorerst keine

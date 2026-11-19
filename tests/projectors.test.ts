@@ -26,6 +26,10 @@ describe('data/projectors.json', () => {
     expect(p.lensShift).toEqual({ up: 42.5, down: 42.5, left: 18, right: 18 });
     expect(p.lumensSpec).toBe(3400);
   });
+  it('BenQ W5800: Handbuch S. 18 – Lens Shift in % der halben Bildhöhe/-breite: ±50/±21 % → ±25/±10,5 % der ganzen Höhe/Breite', () => {
+    const p = valid.find((x) => x.id === 'benq-w5800')!;
+    expect(p.lensShift).toEqual({ up: 25, down: 25, left: 10.5, right: 10.5 });
+  });
   it('Valerion: Lens Shift nur beim Max (±105 % vertikal), Pro 2 ohne', () => {
     expect(valid.find((x) => x.id === 'valerion-visionmaster-max')!.lensShift).toEqual({ up: 105, down: 105, left: null, right: null });
     expect(valid.find((x) => x.id === 'valerion-visionmaster-pro2')!.lensShift).toEqual({ up: 0, down: 0, left: 0, right: 0 });

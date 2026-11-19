@@ -1,6 +1,6 @@
 # Projektordaten – Regeln und Stand
 
-Datei: `data/projectors.json` (Schema: `data/projectors.schema.json`). Stand: 2026-11-09.
+Datei: `data/projectors.json` (Schema: `data/projectors.schema.json`). Stand: 2026-11-19.
 
 ## Grundsätze
 - Nur Hersteller-Websites bzw. -Datenblätter, keine Sammeldatenbanken (projektoren-datenbank.com, projectorcentral.com, projector-database.com u. ä.).
@@ -14,7 +14,7 @@ Datei: `data/projectors.json` (Schema: `data/projectors.schema.json`). Stand: 20
 | Projektionsverhältnis „1,35 – 2,84:1“, optischer Zoom | min 1,35 / max 2,84 |
 | Projektionsverhältnis mit **Digitalzoom** (z. B. „1,27 – 2,54:1“, Zoom „Digital“) | min = max = 1,27 (optisch fest), Originalangabe in `statedThrowRatio` |
 | Fest (kein Zoom) | min = max |
-| Lens Shift „±60 %“ | oben = unten = 60 |
+| Lens Shift „±60 %“ | oben = unten = 60 (Bezug ganze Bildhöhe; bei Herstellern mit Bezug halbe Bildhöhe – Sony, BenQ – Wert ÷ 2) |
 | Lens Shift nur vertikal angegeben | horizontal `null` |
 | Kein Lens Shift genannt | alle `null` (unbekannt), Hinweis im UI |
 | Uneindeutig („0 %–60 %“, „40 %~60 %“, „+10 %“, „… @ 20,9 % V“) | `null`, Originalangabe in `statedLensShift` |
@@ -38,5 +38,6 @@ Gesamt: **106 Modelle** (Stand 2026-11-09).
 - **Sony** (2026-11-09): 5 Einträge (VPL-XW5000ES, XW5100, XW6100, XW7000ES, XW8100). XW7000ES: Lumen (3.200 lm), Projektionsverhältnis und Shift von der Sony-Produktseite pro.sony (Screenshot des Inhabers; pro.sony ist aus der Arbeitsumgebung nicht erreichbar), bestätigt die Werte der Sony-Hilfe. Projektionsabstand und Lens Shift aus der Sony-Hilfe (helpguide.sony.net, „Projektionsentfernung“), Projektionsverhältnis aus Sonys Formel für 100 Zoll 16:9. **Lens Shift umgerechnet:** Sony zählt 100 % = Objektivachse am Bildrand (halbe Bildhöhe), der Rechner % der ganzen Bildhöhe → Sony-Wert ÷ 2, Originalangabe in `statedLensShift`. **Lumen** stehen nicht in der Sony-Hilfe → Händlerangabe von visunext.de (Inhaber-Freigabe für Händlerseiten), Norm wie vom Händler genannt. Beim XW8100 vertauscht visunext horizontalen und vertikalen Shift – deshalb Shift nur aus der Sony-Hilfe. visunext `/search` ist per robots.txt gesperrt → Produktseiten über die Sitemap gefunden.
   - Ausgelassen: ältere VW-Modelle (keine Hilfe-Seite gefunden).
   - **JVC geprüft (2026-11-13):** Bedienungsanleitung DLA-NZ9/NZ8/NZ7/NP5 (B5A-3961-44, S. 30, manuals.jvckenwood.com): „Bis etwa 100 % [NZ9] und 80 % [NZ8/NZ7/NP5] des projizierten Bilds“ (Bild 16:9) vertikal, 43 % / 34 % horizontal → Bezug ganze Bildhöhe/-breite, wie im Rechner; gespeicherte JVC-Werte unverändert richtig. Gleiches Diagramm in B5A-4578-14 (NZ900) und B5A-4685-04 (NZ700).
-  - Offen: Bezug bei Epson, BenQ, XGIMI, LG, Valerion nicht geprüft.
+  - **BenQ geprüft (2026-11-19):** Benutzerhandbuch W5800 (S. 18, vom Inhaber als PDF geliefert): „Der Bereich der Linsenverschiebung wird als Prozentsatz der halben Höhe oder Breite des projizierten Bildes angegeben“ (Toleranz ±5 %) → wie Sony halbiert: W5800 ±25 % / ±10,5 %. W2720i (Datenblatt ±5 % vertikal) im Handbuch nicht geprüft → `null`, Originalangabe in `statedLensShift`.
+  - Offen: Bezug bei Epson (geliefertes PDF war nur die Startseite eines mehrteiligen Handbuchs), XGIMI, LG, Valerion nicht geprüft.
 - Nicht erreichbar: Hisense (www.hisense.de antwortet mit Serverfehler 502).

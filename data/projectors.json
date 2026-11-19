@@ -327,8 +327,8 @@
       },
       "zoom": "optical",
       "lensShift": {
-        "up": 5.0,
-        "down": 5.0,
+        "up": null,
+        "down": null,
         "left": null,
         "right": null
       },
@@ -336,7 +336,8 @@
       "lumensStandard": "ANSI",
       "source": "https://www.benq.eu/de-de/projector/cinema/w2720i/spec.html",
       "asOf": "2026-11-05",
-      "notes": "BenQ nennt keinen horizontalen Lens Shift."
+      "notes": "BenQ nennt keinen horizontalen Lens Shift.",
+      "statedLensShift": "BenQ: vertikal ±5 % (Datenblatt). BenQ bezieht Lens Shift laut Handbuch W5800 auf die halbe Bildhöhe; für dieses Modell nicht im Handbuch geprüft – deshalb nicht übernommen."
     },
     {
       "id": "benq-w4100i",
@@ -370,15 +371,17 @@
       },
       "zoom": "optical",
       "lensShift": {
-        "up": 50.0,
-        "down": 50.0,
-        "left": 21.0,
-        "right": 21.0
+        "up": 25.0,
+        "down": 25.0,
+        "left": 10.5,
+        "right": 10.5
       },
       "lumensSpec": 2600,
       "lumensStandard": "ANSI",
       "source": "https://www.benq.eu/de-de/projector/cinema/w5800/spec.html",
-      "asOf": "2026-11-05"
+      "asOf": "2026-11-05",
+      "statedLensShift": "BenQ: vertikal ±50 %, horizontal ±21 %, angegeben „als Prozentsatz der halben Höhe oder Breite des projizierten Bildes“ (Benutzerhandbuch W5800, S. 18; Toleranz ±5 %). Umgerechnet auf % der ganzen Bildhöhe/-breite: ±25 % / ±10,5 %.",
+      "notes": "Lens-Shift-Bezug aus dem Benutzerhandbuch geprüft (2026-11-19)."
     },
     {
       "id": "benq-x300g",
